@@ -7,4 +7,6 @@ use warnings;
 # the contents of the Makefile that is written.
 WriteMakefile(
     NAME              => 'Router::R3',
-    VERSION
+    VERSION_FROM      => 'lib/Router/R3.pm', # finds $VERSION
+    PREREQ_PM         => {}, # e.g., Module::Name => 1.1
+    ($] >= 5.005 ?     ## Add these ne
