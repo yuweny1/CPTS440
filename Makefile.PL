@@ -11,4 +11,7 @@ WriteMakefile(
     PREREQ_PM         => {}, # e.g., Module::Name => 1.1
     ($] >= 5.005 ?     ## Add these new keywords supported since 5.005
       (ABSTRACT_FROM  => 'lib/Router/R3.pm', # retrieve abstract from module
-       AUTHOR         => 'Cindy W
+       AUTHOR         => 'Cindy Wang (CindyLinz) <cindy@cpan.org>') : ()),
+    CONFIGURE_REQUIRES => { 
+        'ExtUtils::PkgConfig' => 0,
+        'ExtUtils::MakeMa
