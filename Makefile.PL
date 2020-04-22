@@ -14,4 +14,10 @@ WriteMakefile(
        AUTHOR         => 'Cindy Wang (CindyLinz) <cindy@cpan.org>') : ()),
     CONFIGURE_REQUIRES => { 
         'ExtUtils::PkgConfig' => 0,
-        'ExtUtils::MakeMa
+        'ExtUtils::MakeMaker' => 0,
+    },
+    CONFIGURE => sub {
+        my @CCFLAGS = qw(-O2 -std=c99);
+        my @LIBS = qw();
+        if( exists &ExtUtils::PkgConfig::find ) {
+       
