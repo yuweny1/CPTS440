@@ -20,4 +20,7 @@ WriteMakefile(
         my @CCFLAGS = qw(-O2 -std=c99);
         my @LIBS = qw();
         if( exists &ExtUtils::PkgConfig::find ) {
-       
+            my %pkg_info = ExtUtils::PkgConfig->find('libpcre');
+            die "libpcre is required." unless %pkg_info;
+            print "Found libpcre:\n";
+            print "mod
