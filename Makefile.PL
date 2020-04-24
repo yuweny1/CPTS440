@@ -23,4 +23,7 @@ WriteMakefile(
             my %pkg_info = ExtUtils::PkgConfig->find('libpcre');
             die "libpcre is required." unless %pkg_info;
             print "Found libpcre:\n";
-            print "mod
+            print "modversion:  $pkg_info{modversion}\n";
+            print "cflags:      $pkg_info{cflags}\n";
+            print "libs:        $pkg_info{libs}\n";
+          
