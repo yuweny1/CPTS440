@@ -26,4 +26,10 @@ WriteMakefile(
             print "modversion:  $pkg_info{modversion}\n";
             print "cflags:      $pkg_info{cflags}\n";
             print "libs:        $pkg_info{libs}\n";
-          
+            push @LIBS, $pkg_info{libs};
+        } else {
+            push @LIBS, '-lpcre';
+        }
+
+        my @INCLUDE_DIRS=qw(.);
+        push @INCL
