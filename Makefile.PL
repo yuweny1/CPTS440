@@ -32,4 +32,5 @@ WriteMakefile(
         }
 
         my @INCLUDE_DIRS=qw(.);
-        push @INCL
+        push @INCLUDE_DIRS, "/usr/local/include" if -e "/usr/local/include"; # check for homebrew path
+        push @INCLUDE_DIRS, "/opt/local/include" if -e "/opt/local/inc
