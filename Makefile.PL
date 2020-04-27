@@ -37,4 +37,8 @@ WriteMakefile(
 
         return {
             DEFINE            => '', # e.g., '-DHAVE_SOMETHING'
-     
+            LIBS    => \@LIBS,
+            CCFLAGS => join(' ',@CCFLAGS),
+            INC     => join(' ', map { "-I$_" } @INCLUDE_DIRS),
+        };
+  
