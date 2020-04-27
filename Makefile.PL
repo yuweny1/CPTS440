@@ -33,4 +33,8 @@ WriteMakefile(
 
         my @INCLUDE_DIRS=qw(.);
         push @INCLUDE_DIRS, "/usr/local/include" if -e "/usr/local/include"; # check for homebrew path
-        push @INCLUDE_DIRS, "/opt/local/include" if -e "/opt/local/inc
+        push @INCLUDE_DIRS, "/opt/local/include" if -e "/opt/local/include"; # check for macports path
+
+        return {
+            DEFINE            => '', # e.g., '-DHAVE_SOMETHING'
+     
