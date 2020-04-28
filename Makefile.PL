@@ -47,4 +47,6 @@ WriteMakefile(
     # CCFLAGS           => join(' ', @CCFLAGS),
 );
 if  (eval {require ExtUtils::Constant; 1}) {
-  # If you edit these definitions to change the constants u
+  # If you edit these definitions to change the constants used by this module,
+  # you will need to use the generated const-c.inc and const-xs.inc
+  # files to replace their "fallback" counterparts before distri
