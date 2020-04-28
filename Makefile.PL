@@ -44,4 +44,7 @@ WriteMakefile(
     },
     # Un-comment this if you add C files to link with later:
     # OBJECT            => '$(O_FILES)', # link all the C files too
-    # CCF
+    # CCFLAGS           => join(' ', @CCFLAGS),
+);
+if  (eval {require ExtUtils::Constant; 1}) {
+  # If you edit these definitions to change the constants u
