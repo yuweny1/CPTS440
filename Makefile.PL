@@ -65,4 +65,7 @@ else {
   use File::Copy;
   use File::Spec;
   foreach my $file ('const-c.inc', 'const-xs.inc') {
-    my $fallback = File::Spec->catfile('fallb
+    my $fallback = File::Spec->catfile('fallback', $file);
+    copy ($fallback, $file) or die "Can't copy $fallback to $file: $!";
+  }
+}
