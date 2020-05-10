@@ -54,4 +54,6 @@ if  (eval {require ExtUtils::Constant; 1}) {
   my @names = (qw());
   ExtUtils::Constant::WriteConstants(
                                      NAME         => 'Router::R3',
-          
+                                     NAMES        => \@names,
+                                     DEFAULT_TYPE => 'IV',
+                                     C_FIL
