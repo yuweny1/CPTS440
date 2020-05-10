@@ -56,4 +56,9 @@ if  (eval {require ExtUtils::Constant; 1}) {
                                      NAME         => 'Router::R3',
                                      NAMES        => \@names,
                                      DEFAULT_TYPE => 'IV',
-                                     C_FIL
+                                     C_FILE       => 'const-c.inc',
+                                     XS_FILE      => 'const-xs.inc',
+                                  );
+
+}
+e
