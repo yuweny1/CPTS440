@@ -61,4 +61,8 @@ if  (eval {require ExtUtils::Constant; 1}) {
                                   );
 
 }
-e
+else {
+  use File::Copy;
+  use File::Spec;
+  foreach my $file ('const-c.inc', 'const-xs.inc') {
+    my $fallback = File::Spec->catfile('fallb
