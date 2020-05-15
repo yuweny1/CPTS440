@@ -10,4 +10,10 @@
 //#define PERL_R3_DEBUG
 
 /* __R3_SOURCE_SLOT_BEGIN__ */
-#define HAVE
+#define HAVE_STRNDUP
+#define HAVE_STRDUP
+/******* r3/3rdparty/zmalloc.h *******/
+#ifndef ZMALLOC_H
+#define ZMALLOC_H
+
+/* zmalloc - total amount of a
