@@ -19,4 +19,7 @@
 /* zmalloc - total amount of allocated memory aware version of malloc()
  *
  * Copyright (c) 2009-2010, Salvatore Sanfilippo <antirez at gmail dot com>
- * All rights r
+ * All rights reserved.
+ *
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following cond
