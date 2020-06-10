@@ -60,4 +60,5 @@
 #error "Newer version of tcmalloc required"
 #endif
 
-#elif defined(USE_
+#elif defined(USE_JEMALLOC) && (JEMALLOC_VERSION_MAJOR > 2)
+#define ZMALLOC_LIB ("jemalloc-" __xstr(JEMALLOC_VERSION_MAJOR) "." __xstr(JEMALLOC_VERSION_MINOR) "." 
