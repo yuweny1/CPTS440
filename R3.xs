@@ -76,4 +76,10 @@
 #define zmalloc_size(p) malloc_size(p)
 #endif
 
-#ifn
+#ifndef ZMALLOC_LIB
+#define ZMALLOC_LIB "libc"
+#endif
+
+void *zmalloc(size_t size);
+void *zcalloc(size_t size);
+void *zrealloc(void *ptr, size_t si
