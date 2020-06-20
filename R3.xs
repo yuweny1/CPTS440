@@ -82,4 +82,9 @@
 
 void *zmalloc(size_t size);
 void *zcalloc(size_t size);
-void *zrealloc(void *ptr, size_t si
+void *zrealloc(void *ptr, size_t size);
+void zfree(void *ptr);
+char *zstrdup(const char *s);
+char *zstrndup(const char *s, size_t n);
+size_t zmalloc_used_memory(void);
+vo
