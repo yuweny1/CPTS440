@@ -95,3 +95,11 @@ size_t zmalloc_get_private_dirty(void);
 void zlibc_free(void *ptr);
 
 #ifndef HAVE_MALLOC_SIZE
+size_t zmalloc_size(void *ptr);
+#endif
+
+#endif // ZMALLOC_H
+/******* r3/include/r3_define.h *******/
+/*
+ * r3_define.h
+ * Copyright (C) 2014 c9s <c9s
