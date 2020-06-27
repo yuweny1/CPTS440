@@ -122,4 +122,10 @@ typedef unsigned char bool;
 #endif
 
 // #define DEBUG 1
-#ifdef DEBU
+#ifdef DEBUG
+
+#define info(fmt, ...) \
+            do { fprintf(stderr, fmt, __VA_ARGS__); } while (0)
+
+#define debug(fmt, ...) \
+        do { fprintf(stderr, "%s:%d:%s(): " fm
