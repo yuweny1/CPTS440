@@ -128,4 +128,9 @@ typedef unsigned char bool;
             do { fprintf(stderr, fmt, __VA_ARGS__); } while (0)
 
 #define debug(fmt, ...) \
-        do { fprintf(stderr, "%s:%d:%s(): " fm
+        do { fprintf(stderr, "%s:%d:%s(): " fmt, __FILE__, \
+                                __LINE__, __func__, __VA_ARGS__); } while (0)
+
+#else
+#define info(...);
+#define deb
