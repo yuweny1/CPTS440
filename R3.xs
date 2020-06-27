@@ -111,4 +111,15 @@ size_t zmalloc_size(void *ptr);
 #define DEFINE_H
 #include <stdbool.h>
 
-#ifndef 
+#ifndef bool
+typedef unsigned char bool;
+#endif
+#ifndef FALSE
+#    define FALSE 0
+#endif
+#ifndef TRUE
+#    define TRUE 1
+#endif
+
+// #define DEBUG 1
+#ifdef DEBU
