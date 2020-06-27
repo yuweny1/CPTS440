@@ -102,4 +102,13 @@ size_t zmalloc_size(void *ptr);
 /******* r3/include/r3_define.h *******/
 /*
  * r3_define.h
- * Copyright (C) 2014 c9s <c9s
+ * Copyright (C) 2014 c9s <c9s@c9smba.local>
+ *
+ * Distributed under terms of the MIT license.
+ */
+
+#ifndef DEFINE_H
+#define DEFINE_H
+#include <stdbool.h>
+
+#ifndef 
