@@ -133,4 +133,11 @@ typedef unsigned char bool;
 
 #else
 #define info(...);
-#define deb
+#define debug(...);
+#endif
+
+#endif /* !DEFINE_H */
+/******* r3/include/str_array.h *******/
+/*
+ * str_array.h
+ * Copyright (C) 2014 c9s <c9s@c9smba.local
