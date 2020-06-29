@@ -156,4 +156,12 @@ typedef struct _str_array {
 
 str_array * str_array_create(int cap);
 
-bool str_array_is_full(const str_arra
+bool str_array_is_full(const str_array * l);
+
+bool str_array_resize(str_array *l, int new_cap);
+
+bool str_array_append(str_array * list, char * token);
+
+void str_array_free(str_array *l);
+
+void str_array_dump(
