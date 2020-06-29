@@ -149,4 +149,11 @@ typedef unsigned char bool;
 #define STR_ARRAY_H
 
 typedef struct _str_array {
-  char **t
+  char **tokens;
+  int    len;
+  int    cap;
+} str_array;
+
+str_array * str_array_create(int cap);
+
+bool str_array_is_full(const str_arra
