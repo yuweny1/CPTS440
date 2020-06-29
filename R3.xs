@@ -140,4 +140,13 @@ typedef unsigned char bool;
 /******* r3/include/str_array.h *******/
 /*
  * str_array.h
- * Copyright (C) 2014 c9s <c9s@c9smba.local
+ * Copyright (C) 2014 c9s <c9s@c9smba.local>
+ *
+ * Distributed under terms of the MIT license.
+ */
+
+#ifndef STR_ARRAY_H
+#define STR_ARRAY_H
+
+typedef struct _str_array {
+  char **t
