@@ -169,4 +169,11 @@ void str_array_dump(const str_array *l);
 str_array * split_route_pattern(char *pattern, int pattern_len);
 
 #define str_array_fetch(t,i)  t->tokens[i]
-#define str_arra
+#define str_array_len(t)  t->len
+#define str_array_cap(t)  t->cap
+
+#endif /* !STR_ARRAY_H */
+/******* r3/include/match_entry.h *******/
+/*
+ * match_entry.h
+ * Copyright
