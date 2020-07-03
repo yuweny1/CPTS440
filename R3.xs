@@ -184,4 +184,13 @@ str_array * split_route_pattern(char *pattern, int pattern_len);
 #ifndef MATCH_ENTRY_H
 #define MATCH_ENTRY_H
 
-/* #include "r3_define.h" 
+/* #include "r3_define.h" */
+/* #include "str_array.h" */
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+typedef struct {
+    str_array * vars;
+    const char * path; // cur
