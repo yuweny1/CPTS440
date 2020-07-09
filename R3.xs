@@ -197,4 +197,13 @@ typedef struct {
     int    path_len; // the length of the current path
     int    request_method;  // current request method
 
-    void * data; //
+    void * data; // route ptr
+
+    char * host; // the request host
+    int    host_len;
+
+    char * remote_addr;
+    int    remote_addr_len;
+} match_entry;
+
+match_entr
