@@ -206,4 +206,8 @@ typedef struct {
     int    remote_addr_len;
 } match_entry;
 
-match_entr
+match_entry * match_entry_createl(const char * path, int path_len);
+
+#define match_entry_create(path) match_entry_createl(path,strlen(path))
+
+void match_entry
