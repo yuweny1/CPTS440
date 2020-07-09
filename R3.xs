@@ -193,4 +193,8 @@ extern "C" {
 
 typedef struct {
     str_array * vars;
-    const char * path; // cur
+    const char * path; // current path to dispatch
+    int    path_len; // the length of the current path
+    int    request_method;  // current request method
+
+    void * data; //
