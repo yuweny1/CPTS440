@@ -227,4 +227,10 @@ void match_entry_free(match_entry * entry);
 #ifndef R3_NODE_H
 #define R3_NODE_H
 
-#incl
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <pcre.h>
+#include <stdbool.h>
+/* #include "config.h" */
+/* #includ
