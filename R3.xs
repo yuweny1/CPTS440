@@ -220,3 +220,11 @@ void match_entry_free(match_entry * entry);
 /******* r3/include/r3.h *******/
 /*
  * r3.h
+ * Copyright (C) 2014 c9s <c9s@c9smba.local>
+ *
+ * Distributed under terms of the MIT license.
+ */
+#ifndef R3_NODE_H
+#define R3_NODE_H
+
+#incl
