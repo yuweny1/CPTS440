@@ -210,4 +210,13 @@ match_entry * match_entry_createl(const char * path, int path_len);
 
 #define match_entry_create(path) match_entry_createl(path,strlen(path))
 
-void match_entry
+void match_entry_free(match_entry * entry);
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif /* !MATCH_ENTRY_H */
+/******* r3/include/r3.h *******/
+/*
+ * r3.h
