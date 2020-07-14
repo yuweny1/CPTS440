@@ -233,4 +233,9 @@ void match_entry_free(match_entry * entry);
 #include <pcre.h>
 #include <stdbool.h>
 /* #include "config.h" */
-/* #includ
+/* #include "r3_define.h" */
+/* #include "str_array.h" */
+/* #include "match_entry.h" */
+
+#ifdef ENABLE_JSON
+#include <json-c/json.h>
