@@ -239,3 +239,16 @@ void match_entry_free(match_entry * entry);
 
 #ifdef ENABLE_JSON
 #include <json-c/json.h>
+#endif
+
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+struct _edge;
+struct _node;
+struct _route;
+typedef struct _edge edge;
+typedef struct _node node;
+t
