@@ -251,4 +251,11 @@ struct _node;
 struct _route;
 typedef struct _edge edge;
 typedef struct _node node;
-t
+typedef struct _route route;
+
+struct _node {
+    edge  ** edges;
+    // edge  ** edge_table;
+
+    // edges are mostly less than 255
+    unsigne
