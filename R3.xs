@@ -258,4 +258,6 @@ struct _node {
     // edge  ** edge_table;
 
     // edges are mostly less than 255
-    unsigne
+    unsigned char    edge_len;
+    unsigned char    compare_type; // compare_type: pcre, opcode, string
+    unsigned char    endpoint; //
