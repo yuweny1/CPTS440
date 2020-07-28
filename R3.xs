@@ -263,4 +263,8 @@ struct _node {
     unsigned char    endpoint; // endpoint, should be zero for non-endpoint nodes
     unsigned char    ov_cnt; // capture vector array size for pcre
 
-    // almost 
+    // almost less than 255
+    unsigned char      edge_cap;
+    unsigned char      route_len;
+    unsigned char      route_cap;
+    // <-- here
