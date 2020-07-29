@@ -267,4 +267,9 @@ struct _node {
     unsigned char      edge_cap;
     unsigned char      route_len;
     unsigned char      route_cap;
-    // <-- here
+    // <-- here comes a char[1] struct padding for alignment since we have 4 char above.
+
+
+    /** compile-time variables here.... **/
+
+    /* the combined regexp pattern string from 
