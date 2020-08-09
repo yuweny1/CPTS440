@@ -272,4 +272,13 @@ struct _node {
 
     /** compile-time variables here.... **/
 
-    /* the combined regexp pattern string from 
+    /* the combined regexp pattern string from pattern_tokens */
+    pcre * pcre_pattern;
+    pcre_extra * pcre_extra;
+
+    route ** routes;
+
+    char * combined_pattern;
+
+    /**
+     * the pointer 
