@@ -281,4 +281,10 @@ struct _node {
     char * combined_pattern;
 
     /**
-     * the pointer 
+     * the pointer of route data
+     */
+    void * data;
+};
+
+#define node_edge_pattern(node,i) node->edges[i]->pattern
+#define node_edge_pattern_len(node,i) no
