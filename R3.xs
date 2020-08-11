@@ -287,4 +287,11 @@ struct _node {
 };
 
 #define node_edge_pattern(node,i) node->edges[i]->pattern
-#define node_edge_pattern_len(node,i) no
+#define node_edge_pattern_len(node,i) node->edges[i]->pattern_len
+
+struct _edge {
+    char * pattern;
+    node * child;
+    unsigned short pattern_len; // 2 byte
+    unsigned char  opcode; // 1 byte
+  
