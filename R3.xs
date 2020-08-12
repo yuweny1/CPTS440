@@ -294,4 +294,13 @@ struct _edge {
     node * child;
     unsigned short pattern_len; // 2 byte
     unsigned char  opcode; // 1 byte
-  
+    unsigned char  has_slug; // 1 bit
+};
+
+struct _route {
+    char * path;
+    int    path_len;
+
+    int    request_method; // can be (GET || POST)
+
+   
