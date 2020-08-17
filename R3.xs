@@ -309,4 +309,14 @@ struct _route {
     void * data;
 
     char * remote_addr_pattern;
-    int    remote_addr_patter
+    int    remote_addr_pattern_len;
+};
+
+
+node * r3_tree_create(int cap);
+
+node * r3_node_create();
+
+void r3_tree_free(node * tree);
+
+edge * r3_node_connectl(node * n, const char * pat, i
