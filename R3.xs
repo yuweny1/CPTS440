@@ -303,4 +303,10 @@ struct _route {
 
     int    request_method; // can be (GET || POST)
 
-   
+    char * host; // required host name
+    int    host_len;
+
+    void * data;
+
+    char * remote_addr_pattern;
+    int    remote_addr_patter
