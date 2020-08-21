@@ -330,4 +330,8 @@ void r3_node_append_edge(node *n, edge *child);
 
 edge * r3_node_find_common_prefix(node *n, char *path, int path_len, int *prefix_len, char **errstr);
 
-node * r3_tree_insert_pathl(node *tree, const char *path, int path_len, void * data)
+node * r3_tree_insert_pathl(node *tree, const char *path, int path_len, void * data);
+
+route * r3_tree_insert_routel(node *tree, int method, const char *path, int path_len, void *data);
+
+#define r3_tree_insert_path(
