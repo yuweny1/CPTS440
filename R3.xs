@@ -336,4 +336,10 @@ route * r3_tree_insert_routel(node *tree, int method, const char *path, int path
 
 #define r3_tree_insert_path(n,p,d) r3_tree_insert_pathl_ex(n,p,strlen(p), NULL, d, NULL)
 
-#define r3_tree_insert_route(n,method,path,data) r3_tree_insert_routel(n, method, path
+#define r3_tree_insert_route(n,method,path,data) r3_tree_insert_routel(n, method, path, strlen(path), data)
+
+
+/**
+ * The private API to insert a path
+ */
+node * r3_tree_insert_pathl_ex(node *tree, const char *path, int path_l
