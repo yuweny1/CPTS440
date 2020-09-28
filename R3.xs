@@ -342,4 +342,9 @@ route * r3_tree_insert_routel(node *tree, int method, const char *path, int path
 /**
  * The private API to insert a path
  */
-node * r3_tree_insert_pathl_ex(node *tree, const char *path, int path_l
+node * r3_tree_insert_pathl_ex(node *tree, const char *path, int path_len, route * route, void * data, char ** errstr);
+
+void r3_tree_dump(const node * n, int level);
+
+
+edge * r3_node_find_edge_str(const node * n, const cha
