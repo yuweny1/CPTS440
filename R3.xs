@@ -347,4 +347,11 @@ node * r3_tree_insert_pathl_ex(node *tree, const char *path, int path_len, route
 void r3_tree_dump(const node * n, int level);
 
 
-edge * r3_node_find_edge_str(const node * n, const cha
+edge * r3_node_find_edge_str(const node * n, const char * str, int str_len);
+
+
+int r3_tree_compile(node *n, char** errstr);
+
+int r3_tree_compile_patterns(node * n, char** errstr);
+
+node * r3_
