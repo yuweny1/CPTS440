@@ -359,4 +359,10 @@ node * r3_tree_matchl(const node * n, const char * path, int path_len, match_ent
 #define r3_tree_match(n,p,e)  r3_tree_matchl(n,p, strlen(p), e)
 
 // node * r3_tree_match_entry(node * n, match_entry * entry);
-#define r3_tree_match_entry(n, entry) r3_tree_matchl(n, entry->path, 
+#define r3_tree_match_entry(n, entry) r3_tree_matchl(n, entry->path, entry->path_len, entry)
+
+bool r3_node_has_slug_edges(const node *n);
+
+edge * r3_edge_createl(const char * pattern, int pattern_len, node * child);
+
+node * r3_ed
