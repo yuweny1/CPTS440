@@ -356,4 +356,7 @@ int r3_tree_compile_patterns(node * n, char** errstr);
 
 node * r3_tree_matchl(const node * n, const char * path, int path_len, match_entry * entry);
 
-#define r3_tree_match(n,p,e)  r3_tree_matchl(n,p, st
+#define r3_tree_match(n,p,e)  r3_tree_matchl(n,p, strlen(p), e)
+
+// node * r3_tree_match_entry(node * n, match_entry * entry);
+#define r3_tree_match_entry(n, entry) r3_tree_matchl(n, entry->path, 
