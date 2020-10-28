@@ -365,4 +365,14 @@ bool r3_node_has_slug_edges(const node *n);
 
 edge * r3_edge_createl(const char * pattern, int pattern_len, node * child);
 
-node * r3_ed
+node * r3_edge_branch(edge *e, int dl);
+
+void r3_edge_free(edge * edge);
+
+
+
+
+
+route * r3_route_create(const char * path);
+
+route * r3_route_createl(const 
