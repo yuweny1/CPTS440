@@ -381,4 +381,10 @@ int r3_route_cmp(const route *r1, const match_entry *r2);
 
 void r3_node_append_route(node * n, route * route);
 
-void r3_r
+void r3_route_free(route * route);
+
+route * r3_tree_match_route(const node *n, match_entry * entry);
+
+#define METHOD_GET 2
+#define METHOD_POST 2<<1
+#define 
