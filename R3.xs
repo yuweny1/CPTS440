@@ -387,4 +387,12 @@ route * r3_tree_match_route(const node *n, match_entry * entry);
 
 #define METHOD_GET 2
 #define METHOD_POST 2<<1
-#define 
+#define METHOD_PUT 2<<2
+#define METHOD_DELETE 2<<3
+#define METHOD_PATCH 2<<4
+#define METHOD_HEAD 2<<5
+#define METHOD_OPTIONS 2<<6
+
+
+
+int r3_pattern_to_opco
