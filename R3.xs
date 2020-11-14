@@ -395,4 +395,8 @@ route * r3_tree_match_route(const node *n, match_entry * entry);
 
 
 
-int r3_pattern_to_opco
+int r3_pattern_to_opcode(const char * pattern, int pattern_len);
+
+enum { NODE_COMPARE_STR, NODE_COMPARE_PCRE, NODE_COMPARE_OPCODE };
+
+enum { OP_EXPECT_MORE_DI
