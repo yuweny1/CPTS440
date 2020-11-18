@@ -399,4 +399,8 @@ int r3_pattern_to_opcode(const char * pattern, int pattern_len);
 
 enum { NODE_COMPARE_STR, NODE_COMPARE_PCRE, NODE_COMPARE_OPCODE };
 
-enum { OP_EXPECT_MORE_DI
+enum { OP_EXPECT_MORE_DIGITS = 1, OP_EXPECT_MORE_WORDS, OP_EXPECT_NOSLASH, OP_EXPECT_NODASH, OP_EXPECT_MORE_ALPHA };
+
+#ifdef ENABLE_JSON
+json_object * r3_edge_to_json_object(const edge * e);
+j
