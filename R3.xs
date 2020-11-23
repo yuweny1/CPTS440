@@ -403,4 +403,7 @@ enum { OP_EXPECT_MORE_DIGITS = 1, OP_EXPECT_MORE_WORDS, OP_EXPECT_NOSLASH, OP_EX
 
 #ifdef ENABLE_JSON
 json_object * r3_edge_to_json_object(const edge * e);
-j
+json_object * r3_node_to_json_object(const node * n);
+json_object * r3_route_to_json_object(const route * r);
+
+const char * r3_node_to_json_string_ext(cons
