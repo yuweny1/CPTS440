@@ -408,4 +408,14 @@ json_object * r3_route_to_json_object(const route * r);
 
 const char * r3_node_to_json_string_ext(const node * n, int options);
 const char * r3_node_to_json_pretty_string(const node * n);
-const char * r3_node_to_json_string(const node 
+const char * r3_node_to_json_string(const node * n);
+#endif
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif /* !R3_NODE_H */
+/******* r3/include/r3_list.h *******/
+/*
+ * r3_list
