@@ -418,4 +418,11 @@ const char * r3_node_to_json_string(const node * n);
 #endif /* !R3_NODE_H */
 /******* r3/include/r3_list.h *******/
 /*
- * r3_list
+ * r3_list.h
+ * Copyright (C) 2014 c9s <c9s@c9smba.local>
+ *
+ * Distributed under terms of the MIT license.
+ */
+
+#ifndef R3_LIST_H
+#define R3_LIST_H
