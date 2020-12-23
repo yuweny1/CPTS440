@@ -426,3 +426,14 @@ const char * r3_node_to_json_string(const node * n);
 
 #ifndef R3_LIST_H
 #define R3_LIST_H
+
+#include <pthread.h>
+ 
+typedef struct _list_item {
+  void *value;
+  struct _list_item *prev;
+  struct _list_item *next;
+} list_item;
+ 
+typedef struct {
+  i
