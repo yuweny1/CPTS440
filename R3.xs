@@ -436,4 +436,11 @@ typedef struct _list_item {
 } list_item;
  
 typedef struct {
-  i
+  int count;
+  list_item *head;
+  list_item *tail;
+  pthread_mutex_t mutex;
+} list;
+ 
+list *list_create();
+void list_free(list *l
