@@ -443,4 +443,10 @@ typedef struct {
 } list;
  
 list *list_create();
-void list_free(list *l
+void list_free(list *l);
+ 
+list_item *list_add_element(list *l, void *ptr);
+int list_remove_element(list *l, void *ptr);
+void list_each_element(list *l, int (*func)(list_item *));
+ 
+
