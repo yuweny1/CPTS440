@@ -450,3 +450,11 @@ int list_remove_element(list *l, void *ptr);
 void list_each_element(list *l, int (*func)(list_item *));
  
 
+
+#endif /* !R3_LIST_H */
+/******* r3/include/r3_str.h *******/
+/*
+ * r3_str.h
+ * Copyright (C) 2014 c9s <c9s@c9smba.local>
+ *
+ * Distributed und
