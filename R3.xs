@@ -457,4 +457,12 @@ void list_each_element(list *l, int (*func)(list_item *));
  * r3_str.h
  * Copyright (C) 2014 c9s <c9s@c9smba.local>
  *
- * Distributed und
+ * Distributed under terms of the MIT license.
+ */
+#ifndef STR_H
+#define STR_H
+
+/* #include "r3.h" */
+/* #include "config.h" */
+
+char * slug_compile(
