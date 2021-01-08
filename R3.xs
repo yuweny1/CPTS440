@@ -465,4 +465,8 @@ void list_each_element(list *l, int (*func)(list_item *));
 /* #include "r3.h" */
 /* #include "config.h" */
 
-char * slug_compile(
+char * slug_compile(const char * str, int len);
+
+char * slug_find_pattern(const char *s1, int *len);
+
+char * slug_find_placeholder(const char *s1, int *len
