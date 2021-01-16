@@ -475,4 +475,13 @@ char * inside_slug(const char * needle, int needle_len, char *offset, char **err
 
 char * ltrim_slash(char* str);
 
-void str_repeat(c
+void str_repeat(char *s, const char *c, int len);
+
+void print_indent(int level);
+
+#ifndef HAVE_STRDUP
+char *strdup(const char *s);
+#endif
+
+#ifndef HAVE_STRNDUP
+c
