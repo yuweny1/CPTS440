@@ -484,4 +484,13 @@ char *strdup(const char *s);
 #endif
 
 #ifndef HAVE_STRNDUP
-c
+char *strndup(const char *s, int n);
+#endif
+
+
+#endif /* !STR_H */
+
+/******* r3/src/slug.h *******/
+/*
+ * slug.h
+ * Copyright (C) 2014 c9s <c9s@c9smba.loca
