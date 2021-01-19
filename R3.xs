@@ -493,4 +493,13 @@ char *strndup(const char *s, int n);
 /******* r3/src/slug.h *******/
 /*
  * slug.h
- * Copyright (C) 2014 c9s <c9s@c9smba.loca
+ * Copyright (C) 2014 c9s <c9s@c9smba.local>
+ *
+ * Distributed under terms of the MIT license.
+ */
+#ifndef R3_SLUG_H
+#define R3_SLUG_H
+
+typedef struct {
+    /**
+     * sour
