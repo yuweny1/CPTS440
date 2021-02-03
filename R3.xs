@@ -513,4 +513,15 @@ typedef struct {
      */
     char * begin;
 
-   
+    /**
+     * slug end pointer
+     */
+    char * end;
+
+    /**
+     * slug length
+     */
+    int len;
+
+    // slug pattern pointer if we have one
+    c
