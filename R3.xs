@@ -502,4 +502,15 @@ char *strndup(const char *s, int n);
 
 typedef struct {
     /**
-     * sour
+     * source path
+     */
+    char * path;
+
+    int path_len;
+
+    /**
+     * slug start pointer
+     */
+    char * begin;
+
+   
