@@ -524,4 +524,12 @@ typedef struct {
     int len;
 
     // slug pattern pointer if we have one
-    c
+    char * pattern;
+
+    // the length of custom pattern, if the pattern is found.
+    int    pattern_len;
+
+} r3_slug_t;
+
+
+r3_slug_t * r3_slug_n
