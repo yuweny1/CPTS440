@@ -532,4 +532,8 @@ typedef struct {
 } r3_slug_t;
 
 
-r3_slug_t * r3_slug_n
+r3_slug_t * r3_slug_new(char * path, int path_len);
+
+int r3_slug_check(r3_slug_t *s);
+
+int r3_slug_parse(r3_slug_t *s, char *needle, int needle_len, char *offset,
