@@ -550,4 +550,9 @@ static inline int r3_path_contains_slug_char(const char * str) {
 
 #endif /* !SLUG_H */
 /******* r3/3rdparty/zmalloc.c *******/
-/* zmalloc - total amount of allocated memory aware v
+/* zmalloc - total amount of allocated memory aware version of malloc()
+ *
+ * Copyright (c) 2009-2010, Salvatore Sanfilippo <antirez at gmail dot com>
+ * All rights reserved.
+ *
+ * Redistri
