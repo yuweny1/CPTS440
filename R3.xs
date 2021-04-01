@@ -545,4 +545,9 @@ void r3_slug_free(r3_slug_t * s);
 int slug_count(const char * needle, int len, char **errstr);
 
 static inline int r3_path_contains_slug_char(const char * str) {
-    return strchr(s
+    return strchr(str, '{') != NULL ? 1 : 0;
+}
+
+#endif /* !SLUG_H */
+/******* r3/3rdparty/zmalloc.c *******/
+/* zmalloc - total amount of allocated memory aware v
