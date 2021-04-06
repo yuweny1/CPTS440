@@ -555,4 +555,6 @@ static inline int r3_path_contains_slug_char(const char * str) {
  * Copyright (c) 2009-2010, Salvatore Sanfilippo <antirez at gmail dot com>
  * All rights reserved.
  *
- * Redistri
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
+ *
