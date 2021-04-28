@@ -583,4 +583,6 @@ static inline int r3_path_contains_slug_char(const char * str) {
 #include <stdio.h>
 #include <stdlib.h>
 
-/* This functio
+/* This function provide us access to the original libc free(). This is useful
+ * for instance to free results obtained by backtrace_symbols(). We need
+ * t
