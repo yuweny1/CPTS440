@@ -606,4 +606,8 @@ void zlibc_free(void *ptr) {
 #endif
 #endif
 
-/* Explicitly override malloc/free etc when usi
+/* Explicitly override malloc/free etc when using tcmalloc. */
+#if defined(USE_TCMALLOC)
+#define malloc(size) tc_malloc(size)
+#define calloc(count,size) tc_calloc(count,size)
+#define realloc
