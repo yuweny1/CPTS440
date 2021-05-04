@@ -594,4 +594,9 @@ void zlibc_free(void *ptr) {
 #include <string.h>
 #include <pthread.h>
 /* #include "config.h" */
-/* #incl
+/* #include "zmalloc.h" */
+
+#ifdef HAVE_MALLOC_SIZE
+#define PREFIX_SIZE (0)
+#else
+#if defined(__sun) || defined(__sparc) || defined(__sparc_
