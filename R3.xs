@@ -617,3 +617,9 @@ void zlibc_free(void *ptr) {
 #define malloc(size) je_malloc(size)
 #define calloc(count,size) je_calloc(count,size)
 #define realloc(ptr,size) je_realloc(ptr,size)
+#define free(ptr) je_free(ptr)
+#endif
+
+#ifdef HAVE_ATOMIC
+#define update_zmalloc_stat_add(__n) __sync_add_and_fetch(&used_memory, (__n))
+#define update
