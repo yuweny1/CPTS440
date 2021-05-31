@@ -622,4 +622,7 @@ void zlibc_free(void *ptr) {
 
 #ifdef HAVE_ATOMIC
 #define update_zmalloc_stat_add(__n) __sync_add_and_fetch(&used_memory, (__n))
-#define update
+#define update_zmalloc_stat_sub(__n) __sync_sub_and_fetch(&used_memory, (__n))
+#else
+#define update_zmalloc_stat_add(__n) do { \
+    pthread_mutex_lock(&used_memo
