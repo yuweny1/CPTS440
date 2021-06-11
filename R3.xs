@@ -625,4 +625,9 @@ void zlibc_free(void *ptr) {
 #define update_zmalloc_stat_sub(__n) __sync_sub_and_fetch(&used_memory, (__n))
 #else
 #define update_zmalloc_stat_add(__n) do { \
-    pthread_mutex_lock(&used_memo
+    pthread_mutex_lock(&used_memory_mutex); \
+    used_memory += (__n); \
+    pthread_mutex_unlock(&used_memory_mutex); \
+} while(0)
+
+#define update_zmalloc_stat_sub(_
