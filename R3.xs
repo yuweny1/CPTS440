@@ -640,4 +640,7 @@ void zlibc_free(void *ptr) {
 
 #define update_zmalloc_stat_alloc(__n) do { \
     size_t _n = (__n); \
-    if (_n&(sizeof(long)-1)) _n += sizeof(long)-
+    if (_n&(sizeof(long)-1)) _n += sizeof(long)-(_n&(sizeof(long)-1)); \
+    if (zmalloc_thread_safe) { \
+        update_zmalloc_stat_add(_n); \
+    } el
