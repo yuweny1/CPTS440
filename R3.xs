@@ -633,4 +633,11 @@ void zlibc_free(void *ptr) {
 #define update_zmalloc_stat_sub(__n) do { \
     pthread_mutex_lock(&used_memory_mutex); \
     used_memory -= (__n); \
-    pthread_mutex_unlock(&used_memory_mute
+    pthread_mutex_unlock(&used_memory_mutex); \
+} while(0)
+
+#endif
+
+#define update_zmalloc_stat_alloc(__n) do { \
+    size_t _n = (__n); \
+    if (_n&(sizeof(long)-1)) _n += sizeof(long)-
