@@ -630,4 +630,7 @@ void zlibc_free(void *ptr) {
     pthread_mutex_unlock(&used_memory_mutex); \
 } while(0)
 
-#define update_zmalloc_stat_sub(_
+#define update_zmalloc_stat_sub(__n) do { \
+    pthread_mutex_lock(&used_memory_mutex); \
+    used_memory -= (__n); \
+    pthread_mutex_unlock(&used_memory_mute
