@@ -652,4 +652,11 @@ void zlibc_free(void *ptr) {
     size_t _n = (__n); \
     if (_n&(sizeof(long)-1)) _n += sizeof(long)-(_n&(sizeof(long)-1)); \
     if (zmalloc_thread_safe) { \
-        update_zmall
+        update_zmalloc_stat_sub(_n); \
+    } else { \
+        used_memory -= _n; \
+    } \
+} while(0)
+
+static size_t used_memory = 0;
+static int zmalloc_thread_safe = 
