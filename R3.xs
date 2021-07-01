@@ -680,4 +680,10 @@ void *zmalloc(size_t size) {
     return ptr;
 #else
     *((size_t*)ptr) = size;
-   
+    update_zmalloc_stat_alloc(size+PREFIX_SIZE);
+    return (char*)ptr+PREFIX_SIZE;
+#endif
+}
+
+void *zcalloc(size_t size) {
+    void *
