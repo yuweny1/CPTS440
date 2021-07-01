@@ -663,4 +663,10 @@ static int zmalloc_thread_safe = 0;
 pthread_mutex_t used_memory_mutex = PTHREAD_MUTEX_INITIALIZER;
 
 static void zmalloc_default_oom(size_t size) {
-    fprintf(stderr, "zmalloc: Out
+    fprintf(stderr, "zmalloc: Out of memory trying to allocate %zu bytes\n",
+        size);
+    fflush(stderr);
+    abort();
+}
+
+static void (*zmalloc_oom_handler)(size_t) =
