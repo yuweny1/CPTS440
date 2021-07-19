@@ -710,4 +710,8 @@ void *zrealloc(void *ptr, size_t size) {
 #ifdef HAVE_MALLOC_SIZE
     oldsize = zmalloc_size(ptr);
     newptr = realloc(ptr,size);
-    if (!newptr) zm
+    if (!newptr) zmalloc_oom_handler(size);
+
+    update_zmalloc_stat_free(oldsize);
+    update_zmalloc_stat_alloc(zmalloc_size(newptr));
+    return ne
