@@ -748,4 +748,10 @@ void zfree(void *ptr) {
     size_t oldsize;
 #endif
 
-    if (ptr == NUL
+    if (ptr == NULL) return;
+#ifdef HAVE_MALLOC_SIZE
+    update_zmalloc_stat_free(zmalloc_size(ptr));
+    free(ptr);
+#else
+    realptr = (char*)ptr-PREFIX_SIZE;
+    oldsize = 
