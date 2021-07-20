@@ -754,4 +754,11 @@ void zfree(void *ptr) {
     free(ptr);
 #else
     realptr = (char*)ptr-PREFIX_SIZE;
-    oldsize = 
+    oldsize = *((size_t*)realptr);
+    update_zmalloc_stat_free(oldsize+PREFIX_SIZE);
+    free(realptr);
+#endif
+}
+
+char *zstrdup(const char *s) {
+    size_t l =
