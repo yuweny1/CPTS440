@@ -733,4 +733,6 @@ void *zrealloc(void *ptr, size_t size) {
  * information as the first bytes of every allocation. */
 #ifndef HAVE_MALLOC_SIZE
 size_t zmalloc_size(void *ptr) {
-    vo
+    void *realptr = (char*)ptr-PREFIX_SIZE;
+    size_t size = *((size_t*)realptr);
+    /* Assume at least that all the allocations are padded at sizeof(long) by
