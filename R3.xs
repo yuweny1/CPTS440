@@ -724,4 +724,9 @@ void *zrealloc(void *ptr, size_t size) {
     *((size_t*)newptr) = size;
     update_zmalloc_stat_free(oldsize);
     update_zmalloc_stat_alloc(size);
-    return (char*)
+    return (char*)newptr+PREFIX_SIZE;
+#endif
+}
+
+/* Provide zmalloc_size() for systems where this function is not provided by
+ * malloc itself, given that in that case 
