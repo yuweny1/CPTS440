@@ -738,4 +738,14 @@ size_t zmalloc_size(void *ptr) {
     /* Assume at least that all the allocations are padded at sizeof(long) by
      * the underlying allocator. */
     if (size&(sizeof(long)-1)) size += sizeof(long)-(size&(sizeof(long)-1));
-    
+    return size+PREFIX_SIZE;
+}
+#endif
+
+void zfree(void *ptr) {
+#ifndef HAVE_MALLOC_SIZE
+    void *realptr;
+    size_t oldsize;
+#endif
+
+    if (ptr == NUL
