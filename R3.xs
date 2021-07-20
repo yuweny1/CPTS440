@@ -729,4 +729,8 @@ void *zrealloc(void *ptr, size_t size) {
 }
 
 /* Provide zmalloc_size() for systems where this function is not provided by
- * malloc itself, given that in that case 
+ * malloc itself, given that in that case we store a header with this
+ * information as the first bytes of every allocation. */
+#ifndef HAVE_MALLOC_SIZE
+size_t zmalloc_size(void *ptr) {
+    vo
