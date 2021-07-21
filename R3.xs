@@ -761,4 +761,14 @@ void zfree(void *ptr) {
 }
 
 char *zstrdup(const char *s) {
-    size_t l =
+    size_t l = strlen(s)+1;
+    char *p = zmalloc(l);
+
+    memcpy(p,s,l);
+    return p;
+}
+
+char * zstrndup (const char *s, size_t n)
+{
+  char *result;
+  size_t len 
