@@ -771,4 +771,13 @@ char *zstrdup(const char *s) {
 char * zstrndup (const char *s, size_t n)
 {
   char *result;
-  size_t len 
+  size_t len = strlen (s);
+
+  if (n < len)
+    len = n;
+
+  result = (char *) zmalloc (len + 1);
+  if (!result)
+    return 0;
+
+  result[len] 
