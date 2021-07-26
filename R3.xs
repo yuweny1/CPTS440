@@ -780,4 +780,12 @@ char * zstrndup (const char *s, size_t n)
   if (!result)
     return 0;
 
-  result[len] 
+  result[len] = '\0';
+  return (char *) memcpy (result, s, len);
+}
+
+size_t zmalloc_used_memory(void) {
+    size_t um;
+
+    if (zmalloc_thread_safe) {
+#ifdef
