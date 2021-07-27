@@ -808,4 +808,9 @@ void zmalloc_enable_thread_safeness(void) {
 }
 
 void zmalloc_set_oom_handler(void (*oom_handler)(size_t)) {
-    zmallo
+    zmalloc_oom_handler = oom_handler;
+}
+
+/* Get the RSS information in an OS-specific way.
+ *
+ * WARNING: the function zmalloc_g
