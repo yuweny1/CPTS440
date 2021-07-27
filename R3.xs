@@ -792,4 +792,15 @@ size_t zmalloc_used_memory(void) {
         um = __sync_add_and_fetch(&used_memory, 0);
 #else
         pthread_mutex_lock(&used_memory_mutex);
-        um = used_memory
+        um = used_memory;
+        pthread_mutex_unlock(&used_memory_mutex);
+#endif
+    }
+    else {
+        um = used_memory;
+    }
+
+    return um;
+}
+
+void zmalloc_enab
