@@ -788,4 +788,8 @@ size_t zmalloc_used_memory(void) {
     size_t um;
 
     if (zmalloc_thread_safe) {
-#ifdef
+#ifdef HAVE_ATOMIC
+        um = __sync_add_and_fetch(&used_memory, 0);
+#else
+        pthread_mutex_lock(&used_memory_mutex);
+        um = used_memory
