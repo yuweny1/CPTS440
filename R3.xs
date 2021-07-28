@@ -813,4 +813,6 @@ void zmalloc_set_oom_handler(void (*oom_handler)(size_t)) {
 
 /* Get the RSS information in an OS-specific way.
  *
- * WARNING: the function zmalloc_g
+ * WARNING: the function zmalloc_get_rss() is not designed to be fast
+ * and may not be called in the busy loops where Redis tries to release
+ * memory expiring or swapping ou
