@@ -818,4 +818,9 @@ void zmalloc_set_oom_handler(void (*oom_handler)(size_t)) {
  * memory expiring or swapping out objects.
  *
  * For this kind of "fast RSS reporting" usages use instead the
- * function RedisEstimateRSS() that is a muc
+ * function RedisEstimateRSS() that is a much faster (and less precise)
+ * version of the function. */
+
+#if defined(HAVE_PROC_STAT)
+#include <unistd.h>
+#include <sys/types
