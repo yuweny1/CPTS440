@@ -815,4 +815,7 @@ void zmalloc_set_oom_handler(void (*oom_handler)(size_t)) {
  *
  * WARNING: the function zmalloc_get_rss() is not designed to be fast
  * and may not be called in the busy loops where Redis tries to release
- * memory expiring or swapping ou
+ * memory expiring or swapping out objects.
+ *
+ * For this kind of "fast RSS reporting" usages use instead the
+ * function RedisEstimateRSS() that is a muc
