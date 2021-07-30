@@ -823,4 +823,12 @@ void zmalloc_set_oom_handler(void (*oom_handler)(size_t)) {
 
 #if defined(HAVE_PROC_STAT)
 #include <unistd.h>
-#include <sys/types
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+
+size_t zmalloc_get_rss(void) {
+    int page = sysconf(_SC_PAGESIZE);
+    size_t rss;
+    char buf[4096];
+   
