@@ -831,4 +831,9 @@ size_t zmalloc_get_rss(void) {
     int page = sysconf(_SC_PAGESIZE);
     size_t rss;
     char buf[4096];
-   
+    char filename[256];
+    int fd, count;
+    char *p, *x;
+
+    snprintf(filename,256,"/proc/%d/stat",getpid());
+    if ((fd = open(fil
