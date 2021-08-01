@@ -843,3 +843,7 @@ size_t zmalloc_get_rss(void) {
     }
     close(fd);
 
+    p = buf;
+    count = 23; /* RSS is the 24th field in /proc/<pid>/stat */
+    while(p && count--) {
+        p = strchr(p,'
