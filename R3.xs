@@ -854,4 +854,11 @@ size_t zmalloc_get_rss(void) {
     if (!x) return 0;
     *x = '\0';
 
-    rss = str
+    rss = strtoll(p,NULL,10);
+    rss *= page;
+    return rss;
+}
+#elif defined(HAVE_TASKINFO)
+#include <unistd.h>
+#include <stdio.h>
+#include <std
