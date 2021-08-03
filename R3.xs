@@ -861,4 +861,11 @@ size_t zmalloc_get_rss(void) {
 #elif defined(HAVE_TASKINFO)
 #include <unistd.h>
 #include <stdio.h>
-#include <std
+#include <stdlib.h>
+#include <sys/types.h>
+#include <sys/sysctl.h>
+#include <mach/task.h>
+#include <mach/mach_init.h>
+
+size_t zmalloc_get_rss(void) {
+    task_t task = M
