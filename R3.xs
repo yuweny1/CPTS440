@@ -872,4 +872,8 @@ size_t zmalloc_get_rss(void) {
     struct task_basic_info t_info;
     mach_msg_type_number_t t_info_count = TASK_BASIC_INFO_COUNT;
 
-    if (task_for_pid(current_task(), get
+    if (task_for_pid(current_task(), getpid(), &task) != KERN_SUCCESS)
+        return 0;
+    task_info(task, TASK_BASIC_INFO, (task_info_t)&t_info, &t_info_count);
+
+    return t_info.resident
