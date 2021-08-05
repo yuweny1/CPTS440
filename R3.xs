@@ -881,4 +881,8 @@ size_t zmalloc_get_rss(void) {
 #else
 size_t zmalloc_get_rss(void) {
     /* If we can't get the RSS in an OS-specific way for this system just
-     * return the memory u
+     * return the memory usage we estimated in zmalloc()..
+     *
+     * Fragmentation will appear to be always 1 (no fragmentation)
+     * of course... */
+    return zmalloc_use
