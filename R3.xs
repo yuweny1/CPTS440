@@ -885,4 +885,10 @@ size_t zmalloc_get_rss(void) {
      *
      * Fragmentation will appear to be always 1 (no fragmentation)
      * of course... */
-    return zmalloc_use
+    return zmalloc_used_memory();
+}
+#endif
+
+/* Fragmentation = RSS / allocated-bytes */
+float zmalloc_get_fragmentation_ratio(size_t rss) {
+    return (floa
