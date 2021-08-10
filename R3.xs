@@ -929,4 +929,10 @@ size_t zmalloc_get_private_dirty(void) {
 #include <stdlib.h>
 #include <string.h>
 #include <pcre.h>
-#inclu
+#include <assert.h>
+#include <stdbool.h>
+
+/* #include "r3.h" */
+/* #include "zmalloc.h" */
+/* #include "match_entry.h" */
+
