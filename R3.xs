@@ -906,4 +906,13 @@ size_t zmalloc_get_private_dirty(void) {
             char *p = strchr(line,'k');
             if (p) {
                 *p = '\0';
-                p
+                pd += strtol(line+14,NULL,10) * 1024;
+            }
+        }
+    }
+    fclose(fp);
+    return pd;
+}
+#else
+size_t zmalloc_get_private_dirty(void) {
+  
