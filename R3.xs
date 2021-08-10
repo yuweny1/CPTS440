@@ -936,3 +936,8 @@ size_t zmalloc_get_private_dirty(void) {
 /* #include "zmalloc.h" */
 /* #include "match_entry.h" */
 
+
+match_entry * match_entry_createl(const char * path, int path_len) {
+    match_entry * entry = zmalloc(sizeof(match_entry));
+    if(!entry)
+ 
