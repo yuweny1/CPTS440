@@ -915,4 +915,12 @@ size_t zmalloc_get_private_dirty(void) {
 }
 #else
 size_t zmalloc_get_private_dirty(void) {
-  
+    return 0;
+}
+#endif
+/******* r3/src/match_entry.c *******/
+/*
+ * match_entry.c
+ * Copyright (C) 2014 c9s <c9s@c9smba.local>
+ *
+ * Dis
