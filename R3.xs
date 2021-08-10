@@ -902,4 +902,8 @@ size_t zmalloc_get_private_dirty(void) {
 
     if (!fp) return 0;
     while(fgets(line,sizeof(line),fp) != NULL) {
-        if (strnc
+        if (strncmp(line,"Private_Dirty:",14) == 0) {
+            char *p = strchr(line,'k');
+            if (p) {
+                *p = '\0';
+                p
