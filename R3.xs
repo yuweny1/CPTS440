@@ -923,4 +923,10 @@ size_t zmalloc_get_private_dirty(void) {
  * match_entry.c
  * Copyright (C) 2014 c9s <c9s@c9smba.local>
  *
- * Dis
+ * Distributed under terms of the MIT license.
+ */
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <pcre.h>
+#inclu
