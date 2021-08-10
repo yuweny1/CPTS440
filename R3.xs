@@ -945,4 +945,10 @@ match_entry * match_entry_createl(const char * path, int path_len) {
     entry->path = path;
     entry->path_len = path_len;
     entry->data = NULL;
-    return
+    return entry;
+}
+
+void match_entry_free(match_entry * entry) {
+    assert(entry);
+    if (entry->vars) {
+        str_array_free(en
