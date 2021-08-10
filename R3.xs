@@ -898,4 +898,8 @@ float zmalloc_get_fragmentation_ratio(size_t rss) {
 size_t zmalloc_get_private_dirty(void) {
     char line[1024];
     size_t pd = 0;
- 
+    FILE *fp = fopen("/proc/self/smaps","r");
+
+    if (!fp) return 0;
+    while(fgets(line,sizeof(line),fp) != NULL) {
+        if (strnc
