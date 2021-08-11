@@ -951,4 +951,13 @@ match_entry * match_entry_createl(const char * path, int path_len) {
 void match_entry_free(match_entry * entry) {
     assert(entry);
     if (entry->vars) {
-        str_array_free(en
+        str_array_free(entry->vars);
+    }
+    zfree(entry);
+}
+/******* r3/src/edge.c *******/
+/*
+ * edge.c
+ * Copyright (C) 2014 c9s <c9s@c9smba.local>
+ *
+ * Distri
