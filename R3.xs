@@ -982,4 +982,7 @@ void match_entry_free(match_entry * entry) {
 /* #include "slug.h" */
 /* #include "zmalloc.h" */
 
-edge * r3_edge_createl(const char * pattern, int pattern_len, node *
+edge * r3_edge_createl(const char * pattern, int pattern_len, node * child) {
+    edge * e = (edge*) zmalloc( sizeof(edge) );
+    e->pattern = (char*) pattern;
+    e->pattern_len = pattern
