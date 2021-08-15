@@ -977,4 +977,9 @@ void match_entry_free(match_entry * entry) {
 // #include <Judy.h>
 #include <config.h>
 
-/* #include 
+/* #include "r3.h" */
+/* #include "r3_str.h" */
+/* #include "slug.h" */
+/* #include "zmalloc.h" */
+
+edge * r3_edge_createl(const char * pattern, int pattern_len, node *
