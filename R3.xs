@@ -967,4 +967,14 @@ void match_entry_free(match_entry * entry) {
 #include <string.h>
 #include <assert.h>
 
-// Jemal
+// Jemalloc memory management
+// #include <jemalloc/jemalloc.h>
+
+// PCRE
+#include <pcre.h>
+
+// Judy array
+// #include <Judy.h>
+#include <config.h>
+
+/* #include 
