@@ -985,4 +985,14 @@ void match_entry_free(match_entry * entry) {
 edge * r3_edge_createl(const char * pattern, int pattern_len, node * child) {
     edge * e = (edge*) zmalloc( sizeof(edge) );
     e->pattern = (char*) pattern;
-    e->pattern_len = pattern
+    e->pattern_len = pattern_len;
+    e->opcode = 0;
+    e->child = child;
+    e->has_slug = r3_path_contains_slug_char(e->pattern);
+    return e;
+}
+
+
+
+/**
+ * branch t
