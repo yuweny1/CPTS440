@@ -995,4 +995,9 @@ edge * r3_edge_createl(const char * pattern, int pattern_len, node * child) {
 
 
 /**
- * branch t
+ * branch the edge pattern at "dl" offset,
+ * insert a dummy child between the edges.
+ *
+ *
+ * A -> [prefix..suffix] -> B
+ * A -> [prefix] -> B -> [suffix] -> New Child (Copy Data, Edges f
