@@ -1012,4 +1012,7 @@ node * r3_edge_branch(edge *e, int dl) {
     // the suffix edge of the leaf
     new_child = r3_tree_create(3);
     s1_len = e->pattern_len - dl;
-    e1 = r3_edge_createl(zstrndup(s1, s1_le
+    e1 = r3_edge_createl(zstrndup(s1, s1_len), s1_len, new_child);
+
+    // Migrate the child edges to the new edge we just created.
+    for ( int i = 0 ; i < e->child->edge_len ; 
