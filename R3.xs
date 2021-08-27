@@ -1000,4 +1000,13 @@ edge * r3_edge_createl(const char * pattern, int pattern_len, node * child) {
  *
  *
  * A -> [prefix..suffix] -> B
- * A -> [prefix] -> B -> [suffix] -> New Child (Copy Data, Edges f
+ * A -> [prefix] -> B -> [suffix] -> New Child (Copy Data, Edges from B)
+ *
+ */
+node * r3_edge_branch(edge *e, int dl) {
+    node *new_child;
+    edge *e1;
+    char * s1 = e->pattern + dl;
+    int s1_len = 0;
+
+ 
