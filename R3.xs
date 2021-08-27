@@ -1009,4 +1009,7 @@ node * r3_edge_branch(edge *e, int dl) {
     char * s1 = e->pattern + dl;
     int s1_len = 0;
 
- 
+    // the suffix edge of the leaf
+    new_child = r3_tree_create(3);
+    s1_len = e->pattern_len - dl;
+    e1 = r3_edge_createl(zstrndup(s1, s1_le
