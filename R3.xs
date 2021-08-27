@@ -1015,4 +1015,11 @@ node * r3_edge_branch(edge *e, int dl) {
     e1 = r3_edge_createl(zstrndup(s1, s1_len), s1_len, new_child);
 
     // Migrate the child edges to the new edge we just created.
-    for ( int i = 0 ; i < e->child->edge_len ; 
+    for ( int i = 0 ; i < e->child->edge_len ; i++ ) {
+        r3_node_append_edge(new_child, e->child->edges[i]);
+        e->child->edges[i] = NULL;
+    }
+    e->child->edge_len = 0;
+
+
+    // Migrate the child rout
