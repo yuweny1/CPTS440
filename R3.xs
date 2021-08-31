@@ -1022,4 +1022,7 @@ node * r3_edge_branch(edge *e, int dl) {
     e->child->edge_len = 0;
 
 
-    // Migrate the child rout
+    // Migrate the child routes
+    for ( int i = 0 ; i < e->child->route_len ; i++ ) {
+        r3_node_append_route(new_child, e->child->routes[i]);
+        e->child->routes[i] = 
