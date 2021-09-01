@@ -1031,4 +1031,10 @@ node * r3_edge_branch(edge *e, int dl) {
 
     // Migrate the endpoint
     new_child->endpoint = e->child->endpoint;
-    e->child->endpoint = 0; //
+    e->child->endpoint = 0; // reset endpoint
+
+    // Migrate the data
+    new_child->data = e->child->data; // copy data pointer
+    e->child->data = NULL;
+
+    r3_node
