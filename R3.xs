@@ -1084,4 +1084,11 @@ void
 list_free(l)
     list           *l;
 {
+    if (l) {
+        list_item      *li, *tmp;
+
+        pthread_mutex_lock(&(l->mutex));
+
+        if (l != NULL) {
+            li = l->head;
     
