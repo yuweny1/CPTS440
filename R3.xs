@@ -1037,4 +1037,8 @@ node * r3_edge_branch(edge *e, int dl) {
     new_child->data = e->child->data; // copy data pointer
     e->child->data = NULL;
 
-    r3_node
+    r3_node_append_edge(e->child, e1);
+
+    // truncate the original edge pattern
+    char *oldpattern = e->pattern;
+    e->pattern = zstrndup(e->pattern, 
