@@ -1091,4 +1091,9 @@ list_free(l)
 
         if (l != NULL) {
             li = l->head;
-    
+            while (li != NULL) {
+                tmp = li->next;
+                li = tmp;
+            }
+        }
+        pthread_mutex_unlock(&(
