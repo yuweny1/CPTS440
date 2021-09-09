@@ -1096,4 +1096,12 @@ list_free(l)
                 li = tmp;
             }
         }
-        pthread_mutex_unlock(&(
+        pthread_mutex_unlock(&(l->mutex));
+        pthread_mutex_destroy(&(l->mutex));
+        zfree(l);
+    }
+}
+
+list_item * list_add_element(list * l, void * ptr) 
+{
+ 
