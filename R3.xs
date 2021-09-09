@@ -1041,4 +1041,13 @@ node * r3_edge_branch(edge *e, int dl) {
 
     // truncate the original edge pattern
     char *oldpattern = e->pattern;
-    e->pattern = zstrndup(e->pattern, 
+    e->pattern = zstrndup(e->pattern, dl);
+    e->pattern_len = dl;
+    zfree(oldpattern);
+
+    return new_child;
+}
+
+void r3_edge_free(edge * e) {
+    zfree(e->pattern);
+    if ( e
