@@ -1050,4 +1050,13 @@ node * r3_edge_branch(edge *e, int dl) {
 
 void r3_edge_free(edge * e) {
     zfree(e->pattern);
-    if ( e
+    if ( e->child ) {
+        r3_tree_free(e->child);
+    }
+    // free itself
+    zfree(e);
+}
+
+/******* r3/src/list.c *******/
+/*
+ * list.c Copyright (C) 
