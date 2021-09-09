@@ -1073,4 +1073,15 @@ list           *
 list_create()
 {
     list           *l = (list *) zmalloc(sizeof(list));
-    l->count 
+    l->count = 0;
+    l->head = NULL;
+    l->tail = NULL;
+    pthread_mutex_init(&(l->mutex), NULL);
+    return l;
+}
+
+void
+list_free(l)
+    list           *l;
+{
+    
