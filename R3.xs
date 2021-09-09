@@ -1065,4 +1065,12 @@ void r3_edge_free(edge * e) {
  */
 #include <stdlib.h>
 /* #include "r3_list.h" */
-/* #include "zmalloc.h" 
+/* #include "zmalloc.h" */
+
+/* Naive linked list implementation */
+
+list           *
+list_create()
+{
+    list           *l = (list *) zmalloc(sizeof(list));
+    l->count 
