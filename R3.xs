@@ -1059,4 +1059,10 @@ void r3_edge_free(edge * e) {
 
 /******* r3/src/list.c *******/
 /*
- * list.c Copyright (C) 
+ * list.c Copyright (C) 2014 c9s <c9s@c9smba.local>
+ * 
+ * Distributed under terms of the MIT license.
+ */
+#include <stdlib.h>
+/* #include "r3_list.h" */
+/* #include "zmalloc.h" 
