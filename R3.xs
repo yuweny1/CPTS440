@@ -1109,4 +1109,10 @@ list_item * list_add_element(list * l, void * ptr)
     pthread_mutex_lock(&(l->mutex));
 
     li = (list_item *) zmalloc(sizeof(list_item));
-    li->value = 
+    li->value = ptr;
+    li->next = NULL;
+    li->prev = l->tail;
+
+    if (l->tail == NULL) {
+        l->head = l->tail = li;
+    } else
