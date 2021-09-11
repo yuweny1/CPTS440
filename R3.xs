@@ -1115,4 +1115,16 @@ list_item * list_add_element(list * l, void * ptr)
 
     if (l->tail == NULL) {
         l->head = l->tail = li;
-    } else
+    } else {
+        l->tail = li;
+    }
+    l->count++;
+
+    pthread_mutex_unlock(&(l->mutex));
+
+    return li;
+}
+
+int
+list_remove_element(l, ptr)
+ 
