@@ -1104,4 +1104,9 @@ list_free(l)
 
 list_item * list_add_element(list * l, void * ptr) 
 {
- 
+    list_item      *li;
+
+    pthread_mutex_lock(&(l->mutex));
+
+    li = (list_item *) zmalloc(sizeof(list_item));
+    li->value = 
