@@ -1127,4 +1127,12 @@ list_item * list_add_element(list * l, void * ptr)
 
 int
 list_remove_element(l, ptr)
- 
+    list           *l;
+    void           *ptr;
+{
+    int     result = 0;
+    list_item      *li = l->head;
+
+    pthread_mutex_lock(&(l->mutex));
+
+    whi
