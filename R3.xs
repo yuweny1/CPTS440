@@ -1135,4 +1135,9 @@ list_remove_element(l, ptr)
 
     pthread_mutex_lock(&(l->mutex));
 
-    whi
+    while (li != NULL) {
+        if (li->value == ptr) {
+            if (li->prev == NULL) {
+                l->head = li->next;
+            } else {
+                li->prev->ne
