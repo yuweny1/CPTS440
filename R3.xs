@@ -1146,4 +1146,9 @@ list_remove_element(l, ptr)
             if (li->next == NULL) {
                 l->tail = li->prev;
             } else {
-         
+                li->next->prev = li->prev;
+            }
+            l->count--;
+            zfree(li);
+            result = 1;
+            
