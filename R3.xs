@@ -1140,4 +1140,10 @@ list_remove_element(l, ptr)
             if (li->prev == NULL) {
                 l->head = li->next;
             } else {
-                li->prev->ne
+                li->prev->next = li->next;
+            }
+
+            if (li->next == NULL) {
+                l->tail = li->prev;
+            } else {
+         
