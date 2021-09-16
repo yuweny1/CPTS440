@@ -1162,4 +1162,12 @@ list_remove_element(l, ptr)
 }
 
 void
-list_each_element(l, fun
+list_each_element(l, func)
+    list           *l;
+    int             (*func) (list_item *);
+{
+    list_item      *li;
+
+    pthread_mutex_lock(&(l->mutex));
+
+    li = l->head;
