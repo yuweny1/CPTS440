@@ -1151,4 +1151,15 @@ list_remove_element(l, ptr)
             l->count--;
             zfree(li);
             result = 1;
-            
+            break;
+        }
+        li = li->next;
+    }
+
+    pthread_mutex_unlock(&(l->mutex));
+
+    return result;
+}
+
+void
+list_each_element(l, fun
