@@ -1171,3 +1171,11 @@ list_each_element(l, func)
     pthread_mutex_lock(&(l->mutex));
 
     li = l->head;
+    while (li != NULL) {
+        if (func(li) == 1) {
+            break;
+        }
+        li = li->next;
+    }
+
+    pthread_mutex_unlock(&(l->mutex
