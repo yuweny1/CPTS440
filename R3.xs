@@ -1186,3 +1186,12 @@ list_each_element(l, func)
 #include <stdlib.h>
 #include <string.h>
 #include <assert.h>
+#include <ctype.h>
+
+// PCRE
+#include <pcre.h>
+
+/* #include "r3.h" */
+/* #include "r3_str.h" */
+/* #include "slug.h" */
+/* #include "z
