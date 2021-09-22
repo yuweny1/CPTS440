@@ -1178,4 +1178,11 @@ list_each_element(l, func)
         li = li->next;
     }
 
-    pthread_mutex_unlock(&(l->mutex
+    pthread_mutex_unlock(&(l->mutex));
+}
+/******* r3/src/node.c *******/
+/* #include "config.h" */
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <assert.h>
