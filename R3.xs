@@ -1194,4 +1194,9 @@ list_each_element(l, func)
 /* #include "r3.h" */
 /* #include "r3_str.h" */
 /* #include "slug.h" */
-/* #include "z
+/* #include "zmalloc.h" */
+
+
+#define CHECK_PTR(ptr) if (ptr == NULL) return NULL;
+
+// String value as the index http://judy.sourceforge.net/doc/JudySL_3x.htm
