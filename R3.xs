@@ -1200,3 +1200,11 @@ list_each_element(l, func)
 #define CHECK_PTR(ptr) if (ptr == NULL) return NULL;
 
 // String value as the index http://judy.sourceforge.net/doc/JudySL_3x.htm
+
+
+static int strndiff(char * d1, char * d2, unsigned int n) {
+    char * o = d1;
+    while ( *d1 == *d2 && n-- > 0 ) {
+        d1++;
+        d2++;
+    }
