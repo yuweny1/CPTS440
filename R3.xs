@@ -1220,3 +1220,12 @@ static int strdiff(char * d1, char * d2) {
     return d1 - o;
 }
 
+
+/**
+ * Create a node object
+ */
+node * r3_tree_create(int cap) {
+    node * n = (node*) zmalloc( sizeof(node) );
+    CHECK_PTR(n);
+
+    n->edge
