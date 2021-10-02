@@ -1228,4 +1228,10 @@ node * r3_tree_create(int cap) {
     node * n = (node*) zmalloc( sizeof(node) );
     CHECK_PTR(n);
 
-    n->edge
+    n->edges = (edge**) zmalloc( sizeof(edge*) * cap );
+    n->edge_len = 0;
+    n->edge_cap = cap;
+
+    n->routes = NULL;
+    n->route_len = 0;
+ 
