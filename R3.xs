@@ -1234,4 +1234,11 @@ node * r3_tree_create(int cap) {
 
     n->routes = NULL;
     n->route_len = 0;
- 
+    n->route_cap = 0;
+
+    n->endpoint = 0;
+    n->combined_pattern = NULL;
+    n->pcre_pattern = NULL;
+    n->pcre_extra = NULL;
+    return n;
+}
