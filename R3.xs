@@ -1242,3 +1242,8 @@ node * r3_tree_create(int cap) {
     n->pcre_extra = NULL;
     return n;
 }
+
+void r3_tree_free(node * tree) {
+    for (int i = 0 ; i < tree->edge_len ; i++ ) {
+        if (tree->edges[i]) {
+            r3_edge_fre
