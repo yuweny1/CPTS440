@@ -1246,4 +1246,11 @@ node * r3_tree_create(int cap) {
 void r3_tree_free(node * tree) {
     for (int i = 0 ; i < tree->edge_len ; i++ ) {
         if (tree->edges[i]) {
-            r3_edge_fre
+            r3_edge_free(tree->edges[ i ]);
+        }
+    }
+    zfree(tree->edges);
+    zfree(tree->routes);
+
+    if (tree->pcre_pattern) {
+        pcre_free(tree->pcre_patter
