@@ -1253,4 +1253,11 @@ void r3_tree_free(node * tree) {
     zfree(tree->routes);
 
     if (tree->pcre_pattern) {
-        pcre_free(tree->pcre_patter
+        pcre_free(tree->pcre_pattern);
+    }
+#ifdef PCRE_STUDY_JIT_COMPILE
+    if (tree->pcre_extra) {
+        pcre_free_study(tree->pcre_extra);
+    }
+#endif
+    zfree(tree->co
