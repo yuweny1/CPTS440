@@ -1270,4 +1270,5 @@ void r3_tree_free(node * tree) {
 /**
  * Connect two node objects, and create an edge object between them.
  */
-e
+edge * r3_node_connectl(node * n, const char * pat, int len, int dupl, node *child) {
+    // find the same sub-pattern, if it does not
