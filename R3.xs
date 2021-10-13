@@ -1260,4 +1260,14 @@ void r3_tree_free(node * tree) {
         pcre_free_study(tree->pcre_extra);
     }
 #endif
-    zfree(tree->co
+    zfree(tree->combined_pattern);
+    zfree(tree);
+    tree = NULL;
+}
+
+
+
+/**
+ * Connect two node objects, and create an edge object between them.
+ */
+e
