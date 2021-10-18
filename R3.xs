@@ -1280,4 +1280,8 @@ edge * r3_node_connectl(node * n, const char * pat, int len, int dupl, node *chi
     }
 
     if (dupl) {
-     
+        pat = zstrndup(pat, len);
+    }
+    e = r3_edge_createl(pat, len, child);
+    CHECK_PTR(e);
+    r3_node_append_edge(n
