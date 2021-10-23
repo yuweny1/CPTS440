@@ -1312,4 +1312,8 @@ void r3_node_append_edge(node *n, edge *e) {
 edge * r3_node_find_edge(const node * n, const char * pat, int pat_len) {
     edge * e;
     int i;
-    for (i = 0 ; i < n->ed
+    for (i = 0 ; i < n->edge_len ; i++ ) {
+        e = n->edges[i];
+
+        // there is a case: "{foo}" vs "{foo:xxx}",
+        // we should return 
