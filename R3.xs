@@ -1295,4 +1295,14 @@ void r3_node_append_edge(node *n, edge *e) {
     }
     if (n->edge_len >= n->edge_cap) {
         n->edge_cap *= 2;
-        edge ** p = zrealloc(n->ed
+        edge ** p = zrealloc(n->edges, sizeof(edge) * n->edge_cap);
+        if(p) {
+            n->edges = p;
+        }
+    }
+    n->edges[ n->edge_len++ ] = e;
+}
+
+
+/**
+ * F
