@@ -1291,4 +1291,8 @@ edge * r3_node_connectl(node * n, const char * pat, int len, int dupl, node *chi
 void r3_node_append_edge(node *n, edge *e) {
     if (n->edges == NULL) {
         n->edge_cap = 3;
-        n->edges = zmalloc
+        n->edges = zmalloc(sizeof(edge) * n->edge_cap);
+    }
+    if (n->edge_len >= n->edge_cap) {
+        n->edge_cap *= 2;
+        edge ** p = zrealloc(n->ed
