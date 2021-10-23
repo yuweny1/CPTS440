@@ -1307,4 +1307,9 @@ void r3_node_append_edge(node *n, edge *e) {
 /**
  * Find the existing edge with specified pattern (include slug)
  *
- * if "pat" is a slug, we should compare with the specifi
+ * if "pat" is a slug, we should compare with the specified pattern.
+ */
+edge * r3_node_find_edge(const node * n, const char * pat, int pat_len) {
+    edge * e;
+    int i;
+    for (i = 0 ; i < n->ed
