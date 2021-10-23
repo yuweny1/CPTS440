@@ -1316,4 +1316,9 @@ edge * r3_node_find_edge(const node * n, const char * pat, int pat_len) {
         e = n->edges[i];
 
         // there is a case: "{foo}" vs "{foo:xxx}",
-        // we should return 
+        // we should return the match result: full-match or partial-match 
+        if ( strcmp(e->pattern, pat) == 0 ) {
+            return e;
+        }
+    }
+    return
