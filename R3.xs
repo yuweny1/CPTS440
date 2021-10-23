@@ -1284,4 +1284,11 @@ edge * r3_node_connectl(node * n, const char * pat, int len, int dupl, node *chi
     }
     e = r3_edge_createl(pat, len, child);
     CHECK_PTR(e);
-    r3_node_append_edge(n
+    r3_node_append_edge(n, e);
+    return e;
+}
+
+void r3_node_append_edge(node *n, edge *e) {
+    if (n->edges == NULL) {
+        n->edge_cap = 3;
+        n->edges = zmalloc
