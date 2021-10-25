@@ -1321,4 +1321,11 @@ edge * r3_node_find_edge(const node * n, const char * pat, int pat_len) {
             return e;
         }
     }
-    return
+    return NULL;
+}
+
+int r3_tree_compile(node *n, char **errstr)
+{
+    int ret = 0;
+    bool use_slug = r3_node_has_slug_edges(n);
+    if ( use_
