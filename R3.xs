@@ -1328,4 +1328,9 @@ int r3_tree_compile(node *n, char **errstr)
 {
     int ret = 0;
     bool use_slug = r3_node_has_slug_edges(n);
-    if ( use_
+    if ( use_slug ) {
+        if ( (ret = r3_tree_compile_patterns(n, errstr)) ) {
+            return ret;
+        }
+    } else {
+        // use normal text match
