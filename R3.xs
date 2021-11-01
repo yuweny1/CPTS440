@@ -1333,4 +1333,9 @@ int r3_tree_compile(node *n, char **errstr)
             return ret;
         }
     } else {
-        // use normal text match
+        // use normal text matching...
+        n->combined_pattern = NULL;
+    }
+
+    for (int i = 0 ; i < n->edge_len ; i++ ) {
+        if ( (ret = r3_tree_compile(n->edges[i]->child, e
