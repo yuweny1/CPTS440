@@ -1338,4 +1338,13 @@ int r3_tree_compile(node *n, char **errstr)
     }
 
     for (int i = 0 ; i < n->edge_len ; i++ ) {
-        if ( (ret = r3_tree_compile(n->edges[i]->child, e
+        if ( (ret = r3_tree_compile(n->edges[i]->child, errstr)) ) {
+            return ret; // stop here if error occurs
+        }
+    }
+    return 0;
+}
+
+
+/**
+ * This function combines ['/foo', '/bar', '
