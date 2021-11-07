@@ -1347,4 +1347,9 @@ int r3_tree_compile(node *n, char **errstr)
 
 
 /**
- * This function combines ['/foo', '/bar', '
+ * This function combines ['/foo', '/bar', '/{slug}'] into (/foo)|(/bar)|/([^/]+)}
+ *
+ * Return -1 if error occurs
+ * Return 0 if success
+ */
+int r3_tree_compile_patterns(node * n, char **errstr
