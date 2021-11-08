@@ -1358,4 +1358,12 @@ int r3_tree_compile_patterns(node * n, char **errstr) {
 
     cpat = zcalloc(sizeof(char) * 220); // XXX
     if (!cpat) {
-        asprintf(errstr, "Can not allocate mem
+        asprintf(errstr, "Can not allocate memory");
+        return -1;
+    }
+
+    p = cpat;
+
+    edge *e = NULL;
+    int opcode_cnt =  0;
+    for ( int i = 0 ; i < n->edge_le
