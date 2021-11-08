@@ -1366,4 +1366,11 @@ int r3_tree_compile_patterns(node * n, char **errstr) {
 
     edge *e = NULL;
     int opcode_cnt =  0;
-    for ( int i = 0 ; i < n->edge_le
+    for ( int i = 0 ; i < n->edge_len ; i++ ) {
+        e = n->edges[i];
+
+        if ( e->opcode )
+            opcode_cnt++;
+
+        if ( e->has_slug ) {
+            // compile "foo/{slu
