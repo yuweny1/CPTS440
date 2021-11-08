@@ -1352,4 +1352,10 @@ int r3_tree_compile(node *n, char **errstr)
  * Return -1 if error occurs
  * Return 0 if success
  */
-int r3_tree_compile_patterns(node * n, char **errstr
+int r3_tree_compile_patterns(node * n, char **errstr) {
+    char * cpat;
+    char * p;
+
+    cpat = zcalloc(sizeof(char) * 220); // XXX
+    if (!cpat) {
+        asprintf(errstr, "Can not allocate mem
