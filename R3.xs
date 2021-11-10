@@ -1373,4 +1373,8 @@ int r3_tree_compile_patterns(node * n, char **errstr) {
             opcode_cnt++;
 
         if ( e->has_slug ) {
-            // compile "foo/{slu
+            // compile "foo/{slug}" to "foo/[^/]+"
+            char * slug_pat = slug_compile(e->pattern, e->pattern_len);
+            strcat(p, slug_pat);
+        } else {
+      
