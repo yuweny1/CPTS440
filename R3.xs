@@ -1377,4 +1377,10 @@ int r3_tree_compile_patterns(node * n, char **errstr) {
             char * slug_pat = slug_compile(e->pattern, e->pattern_len);
             strcat(p, slug_pat);
         } else {
-      
+            strncat(p,"^(", 2);
+            p += 2;
+
+            strncat(p, e->pattern, e->pattern_len);
+            p += e->pattern_len;
+
+          
