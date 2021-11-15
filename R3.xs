@@ -1394,4 +1394,8 @@ int r3_tree_compile_patterns(node * n, char **errstr) {
     info("pattern: %s\n",cpat);
 
     // if all edges use opcode, we should skip the combined_pattern.
-    if ( opcode_cn
+    if ( opcode_cnt == n->edge_len ) {
+        // zfree(cpat);
+        n->compare_type = NODE_COMPARE_OPCODE;
+    } else {
+        n->compare_type = N
