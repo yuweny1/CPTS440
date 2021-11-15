@@ -1388,4 +1388,10 @@ int r3_tree_compile_patterns(node * n, char **errstr) {
 
         if ( i + 1 < n->edge_len && n->edge_len > 1 ) {
             strncat(p++,"|",1);
-  
+        }
+    }
+
+    info("pattern: %s\n",cpat);
+
+    // if all edges use opcode, we should skip the combined_pattern.
+    if ( opcode_cn
