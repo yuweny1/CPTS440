@@ -1383,4 +1383,9 @@ int r3_tree_compile_patterns(node * n, char **errstr) {
             strncat(p, e->pattern, e->pattern_len);
             p += e->pattern_len;
 
-          
+            strncat(p++,")", 1);
+        }
+
+        if ( i + 1 < n->edge_len && n->edge_len > 1 ) {
+            strncat(p++,"|",1);
+  
