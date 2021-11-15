@@ -1405,4 +1405,11 @@ int r3_tree_compile_patterns(node * n, char **errstr) {
 
     const char *pcre_error;
     int pcre_erroffset;
-    unsigned int option_bits = 0
+    unsigned int option_bits = 0;
+
+    n->ov_cnt = (1 + n->edge_len) * 3;
+
+    if (n->pcre_pattern) {
+        pcre_free(n->pcre_pattern);
+    }
+    n->pcre_p
