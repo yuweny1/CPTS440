@@ -1414,4 +1414,6 @@ int r3_tree_compile_patterns(node * n, char **errstr) {
     }
     n->pcre_pattern = pcre_compile(
             n->combined_pattern,              /* the pattern */
-            option_bits,                       
+            option_bits,                                /* default options */
+            &pcre_error,               /* for error message */
+            &pcre_erroffset,         
