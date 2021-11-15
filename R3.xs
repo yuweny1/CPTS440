@@ -1398,4 +1398,11 @@ int r3_tree_compile_patterns(node * n, char **errstr) {
         // zfree(cpat);
         n->compare_type = NODE_COMPARE_OPCODE;
     } else {
-        n->compare_type = N
+        n->compare_type = NODE_COMPARE_PCRE;
+    }
+
+    n->combined_pattern = cpat;
+
+    const char *pcre_error;
+    int pcre_erroffset;
+    unsigned int option_bits = 0
