@@ -1412,4 +1412,6 @@ int r3_tree_compile_patterns(node * n, char **errstr) {
     if (n->pcre_pattern) {
         pcre_free(n->pcre_pattern);
     }
-    n->pcre_p
+    n->pcre_pattern = pcre_compile(
+            n->combined_pattern,              /* the pattern */
+            option_bits,                       
