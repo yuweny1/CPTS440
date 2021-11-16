@@ -1444,4 +1444,6 @@ int r3_tree_compile_patterns(node * n, char **errstr) {
 
 
 /**
- * This function matches
+ * This function matches the URL path and return the left node
+ *
+ * r3_tree_matchl returns NULL when the path does not match. returns *node when the path
