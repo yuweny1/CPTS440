@@ -1429,4 +1429,6 @@ int r3_tree_compile_patterns(node * n, char **errstr) {
         pcre_free_study(n->pcre_extra);
     }
     n->pcre_extra = pcre_study(n->pcre_pattern, 0, &pcre_error);
-    if (n->pcre_extra == NULL && 
+    if (n->pcre_extra == NULL && pcre_error != NULL) {
+        if (errstr) {
+            asprintf(errstr, "PCRE study failed at offset %d: %s, pattern: %s", pcre_erroffs
