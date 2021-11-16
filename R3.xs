@@ -1431,4 +1431,17 @@ int r3_tree_compile_patterns(node * n, char **errstr) {
     n->pcre_extra = pcre_study(n->pcre_pattern, 0, &pcre_error);
     if (n->pcre_extra == NULL && pcre_error != NULL) {
         if (errstr) {
-            asprintf(errstr, "PCRE study failed at offset %d: %s, pattern: %s", pcre_erroffs
+            asprintf(errstr, "PCRE study failed at offset %d: %s, pattern: %s", pcre_erroffset, pcre_error, n->combined_pattern);
+        }
+        return -1;
+    }
+#endif
+    return 0;
+}
+
+
+
+
+
+/**
+ * This function matches
