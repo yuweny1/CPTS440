@@ -1426,4 +1426,7 @@ int r3_tree_compile_patterns(node * n, char **errstr) {
     }
 #ifdef PCRE_STUDY_JIT_COMPILE
     if (n->pcre_extra) {
- 
+        pcre_free_study(n->pcre_extra);
+    }
+    n->pcre_extra = pcre_study(n->pcre_pattern, 0, &pcre_error);
+    if (n->pcre_extra == NULL && 
