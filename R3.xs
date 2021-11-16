@@ -1418,4 +1418,6 @@ int r3_tree_compile_patterns(node * n, char **errstr) {
             &pcre_error,               /* for error message */
             &pcre_erroffset,           /* for error offset */
             NULL);                /* use default character tables */
-    if (n->pcre_pattern == NULL && 
+    if (n->pcre_pattern == NULL && pcre_error != NULL) {
+        if (errstr) {
+            asprintf(errstr, "PCRE compilation failed at offset %d: %s, pattern: %s", p
