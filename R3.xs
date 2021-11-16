@@ -1416,4 +1416,6 @@ int r3_tree_compile_patterns(node * n, char **errstr) {
             n->combined_pattern,              /* the pattern */
             option_bits,                                /* default options */
             &pcre_error,               /* for error message */
-            &pcre_erroffset,         
+            &pcre_erroffset,           /* for error offset */
+            NULL);                /* use default character tables */
+    if (n->pcre_pattern == NULL && 
