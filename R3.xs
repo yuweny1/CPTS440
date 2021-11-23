@@ -1454,4 +1454,12 @@ int r3_tree_compile_patterns(node * n, char **errstr) {
  * @param match_entry* entry match_entry is used for saving the captured dynamic strings from pcre result.
  */
 node * r3_tree_matchl(const node * n, const char * path, int path_len, match_entry * entry) {
-    info("try matching: %s\n", path
+    info("try matching: %s\n", path);
+
+    edge *e;
+    unsigned short i;
+    unsigned short restlen;
+
+    if (n->compare_type == NODE_COMPARE_OPCODE) {
+        char *pp;
+        const char 
