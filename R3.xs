@@ -1451,4 +1451,7 @@ int r3_tree_compile_patterns(node * n, char **errstr) {
  * @param node         n        the root of the tree
  * @param char*        path     the URL path to dispatch
  * @param int          path_len the length of the URL path.
- * @param match_entry* entry match_entry is used for saving the captured dynamic strings from 
+ * @param match_entry* entry match_entry is used for saving the captured dynamic strings from pcre result.
+ */
+node * r3_tree_matchl(const node * n, const char * path, int path_len, match_entry * entry) {
+    info("try matching: %s\n", path
