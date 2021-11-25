@@ -1462,4 +1462,8 @@ node * r3_tree_matchl(const node * n, const char * path, int path_len, match_ent
 
     if (n->compare_type == NODE_COMPARE_OPCODE) {
         char *pp;
-        const char 
+        const char *pp_end = path + path_len;
+        for (i = 0; i < n->edge_len ; i++ ) {
+            pp = (char*) path;
+            e = n->edges[i];
+           
