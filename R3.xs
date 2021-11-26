@@ -1466,4 +1466,7 @@ node * r3_tree_matchl(const node * n, const char * path, int path_len, match_ent
         for (i = 0; i < n->edge_len ; i++ ) {
             pp = (char*) path;
             e = n->edges[i];
-           
+            switch(e->opcode) {
+                case OP_EXPECT_NOSLASH:
+                    while (*pp != '/' && pp < pp_end) pp++;
+               
