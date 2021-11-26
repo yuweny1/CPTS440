@@ -1469,4 +1469,8 @@ node * r3_tree_matchl(const node * n, const char * path, int path_len, match_ent
             switch(e->opcode) {
                 case OP_EXPECT_NOSLASH:
                     while (*pp != '/' && pp < pp_end) pp++;
-               
+                    break;
+                case OP_EXPECT_MORE_ALPHA:
+                    while ( isalpha(*pp) && pp < pp_end) pp++;
+                    break;
+      
