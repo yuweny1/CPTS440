@@ -1479,4 +1479,8 @@ node * r3_tree_matchl(const node * n, const char * path, int path_len, match_ent
                 case OP_EXPECT_MORE_WORDS:
                     while ( (isdigit(*pp) || isalpha(*pp)) && pp < pp_end) pp++;
                     break;
-                c
+                case OP_EXPECT_NODASH:
+                    while (*pp != '-' && pp < pp_end) pp++;
+                    break;
+            }
+            // ch
