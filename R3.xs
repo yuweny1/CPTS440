@@ -1487,4 +1487,7 @@ node * r3_tree_matchl(const node * n, const char * path, int path_len, match_ent
             if ( (pp - path) > 0) {
                 restlen = pp_end - pp;
                 if (entry) {
-                 
+                    str_array_append(entry->vars , zstrndup(path, pp - path));
+                }
+                if (restlen == 0) {
+                    return e->ch
