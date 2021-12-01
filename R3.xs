@@ -1483,4 +1483,8 @@ node * r3_tree_matchl(const node * n, const char * path, int path_len, match_ent
                     while (*pp != '-' && pp < pp_end) pp++;
                     break;
             }
-            // ch
+            // check match
+            if ( (pp - path) > 0) {
+                restlen = pp_end - pp;
+                if (entry) {
+                 
