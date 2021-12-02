@@ -1507,4 +1507,8 @@ node * r3_tree_matchl(const node * n, const char * path, int path_len, match_ent
 
         info("pcre matching %s on %s\n", n->combined_pattern, path);
 
-        rc = pcre_ex
+        rc = pcre_exec(
+                n->pcre_pattern, /* the compiled pattern */
+                n->pcre_extra,
+                path,         /* the subject string */
+      
