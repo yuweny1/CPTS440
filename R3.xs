@@ -1513,4 +1513,6 @@ node * r3_tree_matchl(const node * n, const char * path, int path_len, match_ent
                 path,         /* the subject string */
                 path_len,     /* the length of the subject */
                 0,            /* start at offset 0 in the subject */
-              
+                0,            /* default options */
+                ov,           /* output vector for substring information */
+                n->ov_cnt);      /
