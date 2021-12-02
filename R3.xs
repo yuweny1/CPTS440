@@ -1515,4 +1515,8 @@ node * r3_tree_matchl(const node * n, const char * path, int path_len, match_ent
                 0,            /* start at offset 0 in the subject */
                 0,            /* default options */
                 ov,           /* output vector for substring information */
-                n->ov_cnt);      /
+                n->ov_cnt);      /* number of elements in the output vector */
+
+        // does not match all edges, return NULL;
+        if (rc < 0) {
+#ifde
