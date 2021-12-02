@@ -1511,4 +1511,6 @@ node * r3_tree_matchl(const node * n, const char * path, int path_len, match_ent
                 n->pcre_pattern, /* the compiled pattern */
                 n->pcre_extra,
                 path,         /* the subject string */
-      
+                path_len,     /* the length of the subject */
+                0,            /* start at offset 0 in the subject */
+              
