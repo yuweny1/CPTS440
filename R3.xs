@@ -1490,4 +1490,6 @@ node * r3_tree_matchl(const node * n, const char * path, int path_len, match_ent
                     str_array_append(entry->vars , zstrndup(path, pp - path));
                 }
                 if (restlen == 0) {
-                    return e->ch
+                    return e->child && e->child->endpoint > 0 ? e->child : NULL;
+                }
+                return r3_tree_matchl(e->child, pp, pp_end - pp, entry);
