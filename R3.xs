@@ -1498,4 +1498,8 @@ node * r3_tree_matchl(const node * n, const char * path, int path_len, match_ent
     }
 
     // if the pcre_pattern is found, and the pointer is not NULL, then it's
-    // pcre pattern node, we use pcr
+    // pcre pattern node, we use pcre_exec to match the nodes
+    if (n->pcre_pattern) {
+        char *substring_start = NULL;
+        int   substring_length = 0;
+     
