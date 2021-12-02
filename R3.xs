@@ -1519,4 +1519,9 @@ node * r3_tree_matchl(const node * n, const char * path, int path_len, match_ent
 
         // does not match all edges, return NULL;
         if (rc < 0) {
-#ifde
+#ifdef DEBUG
+            printf("pcre rc: %d\n", rc );
+            switch(rc)
+            {
+                case PCRE_ERROR_NOMATCH:
+   
