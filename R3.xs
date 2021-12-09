@@ -1527,4 +1527,6 @@ node * r3_tree_matchl(const node * n, const char * path, int path_len, match_ent
                     printf("pcre: no match '%s' on pattern '%s'\n", path, n->combined_pattern);
                     break;
 
-                // Handle o
+                // Handle other special cases if you like
+                default:
+                    printf("pcre matching error '%d' '%s' on pattern '%
