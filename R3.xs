@@ -1537,4 +1537,8 @@ node * r3_tree_matchl(const node * n, const char * path, int path_len, match_ent
         }
 
 
-        for (i = 1; i < rc; i
+        for (i = 1; i < rc; i++)
+        {
+            substring_start = ((char*) path) + ov[2*i];
+            substring_length = ov[2*i+1] - ov[2*i];
+       
