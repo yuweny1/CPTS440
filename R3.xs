@@ -1529,4 +1529,12 @@ node * r3_tree_matchl(const node * n, const char * path, int path_len, match_ent
 
                 // Handle other special cases if you like
                 default:
-                    printf("pcre matching error '%d' '%s' on pattern '%
+                    printf("pcre matching error '%d' '%s' on pattern '%s'\n", rc, path, n->combined_pattern);
+                    break;
+            }
+#endif
+            return NULL;
+        }
+
+
+        for (i = 1; i < rc; i
