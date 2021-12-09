@@ -1524,4 +1524,7 @@ node * r3_tree_matchl(const node * n, const char * path, int path_len, match_ent
             switch(rc)
             {
                 case PCRE_ERROR_NOMATCH:
-   
+                    printf("pcre: no match '%s' on pattern '%s'\n", path, n->combined_pattern);
+                    break;
+
+                // Handle o
