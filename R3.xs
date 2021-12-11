@@ -1544,4 +1544,7 @@ node * r3_tree_matchl(const node * n, const char * path, int path_len, match_ent
             // info("%2d: %.*s\n", i, substring_length, substring_start);
 
             if ( substring_length > 0) {
-                restlen = path_len -
+                restlen = path_len - ov[1]; // fully match to the end
+                // info("matched item => restlen:%d edges:%d i:%d\n", restlen, n->edge_len, i);
+
+                e = n->edges[i 
