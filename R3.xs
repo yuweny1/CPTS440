@@ -1551,4 +1551,7 @@ node * r3_tree_matchl(const node * n, const char * path, int path_len, match_ent
 
                 if (entry && e->has_slug) {
                     // append captured token to entry
-                    str_array_append(e
+                    str_array_append(entry->vars , zstrndup(substring_start, substring_length));
+                }
+                if (restlen == 0 ) {
+                 
