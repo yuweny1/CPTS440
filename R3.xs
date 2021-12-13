@@ -1557,3 +1557,8 @@ node * r3_tree_matchl(const node * n, const char * path, int path_len, match_ent
                     return e->child && e->child->endpoint > 0 ? e->child : NULL;
                 }
                 // get the length of orginal string: $0
+                return r3_tree_matchl( e->child, path + (ov[1] - ov[0]), restlen, entry);
+            }
+        }
+        // does not match
+        return NUL
