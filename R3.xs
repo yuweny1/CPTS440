@@ -1569,4 +1569,12 @@ node * r3_tree_matchl(const node * n, const char * path, int path_len, match_ent
         if (restlen == 0) {
             return e->child && e->child->endpoint > 0 ? e->child : NULL;
         }
-        return r3_tree_matchl(e->child
+        return r3_tree_matchl(e->child, path + e->pattern_len, restlen, entry);
+    }
+    return NULL;
+}
+
+
+
+route * r3_tree_match_route(const node *tree, match_entry * entry) {
+    node
