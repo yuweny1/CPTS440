@@ -1566,4 +1566,7 @@ node * r3_tree_matchl(const node * n, const char * path, int path_len, match_ent
 
     if ( (e = r3_node_find_edge_str(n, path, path_len)) != NULL ) {
         restlen = path_len - e->pattern_len;
-     
+        if (restlen == 0) {
+            return e->child && e->child->endpoint > 0 ? e->child : NULL;
+        }
+        return r3_tree_matchl(e->child
