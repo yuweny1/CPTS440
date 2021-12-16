@@ -1577,4 +1577,8 @@ node * r3_tree_matchl(const node * n, const char * path, int path_len, match_ent
 
 
 route * r3_tree_match_route(const node *tree, match_entry * entry) {
-    node
+    node *n;
+    n = r3_tree_match_entry(tree, entry);
+    if (n && n->routes && n->route_len > 0) {
+        int i;
+        for (i = 0; i < n->route_len ; 
