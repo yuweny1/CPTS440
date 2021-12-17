@@ -1581,4 +1581,9 @@ route * r3_tree_match_route(const node *tree, match_entry * entry) {
     n = r3_tree_match_entry(tree, entry);
     if (n && n->routes && n->route_len > 0) {
         int i;
-        for (i = 0; i < n->route_len ; 
+        for (i = 0; i < n->route_len ; i++ ) {
+            if ( r3_route_cmp(n->routes[i], entry) == 0 ) {
+                return n->routes[i];
+            }
+        }
+  
