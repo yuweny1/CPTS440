@@ -1586,4 +1586,11 @@ route * r3_tree_match_route(const node *tree, match_entry * entry) {
                 return n->routes[i];
             }
         }
+    }
+    return NULL;
+}
+
+inline edge * r3_node_find_edge_str(const node * n, const char * str, int str_len) {
+    unsigned short i = 0;
+    char firstbyte = *str;
   
