@@ -1593,4 +1593,6 @@ route * r3_tree_match_route(const node *tree, match_entry * entry) {
 inline edge * r3_node_find_edge_str(const node * n, const char * str, int str_len) {
     unsigned short i = 0;
     char firstbyte = *str;
-  
+    for (; i < n->edge_len ; i++ ) {
+        if ( firstbyte == *(n->edges[i]->pattern) ) {
+            info("matching '%s' with '%s'\n", str, node_edge_patter
