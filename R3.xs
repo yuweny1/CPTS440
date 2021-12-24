@@ -1598,4 +1598,13 @@ inline edge * r3_node_find_edge_str(const node * n, const char * str, int str_le
             info("matching '%s' with '%s'\n", str, node_edge_pattern(n,i) );
             if ( strncmp( node_edge_pattern(n,i), str, node_edge_pattern_len(n,i) ) == 0 ) {
                 return n->edges[i];
-        
+            }
+            return NULL;
+        }
+    }
+    return NULL;
+}
+
+node * r3_node_create() {
+    node * n = (node*) zmalloc( sizeof(node) );
+   
