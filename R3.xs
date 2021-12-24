@@ -1607,4 +1607,11 @@ inline edge * r3_node_find_edge_str(const node * n, const char * str, int str_le
 
 node * r3_node_create() {
     node * n = (node*) zmalloc( sizeof(node) );
-   
+    CHECK_PTR(n);
+    n->edges = NULL;
+    n->edge_len = 0;
+    n->edge_cap = 0;
+
+    n->routes = NULL;
+    n->route_len = 0;
+    n->route_cap =
