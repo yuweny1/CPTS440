@@ -1624,4 +1624,11 @@ node * r3_node_create() {
 
 
 route * r3_route_create(const char * path) {
-   
+    return r3_route_createl(path, strlen(path));
+}
+
+void r3_route_free(route * route) {
+    zfree(route);
+}
+
+route * r3_route_createl(const char * path, int p
