@@ -1631,4 +1631,8 @@ void r3_route_free(route * route) {
     zfree(route);
 }
 
-route * r3_route_createl(const char * path, int p
+route * r3_route_createl(const char * path, int path_len) {
+    route * info = zmalloc(sizeof(route));
+    CHECK_PTR(info);
+    info->path = (char*) path;
+    info->path_len = path_len;
