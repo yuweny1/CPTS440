@@ -1614,4 +1614,14 @@ node * r3_node_create() {
 
     n->routes = NULL;
     n->route_len = 0;
-    n->route_cap =
+    n->route_cap = 0;
+
+    n->endpoint = 0;
+    n->combined_pattern = NULL;
+    n->pcre_pattern = NULL;
+    return n;
+}
+
+
+route * r3_route_create(const char * path) {
+   
