@@ -1636,3 +1636,11 @@ route * r3_route_createl(const char * path, int path_len) {
     CHECK_PTR(info);
     info->path = (char*) path;
     info->path_len = path_len;
+    info->request_method = 0; // can be (GET || POST)
+
+    info->data = NULL;
+
+    info->host = NULL; // required host name
+    info->host_len = 0;
+
+    i
