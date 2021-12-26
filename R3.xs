@@ -1643,4 +1643,10 @@ route * r3_route_createl(const char * path, int path_len) {
     info->host = NULL; // required host name
     info->host_len = 0;
 
-    i
+    info->remote_addr_pattern = NULL;
+    info->remote_addr_pattern_len = 0;
+    return info;
+}
+
+
+route * r3_tree_insert_routel(node *tree, int method
