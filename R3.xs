@@ -1649,4 +1649,7 @@ route * r3_route_createl(const char * path, int path_len) {
 }
 
 
-route * r3_tree_insert_routel(node *tree, int method
+route * r3_tree_insert_routel(node *tree, int method, const char *path, int path_len, void *data) {
+    route *r = r3_route_createl(path, path_len);
+    CHECK_PTR(r);
+    r->request_method = method; // ALLOW GE
