@@ -1666,4 +1666,9 @@ node * r3_tree_insert_pathl(node *tree, const char *path, int path_len, void * d
 
 
 /**
- * Find c
+ * Find common prefix from the edges of the node.
+ *
+ * Some cases of the common prefix:
+ *
+ * 1.  "/foo/{slug}" vs "/foo/bar"                      => common prefix = "/foo/"
+ * 2.  "{s
