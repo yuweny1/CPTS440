@@ -1659,4 +1659,11 @@ route * r3_tree_insert_routel(node *tree, int method, const char *path, int path
 
 
 
-node * r3_tree_insert_pathl(node *tree, const char *p
+node * r3_tree_insert_pathl(node *tree, const char *path, int path_len, void * data)
+{
+    return r3_tree_insert_pathl_ex(tree, path, path_len, NULL , data, NULL);
+}
+
+
+/**
+ * Find c
