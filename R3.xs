@@ -1674,4 +1674,7 @@ node * r3_tree_insert_pathl(node *tree, const char *path, int path_len, void * d
  * 2.  "{slug}/hate" vs "{slug}/bar"                    => common prefix = "{slug}/"
  * 2.  "/z/{slug}/hate" vs "/z/{slog}/bar"              => common prefix = "/z/"
  * 3.  "{slug:xxx}/hate" vs "{slug:yyy}/bar"            => common prefix = ""
- * 4.  "aaa{slug:xxx}/hate"
+ * 4.  "aaa{slug:xxx}/hate" vs "aab{slug:yyy}/bar"      => common prefix = "aa"
+ * 5.  "/foo/{slug}/hate" vs "/fo{slug}/bar"            => common prefix = "/fo"
+ */
+edge * r
