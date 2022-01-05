@@ -1695,4 +1695,10 @@ edge * r3_node_find_common_prefix(node *n, char *path, int path_len, int *prefix
 
     // found common prefix edge
     if (prefix > 0) {
-       
+        r3_slug_t *slug;
+        int ret = 0;
+        char *p = NULL;
+        char *offset = NULL;
+
+        offset = path;
+        p = path + prefix;
