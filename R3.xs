@@ -1686,4 +1686,13 @@ edge * r3_node_find_common_prefix(node *n, char *path, int path_len, int *prefix
         // ignore all edges with slug
         prefix = strndiff( (char*) path, n->edges[i]->pattern, n->edges[i]->pattern_len);
 
-        // no common, consider insert a n
+        // no common, consider insert a new edge
+        if ( prefix > 0 ) {
+            e = n->edges[i];
+            break;
+        }
+    }
+
+    // found common prefix edge
+    if (prefix > 0) {
+       
