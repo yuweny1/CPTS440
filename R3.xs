@@ -1706,4 +1706,8 @@ edge * r3_node_find_common_prefix(node *n, char *path, int path_len, int *prefix
         slug = r3_slug_new(path, path_len);
 
         do {
-            ret = r3_slug_parse(slug, path, path_len, offset, er
+            ret = r3_slug_parse(slug, path, path_len, offset, errstr);
+            // found slug
+            if (ret == 1) {
+                // inside slug, backtrace to the begin of the slug
+                if
