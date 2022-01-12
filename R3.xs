@@ -1717,4 +1717,9 @@ edge * r3_node_find_common_prefix(node *n, char *path, int path_len, int *prefix
                     break;
                 } else if ( p >= slug->end && p < (path + path_len) ) {
                     offset = slug->end + 1;
-         
+                    prefix = p - path;
+                    continue;
+                } else {
+                    break;
+                }
+            } else if (ret 
