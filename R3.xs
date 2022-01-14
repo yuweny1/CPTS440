@@ -1729,4 +1729,16 @@ edge * r3_node_find_common_prefix(node *n, char *path, int path_len, int *prefix
                 break;
             }
         } while(ret == 1);
- 
+    }
+
+    *prefix_len = prefix;
+    return e;
+}
+
+
+
+
+/**
+ * Return the last inserted node.
+ */
+node * r3_tree_insert_pathl_ex(node *tree, const char *pat
