@@ -1741,4 +1741,13 @@ edge * r3_node_find_common_prefix(node *n, char *path, int path_len, int *prefix
 /**
  * Return the last inserted node.
  */
-node * r3_tree_insert_pathl_ex(node *tree, const char *pat
+node * r3_tree_insert_pathl_ex(node *tree, const char *path, int path_len, route * route, void * data, char **errstr)
+{
+    node * n = tree;
+
+
+    // common edge
+    edge * e = NULL;
+
+
+    /* 
