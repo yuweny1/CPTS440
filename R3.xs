@@ -1722,4 +1722,11 @@ edge * r3_node_find_common_prefix(node *n, char *path, int path_len, int *prefix
                 } else {
                     break;
                 }
-            } else if (ret 
+            } else if (ret == -1) {
+                
+                return NULL;
+            } else {
+                break;
+            }
+        } while(ret == 1);
+ 
