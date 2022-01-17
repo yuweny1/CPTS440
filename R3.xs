@@ -1753,4 +1753,11 @@ node * r3_tree_insert_pathl_ex(node *tree, const char *path, int path_len, route
     /* length of common prefix */
     int prefix_len = 0;
     char *err = NULL;
-    e = r3_node_find_common_prefix(tree, path, path_len, &prefix_len, &err)
+    e = r3_node_find_common_prefix(tree, path, path_len, &prefix_len, &err);
+    if (err) {
+        // copy the error message pointer
+        if (errstr) *errstr = err;
+        return NULL;
+    }
+
+    const char * subpath = 
