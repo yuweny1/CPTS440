@@ -1760,4 +1760,8 @@ node * r3_tree_insert_pathl_ex(node *tree, const char *path, int path_len, route
         return NULL;
     }
 
-    const char * subpath = 
+    const char * subpath = path + prefix_len;
+    const int    subpath_len = path_len - prefix_len;
+
+    // common prefix not found, insert a new edge for this pattern
+    if ( pr
