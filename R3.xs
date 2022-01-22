@@ -1773,4 +1773,10 @@ node * r3_tree_insert_pathl_ex(node *tree, const char *path, int path_len, route
 
         if ( slug_cnt > 1 ) {
             int   slug_len;
-       
+            char *p = slug_find_placeholder(path, &slug_len);
+
+#ifdef DEBUG
+            assert(p);
+#endif
+
+            // find th
