@@ -1779,4 +1779,9 @@ node * r3_tree_insert_pathl_ex(node *tree, const char *path, int path_len, route
             assert(p);
 #endif
 
-            // find th
+            // find the next one '{', then break there
+            if(p) {
+                p = slug_find_placeholder(p + slug_len + 1, NULL);
+            }
+#ifdef DEBUG
+      
