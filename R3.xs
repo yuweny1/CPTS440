@@ -1784,4 +1784,8 @@ node * r3_tree_insert_pathl_ex(node *tree, const char *path, int path_len, route
                 p = slug_find_placeholder(p + slug_len + 1, NULL);
             }
 #ifdef DEBUG
-      
+            assert(p);
+#endif
+
+            // insert the first one edge, and break at "p"
+            node * child = r3_tree_create(3)
