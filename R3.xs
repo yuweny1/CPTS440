@@ -1788,4 +1788,9 @@ node * r3_tree_insert_pathl_ex(node *tree, const char *path, int path_len, route
 #endif
 
             // insert the first one edge, and break at "p"
-            node * child = r3_tree_create(3)
+            node * child = r3_tree_create(3);
+            CHECK_PTR(child);
+
+            r3_node_connect(n, zstrndup(path, (int)(p - path)), child);
+
+            // and insert the rest part to the ch
