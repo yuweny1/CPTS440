@@ -1793,4 +1793,8 @@ node * r3_tree_insert_pathl_ex(node *tree, const char *path, int path_len, route
 
             r3_node_connect(n, zstrndup(path, (int)(p - path)), child);
 
-            // and insert the rest part to the ch
+            // and insert the rest part to the child
+            return r3_tree_insert_pathl_ex(child, p, path_len - (int)(p - path),  route, data, errstr);
+
+        } else {
+            if (slug_cnt == 1) {
