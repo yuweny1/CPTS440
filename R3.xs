@@ -1798,3 +1798,6 @@ node * r3_tree_insert_pathl_ex(node *tree, const char *path, int path_len, route
 
         } else {
             if (slug_cnt == 1) {
+                // there is one slug, let's see if it's optimiz-able by opcode
+                int   slug_len = 0;
+                c
