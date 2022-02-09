@@ -1802,4 +1802,8 @@ node * r3_tree_insert_pathl_ex(node *tree, const char *path, int path_len, route
                 int   slug_len = 0;
                 char *slug_p = slug_find_placeholder(path, &slug_len);
                 int   slug_pattern_len = 0;
-                char *slug
+                char *slug_pattern = slug_find_pattern(slug_p, &slug_pattern_len);
+
+                int opcode = 0;
+                // if there is a pattern defined.
+            
