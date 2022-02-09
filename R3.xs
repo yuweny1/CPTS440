@@ -1806,4 +1806,6 @@ node * r3_tree_insert_pathl_ex(node *tree, const char *path, int path_len, route
 
                 int opcode = 0;
                 // if there is a pattern defined.
-            
+                if (slug_pattern_len) {
+                    char *cpattern = slug_compile(slug_pattern, slug_pattern_len);
+                    opcode = r3_pattern_to_opco
