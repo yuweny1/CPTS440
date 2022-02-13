@@ -1818,4 +1818,6 @@ node * r3_tree_insert_pathl_ex(node *tree, const char *path, int path_len, route
                 // if the slug starts after one+ charactor, for example foo{slug}
                 node *c1;
                 if (slug_p > path) {
-          
+                    c1 = r3_tree_create(3);
+                    CHECK_PTR(c1);
+                    r3_node_connectl(n, path, slug_p - path, 1, c1); // du
