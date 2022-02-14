@@ -1830,4 +1830,9 @@ node * r3_tree_insert_pathl_ex(node *tree, const char *path, int path_len, route
 
                 edge * op_edge = r3_node_connectl(c1, slug_p, slug_len , 1, c2);
                 if(opcode) {
-                
+                    op_edge->opcode = opcode;
+                }
+
+                int restlen = path_len - ((slug_p - path) + slug_len);
+
+                if (restlen) {
