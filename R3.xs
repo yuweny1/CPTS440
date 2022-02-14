@@ -1826,4 +1826,8 @@ node * r3_tree_insert_pathl_ex(node *tree, const char *path, int path_len, route
                 }
 
                 node * c2 = r3_tree_create(3);
-   
+                CHECK_PTR(c2);
+
+                edge * op_edge = r3_node_connectl(c1, slug_p, slug_len , 1, c2);
+                if(opcode) {
+                
