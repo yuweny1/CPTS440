@@ -1839,4 +1839,8 @@ node * r3_tree_insert_pathl_ex(node *tree, const char *path, int path_len, route
                     return r3_tree_insert_pathl_ex(c2, slug_p + slug_len, restlen, route, data, errstr);
                 }
 
-                c2->data = 
+                c2->data = data;
+                c2->endpoint++;
+                if (route) {
+                    route->data = data;
+                    r3_node_append_rou
