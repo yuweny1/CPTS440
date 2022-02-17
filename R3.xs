@@ -1843,4 +1843,10 @@ node * r3_tree_insert_pathl_ex(node *tree, const char *path, int path_len, route
                 c2->endpoint++;
                 if (route) {
                     route->data = data;
-                    r3_node_append_rou
+                    r3_node_append_route(c2, route);
+                }
+                return c2;
+            }
+            // only one slug
+            node * child = r3_tree_create(3);
+    
