@@ -1854,4 +1854,9 @@ node * r3_tree_insert_pathl_ex(node *tree, const char *path, int path_len, route
             if (data)
                 child->data = data;
 
-            r3_node_connectl(n, path, pa
+            r3_node_connectl(n, path, path_len, 1, child);
+            if (route) {
+                route->data = data;
+                r3_node_append_route(child, route);
+            }
+            r
