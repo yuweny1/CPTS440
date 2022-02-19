@@ -1863,4 +1863,6 @@ node * r3_tree_insert_pathl_ex(node *tree, const char *path, int path_len, route
         }
     } else if ( prefix_len == e->pattern_len ) {    // fully-equal to the pattern of the edge
 
-  
+        // there are something more we can insert
+        if ( subpath_len > 0 ) {
+            return r3_tree_insert_pathl_ex(e->child, subpath, subpath_len, rout
