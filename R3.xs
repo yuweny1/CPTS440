@@ -1859,4 +1859,8 @@ node * r3_tree_insert_pathl_ex(node *tree, const char *path, int path_len, route
                 route->data = data;
                 r3_node_append_route(child, route);
             }
-            r
+            return child;
+        }
+    } else if ( prefix_len == e->pattern_len ) {    // fully-equal to the pattern of the edge
+
+  
