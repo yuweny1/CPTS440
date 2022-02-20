@@ -1865,4 +1865,9 @@ node * r3_tree_insert_pathl_ex(node *tree, const char *path, int path_len, route
 
         // there are something more we can insert
         if ( subpath_len > 0 ) {
-            return r3_tree_insert_pathl_ex(e->child, subpath, subpath_len, rout
+            return r3_tree_insert_pathl_ex(e->child, subpath, subpath_len, route, data, errstr);
+        } else {
+            // there are no more path to insert
+
+            // see if there is an endpoint already
+            
