@@ -1874,4 +1874,7 @@ node * r3_tree_insert_pathl_ex(node *tree, const char *path, int path_len, route
                 // XXX: return an error code instead of NULL
                 return NULL;
             }
-          
+            e->child->endpoint++; // make it as an endpoint
+            e->child->data = data;
+            if (route) {
+                rout
