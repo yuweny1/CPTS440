@@ -1870,4 +1870,8 @@ node * r3_tree_insert_pathl_ex(node *tree, const char *path, int path_len, route
             // there are no more path to insert
 
             // see if there is an endpoint already
-            
+            if (e->child->endpoint > 0) {
+                // XXX: return an error code instead of NULL
+                return NULL;
+            }
+          
