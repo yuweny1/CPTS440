@@ -1877,4 +1877,10 @@ node * r3_tree_insert_pathl_ex(node *tree, const char *path, int path_len, route
             e->child->endpoint++; // make it as an endpoint
             e->child->data = data;
             if (route) {
-                rout
+                route->data = data;
+                r3_node_append_route(e->child, route);
+            }
+            return e->child;
+        }
+
+    } else if ( prefi
