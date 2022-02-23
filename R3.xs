@@ -1883,4 +1883,6 @@ node * r3_tree_insert_pathl_ex(node *tree, const char *path, int path_len, route
             return e->child;
         }
 
-    } else if ( prefi
+    } else if ( prefix_len < e->pattern_len ) {
+        /* it's partially matched with the pattern,
+         * we should split the end point and make a
