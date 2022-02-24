@@ -1885,4 +1885,7 @@ node * r3_tree_insert_pathl_ex(node *tree, const char *path, int path_len, route
 
     } else if ( prefix_len < e->pattern_len ) {
         /* it's partially matched with the pattern,
-         * we should split the end point and make a
+         * we should split the end point and make a branch here...
+         */
+        r3_edge_branch(e, prefix_len);
+        return r3_tree_insert_pathl_ex(e->child, subpath, subpath_len, route , data, e
