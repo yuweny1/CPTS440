@@ -1896,4 +1896,9 @@ node * r3_tree_insert_pathl_ex(node *tree, const char *path, int path_len, route
     return n;
 }
 
-bool r3_node_has_slug_edges(const 
+bool r3_node_has_slug_edges(const node *n) {
+    bool found = FALSE;
+    edge *e;
+    for ( int i = 0 ; i < n->edge_len ; i++ ) {
+        e = n->edges[i];
+        e
