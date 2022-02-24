@@ -1888,4 +1888,12 @@ node * r3_tree_insert_pathl_ex(node *tree, const char *path, int path_len, route
          * we should split the end point and make a branch here...
          */
         r3_edge_branch(e, prefix_len);
-        return r3_tree_insert_pathl_ex(e->child, subpath, subpath_len, route , data, e
+        return r3_tree_insert_pathl_ex(e->child, subpath, subpath_len, route , data, errstr);
+    } else {
+        fprintf(stderr, "unexpected route.");
+        return NULL;
+    }
+    return n;
+}
+
+bool r3_node_has_slug_edges(const 
