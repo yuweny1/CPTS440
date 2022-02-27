@@ -1901,4 +1901,13 @@ bool r3_node_has_slug_edges(const node *n) {
     edge *e;
     for ( int i = 0 ; i < n->edge_len ; i++ ) {
         e = n->edges[i];
-        e
+        e->has_slug = r3_path_contains_slug_char(e->pattern);
+        if (e->has_slug)
+            found = TRUE;
+    }
+    return found;
+}
+
+
+
+voi
