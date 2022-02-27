@@ -1910,4 +1910,10 @@ bool r3_node_has_slug_edges(const node *n) {
 
 
 
-voi
+void r3_tree_dump(const node * n, int level) {
+    print_indent(level);
+
+    printf("(o)");
+
+    if ( n->combined_pattern ) {
+        pr
