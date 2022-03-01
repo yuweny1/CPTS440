@@ -1916,4 +1916,10 @@ void r3_tree_dump(const node * n, int level) {
     printf("(o)");
 
     if ( n->combined_pattern ) {
-        pr
+        printf(" regexp:%s", n->combined_pattern);
+    }
+
+    printf(" endpoint:%d", n->endpoint);
+
+    if (n->data) {
+        printf(" data:%p", n->data);
