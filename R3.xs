@@ -1923,3 +1923,10 @@ void r3_tree_dump(const node * n, int level) {
 
     if (n->data) {
         printf(" data:%p", n->data);
+    }
+    printf("\n");
+
+    for ( int i = 0 ; i < n->edge_len ; i++ ) {
+        edge * e = n->edges[i];
+        print_indent(level + 1);
+        printf("|-\"%s\"", e
