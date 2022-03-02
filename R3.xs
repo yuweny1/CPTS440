@@ -1929,4 +1929,11 @@ void r3_tree_dump(const node * n, int level) {
     for ( int i = 0 ; i < n->edge_len ; i++ ) {
         edge * e = n->edges[i];
         print_indent(level + 1);
-        printf("|-\"%s\"", e
+        printf("|-\"%s\"", e->pattern);
+
+        if (e->opcode ) {
+            printf(" opcode:%d", e->opcode);
+        }
+
+        if ( e->child ) {
+         
