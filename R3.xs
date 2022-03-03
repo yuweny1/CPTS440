@@ -1936,4 +1936,13 @@ void r3_tree_dump(const node * n, int level) {
         }
 
         if ( e->child ) {
-         
+            printf("\n");
+            r3_tree_dump( e->child, level + 1);
+        }
+        printf("\n");
+    }
+}
+
+
+/**
+ * return 0 == equ
