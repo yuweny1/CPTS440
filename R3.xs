@@ -1951,4 +1951,10 @@ void r3_tree_dump(const node * n, int level) {
  */
 int r3_route_cmp(const route *r1, const match_entry *r2) {
     if (r1->request_method != 0) {
-        if (0 == (r1->requ
+        if (0 == (r1->request_method & r2->request_method) ) {
+            return -1;
+        }
+    }
+
+    if ( r1->path && r2->path ) {
+        if ( strcmp(r1->path, r2->path) !=
