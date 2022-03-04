@@ -1964,4 +1964,11 @@ int r3_route_cmp(const route *r1, const match_entry *r2) {
 
     if ( r1->host && r2->host ) {
         if (strcmp(r1->host, r2->host) != 0 ) {
-            return -1
+            return -1;
+        }
+    }
+
+    if (r1->remote_addr_pattern) {
+        /*
+         * XXX: consider "netinet/in.h"
+        if (r2->remote_addr) {
