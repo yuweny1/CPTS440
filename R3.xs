@@ -1988,4 +1988,8 @@ int r3_route_cmp(const route *r1, const match_entry *r2) {
  */
 void r3_node_append_route(node * n, route * r) {
     if (n->routes == NULL) {
-  
+        n->route_cap = 3;
+        n->routes = zmalloc(sizeof(route) * n->route_cap);
+    }
+    if (n->route_len >= n->route_cap) {
+        n->route_
