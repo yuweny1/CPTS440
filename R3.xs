@@ -1976,4 +1976,16 @@ int r3_route_cmp(const route *r1, const match_entry *r2) {
         }
         */
         if ( strcmp(r1->remote_addr_pattern, r2->remote_addr) != 0 ) {
-         
+            return -1;
+        }
+    }
+    return 0;
+}
+
+
+/**
+ *
+ */
+void r3_node_append_route(node * n, route * r) {
+    if (n->routes == NULL) {
+  
