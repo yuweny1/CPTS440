@@ -1972,3 +1972,8 @@ int r3_route_cmp(const route *r1, const match_entry *r2) {
         /*
          * XXX: consider "netinet/in.h"
         if (r2->remote_addr) {
+            inet_addr(r2->remote_addr);
+        }
+        */
+        if ( strcmp(r1->remote_addr_pattern, r2->remote_addr) != 0 ) {
+         
