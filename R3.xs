@@ -1992,4 +1992,10 @@ void r3_node_append_route(node * n, route * r) {
         n->routes = zmalloc(sizeof(route) * n->route_cap);
     }
     if (n->route_len >= n->route_cap) {
-        n->route_
+        n->route_cap *= 2;
+        n->routes = zrealloc(n->routes, sizeof(route) * n->route_cap);
+    }
+    n->routes[ n->route_len++ ] = r;
+}
+
+
