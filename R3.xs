@@ -2021,4 +2021,10 @@ int r3_pattern_to_opcode(const char * pattern, int len) {
         return OP_EXPECT_MORE_WORDS;
     }
     if ( strncmp(pattern, "[0-9a-z]+",len) == 0 ||  strncmp(pattern, "[a-z0-9]+",len) == 0  ) {
-        return OP_
+        return OP_EXPECT_MORE_WORDS;
+    }
+    if ( strncmp(pattern, "[a-z]+",len) == 0 ) {
+        return OP_EXPECT_MORE_ALPHA;
+    }
+    if ( strncmp(pattern, "\\d+", len) == 0 ) {
+    
