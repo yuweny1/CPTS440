@@ -2017,4 +2017,8 @@ void r3_node_append_route(node * n, route * r) {
 /* #include "zmalloc.h" */
 
 int r3_pattern_to_opcode(const char * pattern, int len) {
-    if ( strncmp(pattern, "\\w+",le
+    if ( strncmp(pattern, "\\w+",len) == 0 ) {
+        return OP_EXPECT_MORE_WORDS;
+    }
+    if ( strncmp(pattern, "[0-9a-z]+",len) == 0 ||  strncmp(pattern, "[a-z0-9]+",len) == 0  ) {
+        return OP_
