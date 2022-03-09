@@ -2004,4 +2004,12 @@ void r3_node_append_route(node * n, route * r) {
  * str.c
  * Copyright (C) 2014 c9s <c9s@c9smba.local>
  *
- * Distributed under terms of the MIT licens
+ * Distributed under terms of the MIT license.
+ */
+/* #include "config.h" */
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <assert.h>
+/* #include "r3.h" */
+/* #include "r3_str.h
