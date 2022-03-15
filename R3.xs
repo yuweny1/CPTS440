@@ -2036,4 +2036,14 @@ int r3_pattern_to_opcode(const char * pattern, int len) {
         return OP_EXPECT_NOSLASH;
     }
     if ( strncmp(pattern, "[^-]+", len) == 0 ) {
-        return OP_EXP
+        return OP_EXPECT_NODASH;
+    }
+    return 0;
+}
+
+
+
+
+char * inside_slug(const char * needle, int needle_len, char *offset, char **errstr) {
+    char * s1 = offset;
+    c
