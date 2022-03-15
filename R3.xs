@@ -2032,4 +2032,8 @@ int r3_pattern_to_opcode(const char * pattern, int len) {
     if ( strncmp(pattern, "[0-9]+", len) == 0 ) {
         return OP_EXPECT_MORE_DIGITS;
     }
-    if ( strncmp(pattern, "[^/]+
+    if ( strncmp(pattern, "[^/]+", len) == 0 ) {
+        return OP_EXPECT_NOSLASH;
+    }
+    if ( strncmp(pattern, "[^-]+", len) == 0 ) {
+        return OP_EXP
