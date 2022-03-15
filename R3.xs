@@ -2046,4 +2046,11 @@ int r3_pattern_to_opcode(const char * pattern, int len) {
 
 char * inside_slug(const char * needle, int needle_len, char *offset, char **errstr) {
     char * s1 = offset;
-    c
+    char * s2 = offset;
+
+    short found_s1 = 0;
+    short found_s2 = 0;
+
+    while( s1 >= needle && (s1 - needle < needle_len) ) {
+        if ( *s1 == '{' ) {
+           
