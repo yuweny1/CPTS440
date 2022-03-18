@@ -2068,4 +2068,9 @@ char * inside_slug(const char * needle, int needle_len, char *offset, char **err
         s2++;
     }
     if (found_s1 && found_s2) {
-      
+        return s1;
+    }
+    if (found_s1 || found_s2) {
+        // wrong slug pattern
+        if(errstr) {
+            asprintf(errstr, "Incomplete slug
