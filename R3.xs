@@ -2060,4 +2060,12 @@ char * inside_slug(const char * needle, int needle_len, char *offset, char **err
     }
 
     const char * end = needle + needle_len;
-    while( (s2 + 1) < end ) 
+    while( (s2 + 1) < end ) {
+        if ( *s2 == '}' ) {
+            found_s2 = 1;
+            break;
+        }
+        s2++;
+    }
+    if (found_s1 && found_s2) {
+      
