@@ -2053,4 +2053,11 @@ char * inside_slug(const char * needle, int needle_len, char *offset, char **err
 
     while( s1 >= needle && (s1 - needle < needle_len) ) {
         if ( *s1 == '{' ) {
-           
+            found_s1 = 1;
+            break;
+        }
+        s1--;
+    }
+
+    const char * end = needle + needle_len;
+    while( (s2 + 1) < end ) 
