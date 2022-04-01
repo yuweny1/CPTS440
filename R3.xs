@@ -2083,3 +2083,9 @@ char * inside_slug(const char * needle, int needle_len, char *offset, char **err
 char * slug_find_placeholder(const char *s1, int *len) {
     char *c;
     char *s2;
+    int cnt = 0;
+    if ( NULL != (c = strchr(s1, '{')) ) {
+        // find closing '}'
+        s2 = c;
+        while(*s2) {
+            if (*s2 ==
