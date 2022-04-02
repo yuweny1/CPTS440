@@ -2088,4 +2088,9 @@ char * slug_find_placeholder(const char *s1, int *len) {
         // find closing '}'
         s2 = c;
         while(*s2) {
-            if (*s2 ==
+            if (*s2 == '{' )
+                cnt++;
+            else if (*s2 == '}' )
+                cnt--;
+            if (cnt == 0)
+            
