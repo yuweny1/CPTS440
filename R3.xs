@@ -2112,4 +2112,10 @@ char * slug_find_placeholder(const char *s1, int *len) {
 /**
  * given a slug string, duplicate the pattern string of the slug
  */
-char * slug_f
+char * slug_find_pattern(const char *s1, int *len) {
+    char *c;
+    char *s2;
+    int cnt = 1;
+    if ( NULL != (c = strchr(s1, ':')) ) {
+        c++;
+        // find
