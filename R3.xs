@@ -2093,4 +2093,13 @@ char * slug_find_placeholder(const char *s1, int *len) {
             else if (*s2 == '}' )
                 cnt--;
             if (cnt == 0)
-            
+                break;
+            s2++;
+        }
+    } else {
+        return NULL;
+    }
+    if (cnt!=0) {
+        return NULL;
+    }
+    if(
