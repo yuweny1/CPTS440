@@ -2102,4 +2102,14 @@ char * slug_find_placeholder(const char *s1, int *len) {
     if (cnt!=0) {
         return NULL;
     }
-    if(
+    if(len) {
+        *len = s2 - c + 1;
+    }
+    return c;
+}
+
+
+/**
+ * given a slug string, duplicate the pattern string of the slug
+ */
+char * slug_f
