@@ -2118,4 +2118,11 @@ char * slug_find_pattern(const char *s1, int *len) {
     int cnt = 1;
     if ( NULL != (c = strchr(s1, ':')) ) {
         c++;
-        // find
+        // find closing '}'
+        s2 = c;
+        while(s2) {
+            if (*s2 == '{' )
+                cnt++;
+            else if (*s2 == '}' )
+                cnt--;
+     
