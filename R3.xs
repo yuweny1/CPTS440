@@ -2125,4 +2125,12 @@ char * slug_find_pattern(const char *s1, int *len) {
                 cnt++;
             else if (*s2 == '}' )
                 cnt--;
-     
+            if (cnt == 0)
+                break;
+            s2++;
+        }
+
+    } else {
+        return NULL;
+    }
+    *len = s2 - 
