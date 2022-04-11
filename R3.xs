@@ -2133,4 +2133,15 @@ char * slug_find_pattern(const char *s1, int *len) {
     } else {
         return NULL;
     }
-    *len = s2 - 
+    *len = s2 - c;
+    return c;
+}
+
+
+/**
+ * @param char * sep separator
+ */
+char * slug_compile(const char * str, int len)
+{
+    char *s1 = NULL, *o = NULL;
+    c
