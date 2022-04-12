@@ -2153,4 +2153,10 @@ char * slug_compile(const char * str, int len)
     s1 = slug_find_placeholder(str, &s1_len);
 
     if ( s1 == NULL ) {
-      
+        return zstrdup(str);
+    }
+
+    char * out = NULL;
+    if ((out = zcalloc(sizeof(char) * 200)) == NULL) {
+        return (NULL);
+    }
