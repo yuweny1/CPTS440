@@ -2144,4 +2144,13 @@ char * slug_find_pattern(const char *s1, int *len) {
 char * slug_compile(const char * str, int len)
 {
     char *s1 = NULL, *o = NULL;
-    c
+    char *pat = NULL;
+    char sep = '/';
+
+
+    // append prefix
+    int s1_len;
+    s1 = slug_find_placeholder(str, &s1_len);
+
+    if ( s1 == NULL ) {
+      
