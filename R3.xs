@@ -2160,3 +2160,13 @@ char * slug_compile(const char * str, int len)
     if ((out = zcalloc(sizeof(char) * 200)) == NULL) {
         return (NULL);
     }
+
+    o = out;
+    strncat(o, "^", 1);
+    o++;
+
+    strncat(o, str, s1 - str); // string before slug
+    o += (s1 - str);
+
+
+    int pat_
