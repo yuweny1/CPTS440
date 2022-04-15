@@ -2169,4 +2169,10 @@ char * slug_compile(const char * str, int len)
     o += (s1 - str);
 
 
-    int pat_
+    int pat_len;
+    pat = slug_find_pattern(s1, &pat_len);
+
+    if (pat) {
+        *o = '(';
+        o++;
+        strncat(o, pat, p
