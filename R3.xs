@@ -2175,4 +2175,11 @@ char * slug_compile(const char * str, int len)
     if (pat) {
         *o = '(';
         o++;
-        strncat(o, pat, p
+        strncat(o, pat, pat_len );
+        o += pat_len;
+        *o = ')';
+        o++;
+    } else {
+        sprintf(o, "([^%c]+)", sep);
+        o+= strlen("([^*]+)");
+  
