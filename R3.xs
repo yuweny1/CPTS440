@@ -2182,4 +2182,15 @@ char * slug_compile(const char * str, int len)
     } else {
         sprintf(o, "([^%c]+)", sep);
         o+= strlen("([^*]+)");
-  
+    }
+    s1 += s1_len;
+    strncat(o, s1, strlen(s1));
+    return out;
+}
+
+
+char * ltrim_slash(char* str)
+{
+    char * p = str;
+    while (*p == '/') p++;
+    return zstr
