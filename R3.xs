@@ -2193,4 +2193,13 @@ char * ltrim_slash(char* str)
 {
     char * p = str;
     while (*p == '/') p++;
-    return zstr
+    return zstrdup(p);
+}
+
+void str_repeat(char *s, const char *c, int len) {
+    while(len--) {
+        s[len - 1] = *c;
+    }
+}
+
+void print_inde
