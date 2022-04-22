@@ -2202,4 +2202,12 @@ void str_repeat(char *s, const char *c, int len) {
     }
 }
 
-void print_inde
+void print_indent(int level) {
+    int len = level * 2;
+    while(len--) {
+        printf(" ");
+    }
+}
+
+#ifndef HAVE_STRDUP
+char *zstrdup(const cha
