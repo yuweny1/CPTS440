@@ -2210,4 +2210,11 @@ void print_indent(int level) {
 }
 
 #ifndef HAVE_STRDUP
-char *zstrdup(const cha
+char *zstrdup(const char *s) {
+    char *out;
+    int count = 0;
+    while( s[count] )
+        ++count;
+    ++count;
+    out = zmalloc(sizeof(char) * count);
+    out[--coun
