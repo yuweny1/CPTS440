@@ -2217,4 +2217,12 @@ char *zstrdup(const char *s) {
         ++count;
     ++count;
     out = zmalloc(sizeof(char) * count);
-    out[--coun
+    out[--count] = 0;
+    while( --count >= 0 )
+        out[count] = s[count];
+    return out;
+}
+#endif
+
+#ifndef HAVE_STRNDUP
+char *zstrndup(const char *s,
