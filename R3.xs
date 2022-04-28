@@ -2231,4 +2231,11 @@ char *zstrndup(const char *s, int n) {
     while( count < n && s[count] )
         ++count;
     ++count;
-    out = zmalloc(sizeof(cha
+    out = zmalloc(sizeof(char) * count);
+    out[--count] = 0;
+    while( --count >= 0 )
+        out[count] = s[count];
+    return out;
+}
+#endif
+/******* r3/src/token.c ****
