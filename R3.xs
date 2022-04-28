@@ -2225,4 +2225,10 @@ char *zstrdup(const char *s) {
 #endif
 
 #ifndef HAVE_STRNDUP
-char *zstrndup(const char *s,
+char *zstrndup(const char *s, int n) {
+    char *out;
+    int count = 0;
+    while( count < n && s[count] )
+        ++count;
+    ++count;
+    out = zmalloc(sizeof(cha
