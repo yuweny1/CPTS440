@@ -2252,4 +2252,10 @@ char *zstrndup(const char *s, int n) {
 /* #include "r3.h" */
 /* #include "r3_str.h" */
 /* #include "str_array.h" */
-/* #inclu
+/* #include "zmalloc.h" */
+
+str_array * str_array_create(int cap) {
+    str_array * list = (str_array*) zmalloc( sizeof(str_array) );
+    if (!list)
+        return NULL;
+   
