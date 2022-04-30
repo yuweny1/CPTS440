@@ -2238,4 +2238,11 @@ char *zstrndup(const char *s, int n) {
     return out;
 }
 #endif
-/******* r3/src/token.c ****
+/******* r3/src/token.c *******/
+/*
+ * token.c
+ * Copyright (C) 2014 c9s <c9s@c9smba.local>
+ *
+ * Distributed under terms of the MIT license.
+ */
+#include <stdlib
