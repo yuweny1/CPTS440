@@ -2245,4 +2245,11 @@ char *zstrndup(const char *s, int n) {
  *
  * Distributed under terms of the MIT license.
  */
-#include <stdlib
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
+#include <assert.h>
+/* #include "r3.h" */
+/* #include "r3_str.h" */
+/* #include "str_array.h" */
+/* #inclu
