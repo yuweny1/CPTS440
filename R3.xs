@@ -2264,4 +2264,12 @@ str_array * str_array_create(int cap) {
     return list;
 }
 
-void str_array_free(str_arr
+void str_array_free(str_array *l) {
+    assert(l);
+    for ( int i = 0; i < l->len ; i++ ) {
+        if (l->tokens[ i ]) {
+            zfree(l->tokens[i]);
+        }
+    }
+    zfree(l);
+}
