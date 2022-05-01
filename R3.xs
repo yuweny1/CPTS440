@@ -2273,3 +2273,9 @@ void str_array_free(str_array *l) {
     }
     zfree(l);
 }
+
+bool str_array_is_full(const str_array * l) {
+    return l->len >= l->cap;
+}
+
+bool str_array_resize(str_array * l, in
