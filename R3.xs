@@ -2284,4 +2284,7 @@ bool str_array_resize(str_array * l, int new_cap) {
     return l->tokens != NULL;
 }
 
-bool str_array
+bool str_array_append(str_array * l, char * token) {
+    if ( str_array_is_full(l) ) {
+        bool ret = str_array_resize(l, l->cap + 20);
+        if (
