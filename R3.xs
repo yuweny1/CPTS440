@@ -2299,4 +2299,17 @@ void str_array_dump(const str_array *l) {
     printf("[");
     for ( int i = 0; i < l->len ; i++ ) {
         printf("\"%s\"", l->tokens[i] );
-        if ( i + 1 != 
+        if ( i + 1 != l->len ) {
+            printf(", ");
+        }
+    }
+    printf("]\n");
+}
+
+
+
+
+/******* r3/src/slug.c *******/
+/*
+ * slug.c
+ * Copyright (C) 2014 c9s <c9s@c9smb
