@@ -2295,4 +2295,8 @@ bool str_array_append(str_array * l, char * token) {
     return TRUE;
 }
 
-void str_array_dump(con
+void str_array_dump(const str_array *l) {
+    printf("[");
+    for ( int i = 0; i < l->len ; i++ ) {
+        printf("\"%s\"", l->tokens[i] );
+        if ( i + 1 != 
