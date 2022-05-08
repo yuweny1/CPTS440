@@ -2328,4 +2328,10 @@ void str_array_dump(const str_array *l) {
 
 
 r3_slug_t * r3_slug_new(char * path, int path_len) {
-    r3_slug
+    r3_slug_t * s = zmalloc(sizeof(r3_slug_t));
+    if (!s)
+        return NULL;
+    s->path = path;
+    s->path_len = path_len;
+
+    s->begin
