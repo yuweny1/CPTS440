@@ -2312,4 +2312,13 @@ void str_array_dump(const str_array *l) {
 /******* r3/src/slug.c *******/
 /*
  * slug.c
- * Copyright (C) 2014 c9s <c9s@c9smb
+ * Copyright (C) 2014 c9s <c9s@c9smba.local>
+ *
+ * Distributed under terms of the MIT license.
+ */
+/* #include "config.h" */
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+/* #include "r3.h" */
+/* #incl
