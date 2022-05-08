@@ -2321,4 +2321,11 @@ void str_array_dump(const str_array *l) {
 #include <stdlib.h>
 #include <string.h>
 /* #include "r3.h" */
-/* #incl
+/* #include "r3_str.h" */
+/* #include "slug.h" */
+/* #include "zmalloc.h" */
+
+
+
+r3_slug_t * r3_slug_new(char * path, int path_len) {
+    r3_slug
