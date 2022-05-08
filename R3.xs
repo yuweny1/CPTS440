@@ -2334,4 +2334,14 @@ r3_slug_t * r3_slug_new(char * path, int path_len) {
     s->path = path;
     s->path_len = path_len;
 
-    s->begin
+    s->begin = NULL;
+    s->end = NULL;
+    s->len = 0;
+
+    s->pattern = NULL;
+    s->pattern_len = 0;
+    return s;
+}
+
+void r3_slug_free(r3_slug_t * s) {
+    zfree(
