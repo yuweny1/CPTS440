@@ -2344,4 +2344,13 @@ r3_slug_t * r3_slug_new(char * path, int path_len) {
 }
 
 void r3_slug_free(r3_slug_t * s) {
-    zfree(
+    zfree(s);
+}
+
+
+/**
+ * Return 1 means OK
+ * Return 0 means Empty
+ * Return -1 means Error
+ */
+int r3_slug_check(r3_slug_t *
