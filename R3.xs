@@ -2353,4 +2353,9 @@ void r3_slug_free(r3_slug_t * s) {
  * Return 0 means Empty
  * Return -1 means Error
  */
-int r3_slug_check(r3_slug_t *
+int r3_slug_check(r3_slug_t *s) {
+    // if it's empty
+    if (s->begin == NULL && s->len == 0) {
+        return 0;
+    }
+    if (s->begin && s->begin == s->end &&
