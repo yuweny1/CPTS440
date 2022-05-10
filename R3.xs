@@ -2358,4 +2358,9 @@ int r3_slug_check(r3_slug_t *s) {
     if (s->begin == NULL && s->len == 0) {
         return 0;
     }
-    if (s->begin && s->begin == s->end &&
+    if (s->begin && s->begin == s->end && s->len == 0) {
+        return 0;
+    }
+
+    // if the head is defined, we should also have end pointer
+    if (s->begin && s-
