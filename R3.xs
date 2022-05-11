@@ -2372,4 +2372,11 @@ int r3_slug_check(r3_slug_t *s) {
 
 char * r3_slug_to_str(const r3_slug_t *s) {
     char *str = NULL;
-    asprintf(&str, "slug: '%.
+    asprintf(&str, "slug: '%.*s', pattern: '%.*s', path: '%.*s'", s->len, s->begin, s->pattern_len, s->pattern, s->path_len, s->path);
+    return str;
+}
+
+
+
+/*
+r3_slug_t * r3_slug_parse_nex
