@@ -2363,4 +2363,13 @@ int r3_slug_check(r3_slug_t *s) {
     }
 
     // if the head is defined, we should also have end pointer
-    if (s->begin && s-
+    if (s->begin && s->end == NULL) {
+        return -1;
+    }
+    return 0;
+}
+
+
+char * r3_slug_to_str(const r3_slug_t *s) {
+    char *str = NULL;
+    asprintf(&str, "slug: '%.
