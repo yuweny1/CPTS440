@@ -2379,4 +2379,8 @@ char * r3_slug_to_str(const r3_slug_t *s) {
 
 
 /*
-r3_slug_t * r3_slug_parse_nex
+r3_slug_t * r3_slug_parse_next(r3_slug_t *s, char **errstr) {
+    return r3_slug_parse(s->end, s->path_len - (s->end - s->begin), errstr);
+}
+
+Return 0 => Empty, sl
