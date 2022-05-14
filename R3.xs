@@ -2402,4 +2402,9 @@ int r3_slug_parse(r3_slug_t *s, char *needle, int needle_len, char *offset, char
     }
 
     int cnt = 0;
-    in
+    int state = 0;
+    char * p = offset;
+
+    while( (p-needle) < needle_len) {
+        // escape one character
+        if (*p == '\\' ) {
