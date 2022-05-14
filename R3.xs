@@ -2393,4 +2393,13 @@ int r3_slug_parse(r3_slug_t *s, char *needle, int needle_len, char *offset, char
     s->path_len = needle_len;
 
     if (offset == NULL) {
-        offset = (char*) needle; // from the beg
+        offset = (char*) needle; // from the begining of the needle
+    }
+
+    // there is no slug
+    if (!r3_path_contains_slug_char(offset)) {
+        return 0;
+    }
+
+    int cnt = 0;
+    in
