@@ -2420,4 +2420,11 @@ int r3_slug_parse(r3_slug_t *s, char *needle, int needle_len, char *offset, char
         }
 
         // in the middle of the slug (pattern)
-        if (state ==
+        if (state == 1 && *p == ':') {
+            // start from next
+            s->pattern = ++p;
+            continue;
+        }
+
+        // slug closed.
+      
