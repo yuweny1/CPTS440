@@ -2408,3 +2408,10 @@ int r3_slug_parse(r3_slug_t *s, char *needle, int needle_len, char *offset, char
     while( (p-needle) < needle_len) {
         // escape one character
         if (*p == '\\' ) {
+            p++; p++;
+            continue;
+        }
+
+        // slug starts with '{'
+        if (state == 0 && *p == '{') {
+            s->
