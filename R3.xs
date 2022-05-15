@@ -2414,4 +2414,10 @@ int r3_slug_parse(r3_slug_t *s, char *needle, int needle_len, char *offset, char
 
         // slug starts with '{'
         if (state == 0 && *p == '{') {
-            s->
+            s->begin = ++p;
+            state++;
+            continue;
+        }
+
+        // in the middle of the slug (pattern)
+        if (state ==
