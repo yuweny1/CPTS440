@@ -2450,4 +2450,14 @@ int r3_slug_parse(r3_slug_t *s, char *needle, int needle_len, char *offset, char
 
     if (state != 0) {
         if (errstr) {
-            asprintf(errstr, "Incomplete slug pattern. PATH (%d): '%s', OFFSET: %ld, STATE: %d", needle_
+            asprintf(errstr, "Incomplete slug pattern. PATH (%d): '%s', OFFSET: %ld, STATE: %d", needle_len, needle, p - needle, state);
+        }
+        return -1;
+    }
+    info("found slug\n");
+    return 1;
+}
+
+
+/**
+ * provide a quick way to count slugs, simply
