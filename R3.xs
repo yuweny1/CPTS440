@@ -2431,4 +2431,12 @@ int r3_slug_parse(r3_slug_t *s, char *needle, int needle_len, char *offset, char
             s->end = p;
             s->len = s->end - s->begin;
             if (s->pattern) {
-             
+                s->pattern_len = p - s->pattern;
+            }
+            cnt++;
+            state--;
+            p++;
+            break;
+        }
+
+        // might be inside the pat
