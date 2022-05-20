@@ -2448,4 +2448,6 @@ int r3_slug_parse(r3_slug_t *s, char *needle, int needle_len, char *offset, char
         p++;
     };
 
- 
+    if (state != 0) {
+        if (errstr) {
+            asprintf(errstr, "Incomplete slug pattern. PATH (%d): '%s', OFFSET: %ld, STATE: %d", needle_
