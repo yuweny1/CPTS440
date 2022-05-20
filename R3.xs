@@ -2439,4 +2439,13 @@ int r3_slug_parse(r3_slug_t *s, char *needle, int needle_len, char *offset, char
             break;
         }
 
-        // might be inside the pat
+        // might be inside the pattern
+        if ( *p == '{' ) {
+            state++;
+        } else if ( *p == '}' ) {
+            state--;
+        }
+        p++;
+    };
+
+ 
