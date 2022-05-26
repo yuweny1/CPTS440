@@ -2465,4 +2465,12 @@ int r3_slug_parse(r3_slug_t *s, char *needle, int needle_len, char *offset, char
 int slug_count(const char * needle, int len, char **errstr) {
     int cnt = 0;
     int state = 0;
-    char * p =
+    char * p = (char*) needle;
+
+    while( (p-needle) < len) {
+        if (*p == '\\' ) {
+            p++; p++;
+            continue;
+        }
+
+        if (state == 1 && *p
