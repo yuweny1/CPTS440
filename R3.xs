@@ -2473,4 +2473,10 @@ int slug_count(const char * needle, int len, char **errstr) {
             continue;
         }
 
-        if (state == 1 && *p
+        if (state == 1 && *p == '}') {
+            cnt++;
+        }
+        if ( *p == '{' ) {
+            state++;
+        } else if ( *p == '}' ) {
+     
