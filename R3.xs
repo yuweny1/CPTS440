@@ -2479,4 +2479,10 @@ int slug_count(const char * needle, int len, char **errstr) {
         if ( *p == '{' ) {
             state++;
         } else if ( *p == '}' ) {
-     
+            state--;
+        }
+        p++;
+    };
+    info("FOUND PATTERN: '%s' (%d), STATE: %d\n", needle, len, state);
+    if (state != 0) {
+        
