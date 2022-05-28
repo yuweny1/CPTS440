@@ -2497,3 +2497,11 @@ int slug_count(const char * needle, int len, char **errstr) {
 /* __R3_SOURCE_SLOT_END__ */
 
 #ifdef PERL_R3_DEBUG
+void _test(){
+    int route_data = 3;
+    int ret;
+    node * n = r3_tree_create(10);
+    node *matched_node;
+    match_entry * entry;
+
+    // inse
