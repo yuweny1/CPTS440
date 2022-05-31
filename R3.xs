@@ -2504,4 +2504,6 @@ void _test(){
     node *matched_node;
     match_entry * entry;
 
-    // inse
+    // insert the route path into the router tree
+    r3_tree_insert_path(n , "/post/{id:\\d{3}}/{id2}" , &route_data );
+    r3_tree_insert_path(n , "/z
