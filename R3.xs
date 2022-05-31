@@ -2506,4 +2506,7 @@ void _test(){
 
     // insert the route path into the router tree
     r3_tree_insert_path(n , "/post/{id:\\d{3}}/{id2}" , &route_data );
-    r3_tree_insert_path(n , "/z
+    r3_tree_insert_path(n , "/zoo"       , &route_data );
+    r3_tree_insert_path(n , "/foo/bar"   , &route_data );
+    r3_tree_insert_path(n , "/bar"       , &route_data );
+    // r3_tree_inse
