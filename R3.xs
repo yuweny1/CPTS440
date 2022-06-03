@@ -2509,4 +2509,6 @@ void _test(){
     r3_tree_insert_path(n , "/zoo"       , &route_data );
     r3_tree_insert_path(n , "/foo/bar"   , &route_data );
     r3_tree_insert_path(n , "/bar"       , &route_data );
-    // r3_tree_inse
+    // r3_tree_insert_pathl(n , "abc"       , strlen("abc")       , &route_data );
+    // r3_tree_insert_pathl(n , "ade"       , strlen("ade")       , &route_data );
+   
