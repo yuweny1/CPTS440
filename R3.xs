@@ -2519,4 +2519,6 @@ void _test(){
 
     r3_tree_dump(n, 0);
 
-    entry = match_entry_createl( "/post/123/" , strle
+    entry = match_entry_createl( "/post/123/" , strlen("/post/123/") );
+    matched_node = r3_tree_matchl(n, "/post/123/", strlen("/post/123/"), entry );
+    printf("matched_node=%p\n", (
