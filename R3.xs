@@ -2521,4 +2521,7 @@ void _test(){
 
     entry = match_entry_createl( "/post/123/" , strlen("/post/123/") );
     matched_node = r3_tree_matchl(n, "/post/123/", strlen("/post/123/"), entry );
-    printf("matched_node=%p\n", (
+    printf("matched_node=%p\n", (void*)matched_node);
+    if( matched_node ){
+        printf("data=%p - %p\n", (void*)matched_node->data, (void*)&route_data);
+        ret = *( (int*) matc
