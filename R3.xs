@@ -2512,4 +2512,11 @@ void _test(){
     // r3_tree_insert_pathl(n , "abc"       , strlen("abc")       , &route_data );
     // r3_tree_insert_pathl(n , "ade"       , strlen("ade")       , &route_data );
     // r3_tree_insert_pathl(n , "/f/foo"       , strlen("/f/foo")       , &route_data );
-    // r3_tree_insert_pathl(n , "/f/bar"      
+    // r3_tree_insert_pathl(n , "/f/bar"       , strlen("/f/bar")       , &route_data );
+
+    r3_tree_compile(n);
+
+
+    r3_tree_dump(n, 0);
+
+    entry = match_entry_createl( "/post/123/" , strle
