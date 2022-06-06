@@ -2534,3 +2534,7 @@ void _test(){
 // r3_pad structure:
 // (node*) r3
 // (int) branch_n
+// (SV*) target * branch_n
+// (int) capture_n * branch_n
+// (char**) first_capture_key_head * branch_n
+// (char*) (capture_key_head, capture_key_end) * (s
