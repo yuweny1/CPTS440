@@ -2524,4 +2524,13 @@ void _test(){
     printf("matched_node=%p\n", (void*)matched_node);
     if( matched_node ){
         printf("data=%p - %p\n", (void*)matched_node->data, (void*)&route_data);
-        ret = *( (int*) matc
+        ret = *( (int*) matched_node->data );
+        printf("ret=%d\n", ret);
+    }
+    match_entry_free(entry);
+}
+#endif
+
+// r3_pad structure:
+// (node*) r3
+// (int) branch_n
