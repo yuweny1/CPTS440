@@ -2537,4 +2537,9 @@ void _test(){
 // (SV*) target * branch_n
 // (int) capture_n * branch_n
 // (char**) first_capture_key_head * branch_n
-// (char*) (capture_key_head, capture_key_end) * (s
+// (char*) (capture_key_head, capture_key_end) * (sum of capture_n)
+// (char) capture_key_pool * (sum of capture_key_len)
+
+#define BRANCH_N (*(int*)( (char*)r3_pad + sizeof(node*) ))
+#define ASSIGN_OFFSET \
+    SV*
