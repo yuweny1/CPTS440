@@ -2542,4 +2542,9 @@ void _test(){
 
 #define BRANCH_N (*(int*)( (char*)r3_pad + sizeof(node*) ))
 #define ASSIGN_OFFSET \
-    SV*
+    SV** target; \
+    int* capture_n; \
+    char*** first_capture_key_head; \
+    char** capture_key; \
+    char* capture_key_pool; \
+    target = (SV**)( (char*)r3_pad + sizeof(node*
