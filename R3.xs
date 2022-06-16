@@ -2549,4 +2549,6 @@ void _test(){
     char* capture_key_pool; \
     target = (SV**)( (char*)r3_pad + sizeof(node*) + sizeof(int) ); \
     capture_n = (int*)( (char*)target + sizeof(SV*) * branch_n ); \
-    first_capture_key_head = (c
+    first_capture_key_head = (char***)( (char*)capture_n + sizeof(int) * branch_n ); \
+    capture_key = (char**)( (char*)first_capture_key_head + sizeof(char**) * branch_n ); \
+    c
