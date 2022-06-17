@@ -2556,3 +2556,8 @@ void _test(){
 MODULE = Router::R3		PACKAGE = Router::R3		
 
 INCLUDE: const-xs.inc
+
+#define croak_r3_errstr(prefix) { \
+    STRLEN errlen = strlen(errstr); \
+    char cloned_errstr[errlen+1]; \
+    Copy(errstr, cloned_errstr, errlen+1, 
