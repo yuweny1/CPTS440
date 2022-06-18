@@ -2567,4 +2567,8 @@ INCLUDE: const-xs.inc
 
 #define ANALYZE_PATTERN(pattern, pattern_len) { \
     int k; \
-  
+    for(STRLEN j=0; j<pattern_len; ++j) \
+        if( pattern[j] == '{' ){ \
+            ++capture_n_total; \
+            ++j; \
+      
