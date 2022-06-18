@@ -2571,4 +2571,8 @@ INCLUDE: const-xs.inc
         if( pattern[j] == '{' ){ \
             ++capture_n_total; \
             ++j; \
+            while( j<pattern_len && pattern[j]!='}' && pattern[j]!=':' ){ \
+                ++capture_key_len_total; \
+                ++j; \
+            } \
       
