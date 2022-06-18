@@ -2575,4 +2575,8 @@ INCLUDE: const-xs.inc
                 ++capture_key_len_total; \
                 ++j; \
             } \
-      
+            k = 1; \
+            while( j<pattern_len && k>0 ) { \
+                switch( pattern[j] ) { \
+                    case '{': \
+             
