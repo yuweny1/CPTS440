@@ -2579,4 +2579,8 @@ INCLUDE: const-xs.inc
             while( j<pattern_len && k>0 ) { \
                 switch( pattern[j] ) { \
                     case '{': \
-             
+                        ++k; \
+                        break; \
+                    case '}': \
+                        --k; \
+                   
