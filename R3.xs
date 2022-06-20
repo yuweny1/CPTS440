@@ -2583,4 +2583,11 @@ INCLUDE: const-xs.inc
                         break; \
                     case '}': \
                         --k; \
-                   
+                        break; \
+                } \
+                ++j; \
+            } \
+        } \
+}
+
+#define FILL_PATTERN(pad, r3, i, pattern, pattern_len, v
