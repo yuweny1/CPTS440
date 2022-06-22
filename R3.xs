@@ -2595,4 +2595,9 @@ INCLUDE: const-xs.inc
     char** this_capture_key_head_cursor; \
     char* this_capture_key_pool_cursor; \
     if( val ) \
-        ta
+        target[i] = newSVsv(val); \
+    else \
+        target[i] = newSV(0); \
+    if( i==0 ) \
+        first_capture_key_head[0] = capture_key; \
+    if( 
