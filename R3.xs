@@ -2590,4 +2590,9 @@ INCLUDE: const-xs.inc
         } \
 }
 
-#define FILL_PATTERN(pad, r3, i, pattern, pattern_len, v
+#define FILL_PATTERN(pad, r3, i, pattern, pattern_len, val) { \
+    int this_capture_n = 0; \
+    char** this_capture_key_head_cursor; \
+    char* this_capture_key_pool_cursor; \
+    if( val ) \
+        ta
