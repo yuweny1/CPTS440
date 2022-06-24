@@ -2600,4 +2600,7 @@ INCLUDE: const-xs.inc
         target[i] = newSV(0); \
     if( i==0 ) \
         first_capture_key_head[0] = capture_key; \
-    if( 
+    if( first_capture_key_head[i] == capture_key ) \
+        this_capture_key_pool_cursor = capture_key_pool; \
+    else \
+        this_capture_key_pool_cursor
