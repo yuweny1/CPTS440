@@ -2606,3 +2606,6 @@ INCLUDE: const-xs.inc
         this_capture_key_pool_cursor = *(first_capture_key_head[i]-1); \
     this_capture_key_head_cursor = first_capture_key_head[i]; \
     for(STRLEN j=0; j<pattern_len; ++j) \
+        if( pattern[j] == '{' ){ \
+            ++this_capture_n; \
+            *this_capture_key_head_cursor++ = this_capture_key_pool_cursor; /*
