@@ -2603,4 +2603,6 @@ INCLUDE: const-xs.inc
     if( first_capture_key_head[i] == capture_key ) \
         this_capture_key_pool_cursor = capture_key_pool; \
     else \
-        this_capture_key_pool_cursor
+        this_capture_key_pool_cursor = *(first_capture_key_head[i]-1); \
+    this_capture_key_head_cursor = first_capture_key_head[i]; \
+    for(STRLEN j=0; j<pattern_len; ++j) \
