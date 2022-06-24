@@ -2608,4 +2608,7 @@ INCLUDE: const-xs.inc
     for(STRLEN j=0; j<pattern_len; ++j) \
         if( pattern[j] == '{' ){ \
             ++this_capture_n; \
-            *this_capture_key_head_cursor++ = this_capture_key_pool_cursor; /*
+            *this_capture_key_head_cursor++ = this_capture_key_pool_cursor; /* head */ \
+            ++j; \
+            while( j<pattern_len && pattern[j]!='}' && pattern[j]!=':' ){ \
+                *this_capture_key
