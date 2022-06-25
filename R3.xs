@@ -2611,4 +2611,7 @@ INCLUDE: const-xs.inc
             *this_capture_key_head_cursor++ = this_capture_key_pool_cursor; /* head */ \
             ++j; \
             while( j<pattern_len && pattern[j]!='}' && pattern[j]!=':' ){ \
-                *this_capture_key
+                *this_capture_key_pool_cursor++ = pattern[j]; \
+                ++j; \
+            } \
+            *this_capture_key_head_cursor++ = th
