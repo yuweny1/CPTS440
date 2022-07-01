@@ -2617,4 +2617,9 @@ INCLUDE: const-xs.inc
             *this_capture_key_head_cursor++ = this_capture_key_pool_cursor; /* end */ \
             int k = 1; \
             while( j<pattern_len && k>0 ) { \
-                switch(
+                switch( pattern[j] ) { \
+                    case '{': \
+                        ++k; \
+                        break; \
+                    case '}': \
+                        --k; \
