@@ -2623,3 +2623,9 @@ INCLUDE: const-xs.inc
                         break; \
                     case '}': \
                         --k; \
+                        break; \
+                } \
+                ++j; \
+            } \
+        } \
+    capture_n[i] = this
