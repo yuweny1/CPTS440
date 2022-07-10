@@ -2632,4 +2632,7 @@ INCLUDE: const-xs.inc
     if( i < branch_n - 1 ) \
         first_capture_key_head[i+1] = this_capture_key_head_cursor; \
     char *errstr; \
-    if( !r3_t
+    if( !r3_tree_insert_pathl_ex(r3, pattern, pattern_len, NULL, &target[i], &errstr) ) { \
+        r3_tree_free(r3); \
+        Safefree(pad); \
+        croak_r3
