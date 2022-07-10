@@ -2635,4 +2635,11 @@ INCLUDE: const-xs.inc
     if( !r3_tree_insert_pathl_ex(r3, pattern, pattern_len, NULL, &target[i], &errstr) ) { \
         r3_tree_free(r3); \
         Safefree(pad); \
-        croak_r3
+        croak_r3_errstr("insert path"); \
+    } \
+}
+
+#ifdef PERL_R3_DEBUG
+#define DUMP_PAD(pad) { \
+    char *p = (char*)pad; \
+    printf("DUMP_PAD: (%p)\n", (void*)pad
