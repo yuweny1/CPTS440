@@ -2628,4 +2628,8 @@ INCLUDE: const-xs.inc
                 ++j; \
             } \
         } \
-    capture_n[i] = this
+    capture_n[i] = this_capture_n; \
+    if( i < branch_n - 1 ) \
+        first_capture_key_head[i+1] = this_capture_key_head_cursor; \
+    char *errstr; \
+    if( !r3_t
