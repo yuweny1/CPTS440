@@ -2642,4 +2642,8 @@ INCLUDE: const-xs.inc
 #ifdef PERL_R3_DEBUG
 #define DUMP_PAD(pad) { \
     char *p = (char*)pad; \
-    printf("DUMP_PAD: (%p)\n", (void*)pad
+    printf("DUMP_PAD: (%p)\n", (void*)pad); \
+    printf("  r3=%p\n", (void*)(*(node**)p)); \
+    p += sizeof(node*); \
+    int branch_n = *(int*)p; \
+    p += sizeof(int); \
