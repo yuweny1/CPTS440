@@ -2647,3 +2647,7 @@ INCLUDE: const-xs.inc
     p += sizeof(node*); \
     int branch_n = *(int*)p; \
     p += sizeof(int); \
+    printf("  branch_n=%d\n  targets:", branch_n); \
+    for(int i=0; i<branch_n; ++i) { \
+        printf(" %p", (void*)(*(SV**)p)); \
+  
