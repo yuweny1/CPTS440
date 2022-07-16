@@ -2650,4 +2650,9 @@ INCLUDE: const-xs.inc
     printf("  branch_n=%d\n  targets:", branch_n); \
     for(int i=0; i<branch_n; ++i) { \
         printf(" %p", (void*)(*(SV**)p)); \
-  
+        p += sizeof(SV*); \
+    } \
+    printf("\n  capture_n:"); \
+    for(int i=0; i<branch_n; ++i) { \
+        printf(" %d", *(int*)p); \
+        p += sizeof(i
