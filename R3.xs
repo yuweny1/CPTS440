@@ -2670,4 +2670,14 @@ INCLUDE: const-xs.inc
         p += sizeof(char*) * 2; \
     } \
     printf("\n  capture_key_pool: "); \
-    for(int i=0; i<captur
+    for(int i=0; i<capture_key_len_total; ++i) { \
+        printf("%c", *(char*)p); \
+        ++p; \
+    } \
+    printf("\n"); \
+}
+#else
+#define DUMP_PAD(pad) ;
+#endif
+
+v
