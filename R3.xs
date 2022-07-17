@@ -2664,4 +2664,6 @@ INCLUDE: const-xs.inc
     } \
     printf("\n  capture_key:"); \
     for(int i=0; i<capture_n_total; ++i) { \
-        printf("
+        printf(" (%p,%p)", (void*)(*(char**)p), (void*)(*(char**)(p + sizeof(char*)))); \
+        for(char *pp=*(char**)p; pp!=*(char**)(p + sizeof(char*)); ++pp) \
+        
