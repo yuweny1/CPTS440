@@ -2666,4 +2666,8 @@ INCLUDE: const-xs.inc
     for(int i=0; i<capture_n_total; ++i) { \
         printf(" (%p,%p)", (void*)(*(char**)p), (void*)(*(char**)(p + sizeof(char*)))); \
         for(char *pp=*(char**)p; pp!=*(char**)(p + sizeof(char*)); ++pp) \
-        
+            printf("%c", *pp); \
+        p += sizeof(char*) * 2; \
+    } \
+    printf("\n  capture_key_pool: "); \
+    for(int i=0; i<captur
