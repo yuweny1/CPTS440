@@ -2660,4 +2660,8 @@ INCLUDE: const-xs.inc
     printf("\n  first_capture_key_head:"); \
     for(int i=0; i<branch_n; ++i) { \
         printf(" %p", (void*)(*(char***)p)); \
-   
+        p += sizeof(char**); \
+    } \
+    printf("\n  capture_key:"); \
+    for(int i=0; i<capture_n_total; ++i) { \
+        printf("
