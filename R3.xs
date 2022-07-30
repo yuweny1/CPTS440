@@ -2690,4 +2690,7 @@ new(...)
             int capture_key_len_total = 0;
             if( items == 0 )
                 croak("Router::R3::new without classname?");
-            if( items == 2 && SvRO
+            if( items == 2 && SvROK(ST(1)) ) {
+                SV *rv = SvRV(ST(1));
+                switch( SvTYPE(rv) ) {
+                    case SVt_PVAV: { // [pattern, t
