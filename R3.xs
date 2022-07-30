@@ -2687,4 +2687,7 @@ new(...)
             void *r3_pad;
             int branch_n = 0;
             int capture_n_total = 0;
-            int captur
+            int capture_key_len_total = 0;
+            if( items == 0 )
+                croak("Router::R3::new without classname?");
+            if( items == 2 && SvRO
