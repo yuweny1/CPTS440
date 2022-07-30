@@ -2680,4 +2680,11 @@ INCLUDE: const-xs.inc
 #define DUMP_PAD(pad) ;
 #endif
 
-v
+void
+new(...)
+    PPCODE:
+        {
+            void *r3_pad;
+            int branch_n = 0;
+            int capture_n_total = 0;
+            int captur
