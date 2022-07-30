@@ -2693,4 +2693,7 @@ new(...)
             if( items == 2 && SvROK(ST(1)) ) {
                 SV *rv = SvRV(ST(1));
                 switch( SvTYPE(rv) ) {
-                    case SVt_PVAV: { // [pattern, t
+                    case SVt_PVAV: { // [pattern, target, pattern, target, ...]
+                        AV *av = (AV*)rv;
+                        SSize_t len = av_len(av);
+                 
