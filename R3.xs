@@ -2698,4 +2698,7 @@ new(...)
                         SSize_t len = av_len(av);
                         if( !(len & 1) )
                             warn("Router::R3::new with odd length array");
-                        branch_n = len + 1 >
+                        branch_n = len + 1 >> 1;
+                        for(SSize_t i=0; i<=len; i+=2){
+                            SV** key = av_fetch(av, i, 0);
+                            if
