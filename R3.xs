@@ -2696,4 +2696,6 @@ new(...)
                     case SVt_PVAV: { // [pattern, target, pattern, target, ...]
                         AV *av = (AV*)rv;
                         SSize_t len = av_len(av);
-                 
+                        if( !(len & 1) )
+                            warn("Router::R3::new with odd length array");
+                        branch_n = len + 1 >
