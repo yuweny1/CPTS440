@@ -2701,4 +2701,6 @@ new(...)
                         branch_n = len + 1 >> 1;
                         for(SSize_t i=0; i<=len; i+=2){
                             SV** key = av_fetch(av, i, 0);
-                            if
+                            if( !key || !SvPOK(*key) )
+                                warn("The %dth element of the new call argument array should be a string", i);
+                            STRLE
