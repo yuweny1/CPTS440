@@ -2703,4 +2703,7 @@ new(...)
                             SV** key = av_fetch(av, i, 0);
                             if( !key || !SvPOK(*key) )
                                 warn("The %dth element of the new call argument array should be a string", i);
-                            STRLE
+                            STRLEN pattern_len;
+                            char * pattern;
+                            if( key )
+                                pattern = SvPVbyt
