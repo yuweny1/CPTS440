@@ -2709,4 +2709,7 @@ new(...)
                                 pattern = SvPVbyte(*key, pattern_len);
                             else {
                                 pattern = "";
-                           
+                                pattern_len = 0;
+                            }
+                            ANALYZE_PATTERN(pattern, pattern_len);
+                 
