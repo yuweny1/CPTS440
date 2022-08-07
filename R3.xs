@@ -2706,4 +2706,7 @@ new(...)
                             STRLEN pattern_len;
                             char * pattern;
                             if( key )
-                                pattern = SvPVbyt
+                                pattern = SvPVbyte(*key, pattern_len);
+                            else {
+                                pattern = "";
+                           
