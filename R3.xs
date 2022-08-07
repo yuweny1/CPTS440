@@ -2715,4 +2715,8 @@ new(...)
                         }
                         break;
                     }
-                    case SVt_PVHV: { // {pattern => target, pattern => target, ...
+                    case SVt_PVHV: { // {pattern => target, pattern => target, ...}
+                        HV *hv = (HV*)rv;
+                        branch_n = hv_iterinit(hv);
+                        char *pattern;
+                
