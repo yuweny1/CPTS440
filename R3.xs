@@ -2712,4 +2712,7 @@ new(...)
                                 pattern_len = 0;
                             }
                             ANALYZE_PATTERN(pattern, pattern_len);
-                 
+                        }
+                        break;
+                    }
+                    case SVt_PVHV: { // {pattern => target, pattern => target, ...
