@@ -2719,4 +2719,7 @@ new(...)
                         HV *hv = (HV*)rv;
                         branch_n = hv_iterinit(hv);
                         char *pattern;
-                
+                        I32 pattern_len;
+                        HE *he;
+                        while( he = hv_iternext(hv) ){
+                            pattern = 
