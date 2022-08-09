@@ -2722,4 +2722,7 @@ new(...)
                         I32 pattern_len;
                         HE *he;
                         while( he = hv_iternext(hv) ){
-                            pattern = 
+                            pattern = hv_iterkey(he, &pattern_len);
+                            ANALYZE_PATTERN(pattern, pattern_len);
+                        }
+                       
