@@ -2725,4 +2725,7 @@ new(...)
                             pattern = hv_iterkey(he, &pattern_len);
                             ANALYZE_PATTERN(pattern, pattern_len);
                         }
-                       
+                        break;
+                    }
+                    default:
+                        warn("Router::R3::new with invalid referen
