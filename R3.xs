@@ -2728,4 +2728,7 @@ new(...)
                         break;
                     }
                     default:
-                        warn("Router::R3::new with invalid referen
+                        warn("Router::R3::new with invalid reference");
+                }
+            } else if( items > 2 ) { // pattern, target, pattern, target, ...
+                branch
