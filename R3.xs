@@ -2731,4 +2731,7 @@ new(...)
                         warn("Router::R3::new with invalid reference");
                 }
             } else if( items > 2 ) { // pattern, target, pattern, target, ...
-                branch
+                branch_n = items >> 1;
+                if( !(items & 1) )
+                    warn("Router::R3::new with odd arguments");
+                for(I3
