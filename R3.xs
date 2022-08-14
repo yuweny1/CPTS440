@@ -2737,4 +2737,6 @@ new(...)
                 for(I32 i=1; i<items; i+=2) {
                     SV * key = ST(i);
                     if( !SvPOK(key) )
-                        warn("The %dth argumen
+                        warn("The %dth argument for new call should be a string", i);
+                    STRLEN pattern_len;
+                    char * pattern = SvPVbyte(key, patt
