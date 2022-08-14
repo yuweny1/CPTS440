@@ -2734,4 +2734,7 @@ new(...)
                 branch_n = items >> 1;
                 if( !(items & 1) )
                     warn("Router::R3::new with odd arguments");
-                for(I3
+                for(I32 i=1; i<items; i+=2) {
+                    SV * key = ST(i);
+                    if( !SvPOK(key) )
+                        warn("The %dth argumen
