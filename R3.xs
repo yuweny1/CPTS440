@@ -2739,4 +2739,9 @@ new(...)
                     if( !SvPOK(key) )
                         warn("The %dth argument for new call should be a string", i);
                     STRLEN pattern_len;
-                    char * pattern = SvPVbyte(key, patt
+                    char * pattern = SvPVbyte(key, pattern_len);
+                    ANALYZE_PATTERN(pattern, pattern_len);
+                }
+            }
+#ifdef PERL_R3_DEBUG
+            printf
