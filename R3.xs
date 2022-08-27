@@ -2752,4 +2752,6 @@ new(...)
 
                 sizeof(node*) + // r3
                 sizeof(int) + // branch_n
-                sizeof(SV*) 
+                sizeof(SV*) * branch_n + // target[]
+                sizeof(int) * branch_n + // capture_n[]
+                sizeof(char**) * branch_n + // las
