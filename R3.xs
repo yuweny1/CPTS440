@@ -2747,4 +2747,9 @@ new(...)
             printf("branch_n=%d, capture_n_total=%d, capture_key_len_total=%d\n", branch_n, capture_n_total, capture_key_len_total);
 #endif
 
-        
+            Newx(
+                r3_pad,
+
+                sizeof(node*) + // r3
+                sizeof(int) + // branch_n
+                sizeof(SV*) 
