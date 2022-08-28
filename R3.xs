@@ -2756,4 +2756,11 @@ new(...)
                 sizeof(int) * branch_n + // capture_n[]
                 sizeof(char**) * branch_n + // last_capture_key_end[]
                 sizeof(char*) * capture_n_total * 2 + // (capture_key_head, capture_key_end)[]
-                sizeof(char) * capture_key
+                sizeof(char) * capture_key_len_total,
+
+                char
+            );
+            {
+                node* r3;
+                ASSIGN_OFFSET;
+              
