@@ -2763,4 +2763,8 @@ new(...)
             {
                 node* r3;
                 ASSIGN_OFFSET;
-              
+                if( items >> 1 <= 10 )
+                    r3 = r3_tree_create( items >> 1 );
+                else
+                    r3 = r3_tree_create(10);
+                *(nod
