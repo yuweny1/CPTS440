@@ -2767,4 +2767,9 @@ new(...)
                     r3 = r3_tree_create( items >> 1 );
                 else
                     r3 = r3_tree_create(10);
-                *(nod
+                *(node**)r3_pad = r3;
+                BRANCH_N = branch_n;
+
+                if( items == 2 && SvROK(ST(1)) ) {
+                    SV *rv = SvRV(ST(1));
+   
