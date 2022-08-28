@@ -2754,4 +2754,6 @@ new(...)
                 sizeof(int) + // branch_n
                 sizeof(SV*) * branch_n + // target[]
                 sizeof(int) * branch_n + // capture_n[]
-                sizeof(char**) * branch_n + // las
+                sizeof(char**) * branch_n + // last_capture_key_end[]
+                sizeof(char*) * capture_n_total * 2 + // (capture_key_head, capture_key_end)[]
+                sizeof(char) * capture_key
