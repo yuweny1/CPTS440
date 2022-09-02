@@ -2772,4 +2772,6 @@ new(...)
 
                 if( items == 2 && SvROK(ST(1)) ) {
                     SV *rv = SvRV(ST(1));
-   
+                    switch( SvTYPE(rv) ) {
+                        case SVt_PVAV: { // [pattern, target, pattern, target, ...]
+     
