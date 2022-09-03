@@ -2778,4 +2778,7 @@ new(...)
                             SSize_t len = av_len(av);
                             for(SSize_t i=0; i<=len; i+=2){
                                 I32 i2 = i >> 1;
-                                SV ** pval = i+1 <= len 
+                                SV ** pval = i+1 <= len ? av_fetch(av, i+1, 0) : NULL;
+                                char * pattern;
+                                STRLEN pattern_len;
+              
