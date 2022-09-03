@@ -2774,4 +2774,6 @@ new(...)
                     SV *rv = SvRV(ST(1));
                     switch( SvTYPE(rv) ) {
                         case SVt_PVAV: { // [pattern, target, pattern, target, ...]
-     
+                            AV *av = (AV*)rv;
+                            SSize_t len = av_len(av);
+                            for(SSize_t i=0; i<
