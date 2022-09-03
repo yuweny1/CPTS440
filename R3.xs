@@ -2776,4 +2776,6 @@ new(...)
                         case SVt_PVAV: { // [pattern, target, pattern, target, ...]
                             AV *av = (AV*)rv;
                             SSize_t len = av_len(av);
-                            for(SSize_t i=0; i<
+                            for(SSize_t i=0; i<=len; i+=2){
+                                I32 i2 = i >> 1;
+                                SV ** pval = i+1 <= len 
