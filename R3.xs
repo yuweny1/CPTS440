@@ -2783,4 +2783,8 @@ new(...)
                                 STRLEN pattern_len;
                                 SV ** pkey = av_fetch(av, i, 0);
                                 if( pkey )
-                                    pattern = SvPVbyte(*pkey, pattern_le
+                                    pattern = SvPVbyte(*pkey, pattern_len);
+                                else{
+                                    pattern = "";
+                                    pattern_len = 0;
+             
