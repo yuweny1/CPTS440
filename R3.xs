@@ -2781,4 +2781,6 @@ new(...)
                                 SV ** pval = i+1 <= len ? av_fetch(av, i+1, 0) : NULL;
                                 char * pattern;
                                 STRLEN pattern_len;
-              
+                                SV ** pkey = av_fetch(av, i, 0);
+                                if( pkey )
+                                    pattern = SvPVbyte(*pkey, pattern_le
