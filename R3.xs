@@ -2788,4 +2788,8 @@ new(...)
                                     pattern = "";
                                     pattern_len = 0;
                                 }
-                                FILL_PATTERN(r3_pad, r3, i2, pattern, pattern_len, (pval ? *pval : N
+                                FILL_PATTERN(r3_pad, r3, i2, pattern, pattern_len, (pval ? *pval : NULL));
+                            }
+                            break;
+                        }
+                        case SVt_PVHV: { // {pattern =>
