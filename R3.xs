@@ -2787,4 +2787,5 @@ new(...)
                                 else{
                                     pattern = "";
                                     pattern_len = 0;
-             
+                                }
+                                FILL_PATTERN(r3_pad, r3, i2, pattern, pattern_len, (pval ? *pval : N
