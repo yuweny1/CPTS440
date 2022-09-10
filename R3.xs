@@ -2795,4 +2795,8 @@ new(...)
                         case SVt_PVHV: { // {pattern => target, pattern => target, ...}
                             HV *hv = (HV*)rv;
                             hv_iterinit(hv);
-               
+                            char *pattern;
+                            I32 pattern_len;
+                            SV *val;
+                            I32 i2 = 0;
+     
