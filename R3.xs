@@ -2792,4 +2792,7 @@ new(...)
                             }
                             break;
                         }
-                        case SVt_PVHV: { // {pattern =>
+                        case SVt_PVHV: { // {pattern => target, pattern => target, ...}
+                            HV *hv = (HV*)rv;
+                            hv_iterinit(hv);
+               
