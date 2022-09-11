@@ -2800,4 +2800,9 @@ new(...)
                             SV *val;
                             I32 i2 = 0;
                             while( val = hv_iternextsv(hv, &pattern, &pattern_len) ){
-                                FILL_PATTERN(r3_pad, r3, i2, pattern, pattern_le
+                                FILL_PATTERN(r3_pad, r3, i2, pattern, pattern_len, val);
+                                ++i2;
+                            }
+                            break;
+                        }
+ 
