@@ -2805,4 +2805,6 @@ new(...)
                             }
                             break;
                         }
- 
+                        default:
+                            warn("Router::R3::new with invalid reference");
+                  
