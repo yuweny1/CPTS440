@@ -2807,4 +2807,7 @@ new(...)
                         }
                         default:
                             warn("Router::R3::new with invalid reference");
-                  
+                    }
+                } else if( items > 2 ) { // pattern, target, pattern, target, ...
+                    I32 i;
+                    for(i=1; i<item
