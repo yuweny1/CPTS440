@@ -2813,4 +2813,6 @@ new(...)
                     for(i=1; i<items; i+=2) {
                         I32 i2 = i >> 1;
                         SV *val = i+1 < items ? ST(i+1) : NULL;
-               
+                        STRLEN pattern_len;
+                        char * pattern = SvPVbyte(ST(i), pattern_len);
+                        FILL_
