@@ -2815,4 +2815,8 @@ new(...)
                         SV *val = i+1 < items ? ST(i+1) : NULL;
                         STRLEN pattern_len;
                         char * pattern = SvPVbyte(ST(i), pattern_len);
-                        FILL_
+                        FILL_PATTERN(r3_pad, r3, i2, pattern, pattern_len, val);
+                    }
+                }
+                DUMP_PAD(r3_pad);
+               
