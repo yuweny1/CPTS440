@@ -2810,4 +2810,7 @@ new(...)
                     }
                 } else if( items > 2 ) { // pattern, target, pattern, target, ...
                     I32 i;
-                    for(i=1; i<item
+                    for(i=1; i<items; i+=2) {
+                        I32 i2 = i >> 1;
+                        SV *val = i+1 < items ? ST(i+1) : NULL;
+               
