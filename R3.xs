@@ -2819,4 +2819,7 @@ new(...)
                     }
                 }
                 DUMP_PAD(r3_pad);
-               
+                int errno;
+                char *errstr;
+                if(( errno = r3_tree_compile(r3, &errstr) )) {
+                    r3_tree_free(r3
