@@ -2822,4 +2822,10 @@ new(...)
                 int errno;
                 char *errstr;
                 if(( errno = r3_tree_compile(r3, &errstr) )) {
-                    r3_tree_free(r3
+                    r3_tree_free(r3);
+                    Safefree(r3_pad);
+                    croak_r3_errstr("creating R3 routing tree fail");
+                }
+            }
+
+   
