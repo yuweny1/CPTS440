@@ -2836,4 +2836,7 @@ new(...)
             SV * obj = newRV_noinc(ret);
             STRLEN classname_len;
             char * classname = SvPVbyte(ST(0), classname_len);
-       
+            HV * stash = gv_stashpvn(classname, classname_len, 0);
+            sv_bless(obj, stash);
+            EXTEND(SP, 1);
+            PUSHs(sv_2mortal(obj)
