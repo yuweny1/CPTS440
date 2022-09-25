@@ -2833,4 +2833,7 @@ new(...)
             SvROK_on(ret);
             SvRV(ret) = (SV*)r3_pad;
 
-            S
+            SV * obj = newRV_noinc(ret);
+            STRLEN classname_len;
+            char * classname = SvPVbyte(ST(0), classname_len);
+       
