@@ -2828,4 +2828,9 @@ new(...)
                 }
             }
 
-   
+            SV* ret = newSV(0);
+            SvUPGRADE(ret, SVt_RV);
+            SvROK_on(ret);
+            SvRV(ret) = (SV*)r3_pad;
+
+            S
