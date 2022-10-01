@@ -2859,4 +2859,9 @@ match(SV* r3_sv, SV *str_sv)
             SV** target_p = (SV**) matched_node->data;
 #ifdef PERL_R3_DEBUG
             printf("matched target_p = %p\n", (void*)target_p);
-            p
+            printf("matched target = %p\n", (void*)(*(SV**)target_p));
+#endif
+            EXTEND(SP, 2);
+            PUSHs(sv_2mortal(newSVsv(*(SV**)target_p)));
+
+       
