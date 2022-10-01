@@ -2846,4 +2846,10 @@ void
 match(SV* r3_sv, SV *str_sv)
     PPCODE:
         void* r3_pad = SvRV(SvRV(r3_sv));
-        node* r3 = *(node**)r3_
+        node* r3 = *(node**)r3_pad;
+
+        char *str;
+        STRLEN str_len;
+        str = SvPVbyte(str_sv, str_len);
+
+        match_entry* entry = match_entry_createl(st
