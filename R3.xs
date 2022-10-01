@@ -2839,4 +2839,11 @@ new(...)
             HV * stash = gv_stashpvn(classname, classname_len, 0);
             sv_bless(obj, stash);
             EXTEND(SP, 1);
-            PUSHs(sv_2mortal(obj)
+            PUSHs(sv_2mortal(obj));
+        }
+
+void
+match(SV* r3_sv, SV *str_sv)
+    PPCODE:
+        void* r3_pad = SvRV(SvRV(r3_sv));
+        node* r3 = *(node**)r3_
