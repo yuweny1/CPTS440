@@ -2852,4 +2852,8 @@ match(SV* r3_sv, SV *str_sv)
         STRLEN str_len;
         str = SvPVbyte(str_sv, str_len);
 
-        match_entry* entry = match_entry_createl(st
+        match_entry* entry = match_entry_createl(str, str_len);
+        node* matched_node = r3_tree_matchl(r3, str, str_len, entry);
+
+        if( matched_node ){
+            SV** target_p 
