@@ -2856,4 +2856,7 @@ match(SV* r3_sv, SV *str_sv)
         node* matched_node = r3_tree_matchl(r3, str, str_len, entry);
 
         if( matched_node ){
-            SV** target_p 
+            SV** target_p = (SV**) matched_node->data;
+#ifdef PERL_R3_DEBUG
+            printf("matched target_p = %p\n", (void*)target_p);
+            p
