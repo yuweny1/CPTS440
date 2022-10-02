@@ -2864,4 +2864,7 @@ match(SV* r3_sv, SV *str_sv)
             EXTEND(SP, 2);
             PUSHs(sv_2mortal(newSVsv(*(SV**)target_p)));
 
-       
+            HV* captures_hv = newHV();
+            int capture_n = entry->vars->len;
+            if( capture_n > 0 ) {
+             
