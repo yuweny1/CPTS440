@@ -2867,4 +2867,5 @@ match(SV* r3_sv, SV *str_sv)
             HV* captures_hv = newHV();
             int capture_n = entry->vars->len;
             if( capture_n > 0 ) {
-             
+                int match_i = target_p - (SV**)( (char*)r3_pad + sizeof(node*) + sizeof(int) );
+                int branch_n = *(int*)( (char*)r3_pad + size
