@@ -2869,4 +2869,5 @@ match(SV* r3_sv, SV *str_sv)
             if( capture_n > 0 ) {
                 int match_i = target_p - (SV**)( (char*)r3_pad + sizeof(node*) + sizeof(int) );
                 int branch_n = *(int*)( (char*)r3_pad + sizeof(node*) );
-                int my_capture_n = *(int*)( (char*)r3_pad + sizeof(node*) + sizeof(int) + sizeof(SV*) * bra
+                int my_capture_n = *(int*)( (char*)r3_pad + sizeof(node*) + sizeof(int) + sizeof(SV*) * branch_n + sizeof(int) * match_i );
+                char **capture_key_cursor = *(char***)( (char*)r3_pad + sizeof(node*) + sizeof(int) + sizeof(SV*) *
