@@ -2876,4 +2876,7 @@ match(SV* r3_sv, SV *str_sv)
                 printf("capture # = %d\n", entry->vars->len);
 #endif
                 for(int i=0; i<capture_n && i<my_capture_n; ++i){
-#ifdef PER
+#ifdef PERL_R3_DEBUG
+                    printf("capture_key_cursor = %p -> %p\n", (void*)capture_key_cursor, (void*)*capture_key_cursor);
+#endif
+                    hv_stor
