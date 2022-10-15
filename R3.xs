@@ -2873,4 +2873,7 @@ match(SV* r3_sv, SV *str_sv)
                 char **capture_key_cursor = *(char***)( (char*)r3_pad + sizeof(node*) + sizeof(int) + sizeof(SV*) * branch_n + sizeof(int) * branch_n + sizeof(char**) * match_i );
                 char ** captures = entry->vars->tokens;
 #ifdef PERL_R3_DEBUG
-      
+                printf("capture # = %d\n", entry->vars->len);
+#endif
+                for(int i=0; i<capture_n && i<my_capture_n; ++i){
+#ifdef PER
