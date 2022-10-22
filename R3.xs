@@ -2885,4 +2885,11 @@ match(SV* r3_sv, SV *str_sv)
                         newSVpv(captures[i], 0),
                         0
                     );
-                    capture_key_cu
+                    capture_key_cursor += 2;
+                }
+            }
+            PUSHs(sv_2mortal(newRV_noinc((SV*)captures_hv)));
+        }
+        match_entry_free(entry);
+
+void DESTROY(SV* r3_s
