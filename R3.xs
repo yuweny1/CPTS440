@@ -2896,4 +2896,7 @@ void DESTROY(SV* r3_sv)
     PPCODE:
         void* pad = SvRV(SvRV(r3_sv));
         int branch_n = *(int*)((char*)pad + sizeof(node*));
-        SV** target = (SV**
+        SV** target = (SV**)((char*)pad + sizeof(node*) + sizeof(int));
+        for(int i=0; i<branch_n; ++i)
+            SvREFCNT_dec(target[i]);
+        r3_tree_free(*(node**)pa
