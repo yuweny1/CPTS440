@@ -2892,4 +2892,8 @@ match(SV* r3_sv, SV *str_sv)
         }
         match_entry_free(entry);
 
-void DESTROY(SV* r3_s
+void DESTROY(SV* r3_sv)
+    PPCODE:
+        void* pad = SvRV(SvRV(r3_sv));
+        int branch_n = *(int*)((char*)pad + sizeof(node*));
+        SV** target = (SV**
