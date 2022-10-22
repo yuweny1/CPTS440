@@ -2882,4 +2882,7 @@ match(SV* r3_sv, SV *str_sv)
                     hv_store(
                         captures_hv,
                         *capture_key_cursor, *(capture_key_cursor+1) - *capture_key_cursor,
-      
+                        newSVpv(captures[i], 0),
+                        0
+                    );
+                    capture_key_cu
