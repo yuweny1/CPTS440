@@ -2879,4 +2879,7 @@ match(SV* r3_sv, SV *str_sv)
 #ifdef PERL_R3_DEBUG
                     printf("capture_key_cursor = %p -> %p\n", (void*)capture_key_cursor, (void*)*capture_key_cursor);
 #endif
-                    hv_stor
+                    hv_store(
+                        captures_hv,
+                        *capture_key_cursor, *(capture_key_cursor+1) - *capture_key_cursor,
+      
