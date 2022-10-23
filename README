@@ -1,1 +1,6 @@
-Router-R
+Router-R3 version 0.9.0
+======================
+
+    This mod is a XS wrapper around a C library R3.
+
+    R3 is an URL router library with high perfor
