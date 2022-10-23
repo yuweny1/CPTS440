@@ -2899,4 +2899,16 @@ void DESTROY(SV* r3_sv)
         SV** target = (SV**)((char*)pad + sizeof(node*) + sizeof(int));
         for(int i=0; i<branch_n; ++i)
             SvREFCNT_dec(target[i]);
-        r3_tree_free(*(node**)pa
+        r3_tree_free(*(node**)pad);
+        Safefree(pad);
+        SvRV(SvRV(r3_sv)) = 0;
+
+#ifdef PERL_R3_DEBUG
+
+void
+test()
+    CODE:
+        _test();
+
+#endif
+
