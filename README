@@ -11,4 +11,11 @@ INSTALLATION
 
 To install this module type the following:
 
-   perl Makefile
+   perl Makefile.PL
+   make
+   make test
+   make install
+
+SEE ALSO
+
+The original C version L<"github repository"|https://github.com/c9s/r3> by L
