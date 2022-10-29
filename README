@@ -5,4 +5,10 @@ Router-R3 version 0.9.0
 
     R3 is an URL router library with high performance, thus, it's implemented in C. It compiles your route paths into a prefix trie.
 
-    By using the constructed prefix trie in the star
+    By using the constructed prefix trie in the start-up time, you can dispatch routes with efficiency.
+
+INSTALLATION
+
+To install this module type the following:
+
+   perl Makefile
