@@ -53,3 +53,38 @@ constant(sv)
         case PERL_constant_ISPV:
           EXTEND(SP, 1);
           PUSHs(&PL_sv_undef);
+          PUSHp(pv, strlen(pv));
+          break; */
+	/* Uncomment this if you need to return PVNs
+        case PERL_constant_ISPVN:
+          EXTEND(SP, 1);
+          PUSHs(&PL_sv_undef);
+          PUSHp(pv, iv);
+          break; */
+	/* Uncomment this if you need to return SVs
+        case PERL_constant_ISSV:
+          EXTEND(SP, 1);
+          PUSHs(&PL_sv_undef);
+          PUSHs(sv);
+          break; */
+	/* Uncomment this if you need to return UNDEFs
+        case PERL_constant_ISUNDEF:
+          break; */
+	/* Uncomment this if you need to return UVs
+        case PERL_constant_ISUV:
+          EXTEND(SP, 1);
+          PUSHs(&PL_sv_undef);
+          PUSHu((UV)iv);
+          break; */
+	/* Uncomment this if you need to return YESs
+        case PERL_constant_ISYES:
+          EXTEND(SP, 1);
+          PUSHs(&PL_sv_undef);
+          PUSHs(&PL_sv_yes);
+          break; */
+        default:
+          sv = sv_2mortal(newSVpvf(
+	    "Unexpected return type %d while processing Router::R3 macro %s, used",
+               type, s));
+          PUSHs(sv);
+        }
