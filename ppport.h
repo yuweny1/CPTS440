@@ -318,3 +318,131 @@ to display portability information for all C<_nomg> functions or
 to display information for all known API elements.
 
 =head1 BUGS
+
+If this version of F<ppport.h> is causing failure during
+the compilation of this module, please check if newer versions
+of either this module or C<Devel::PPPort> are available on CPAN
+before sending a bug report.
+
+If F<ppport.h> was generated using the latest version of
+C<Devel::PPPort> and is causing failure of this module, please
+file a bug report using the CPAN Request Tracker at L<http://rt.cpan.org/>.
+
+Please include the following information:
+
+=over 4
+
+=item 1.
+
+The complete output from running "perl -V"
+
+=item 2.
+
+This file.
+
+=item 3.
+
+The name and version of the module you were trying to build.
+
+=item 4.
+
+A full log of the build that failed.
+
+=item 5.
+
+Any other information that you think could be relevant.
+
+=back
+
+For the latest version of this code, please get the C<Devel::PPPort>
+module from CPAN.
+
+=head1 COPYRIGHT
+
+Version 3.x, Copyright (c) 2004-2010, Marcus Holland-Moritz.
+
+Version 2.x, Copyright (C) 2001, Paul Marquess.
+
+Version 1.x, Copyright (C) 1999, Kenneth Albanowski.
+
+This program is free software; you can redistribute it and/or
+modify it under the same terms as Perl itself.
+
+=head1 SEE ALSO
+
+See L<Devel::PPPort>.
+
+=cut
+
+use strict;
+
+# Disable broken TRIE-optimization
+BEGIN { eval '${^RE_TRIE_MAXBUF} = -1' if $] >= 5.009004 && $] <= 5.009005 }
+
+my $VERSION = 3.20;
+
+my %opt = (
+  quiet     => 0,
+  diag      => 1,
+  hints     => 1,
+  changes   => 1,
+  cplusplus => 0,
+  filter    => 1,
+  strip     => 0,
+  version   => 0,
+);
+
+my($ppport) = $0 =~ /([\w.]+)$/;
+my $LF = '(?:\r\n|[\r\n])';   # line feed
+my $HS = "[ \t]";             # horizontal whitespace
+
+# Never use C comments in this file!
+my $ccs  = '/'.'*';
+my $cce  = '*'.'/';
+my $rccs = quotemeta $ccs;
+my $rcce = quotemeta $cce;
+
+eval {
+  require Getopt::Long;
+  Getopt::Long::GetOptions(\%opt, qw(
+    help quiet diag! filter! hints! changes! cplusplus strip version
+    patch=s copy=s diff=s compat-version=s
+    list-provided list-unsupported api-info=s
+  )) or usage();
+};
+
+if ($@ and grep /^-/, @ARGV) {
+  usage() if "@ARGV" =~ /^--?h(?:elp)?$/;
+  die "Getopt::Long not found. Please don't use any options.\n";
+}
+
+if ($opt{version}) {
+  print "This is $0 $VERSION.\n";
+  exit 0;
+}
+
+usage() if $opt{help};
+strip() if $opt{strip};
+
+if (exists $opt{'compat-version'}) {
+  my($r,$v,$s) = eval { parse_version($opt{'compat-version'}) };
+  if ($@) {
+    die "Invalid version number format: '$opt{'compat-version'}'\n";
+  }
+  die "Only Perl 5 is supported\n" if $r != 5;
+  die "Invalid version number: $opt{'compat-version'}\n" if $v >= 1000 || $s >= 1000;
+  $opt{'compat-version'} = sprintf "%d.%03d%03d", $r, $v, $s;
+}
+else {
+  $opt{'compat-version'} = 5;
+}
+
+my %API = map { /^(\w+)\|([^|]*)\|([^|]*)\|(\w*)$/
+                ? ( $1 => {
+                      ($2                  ? ( base     => $2 ) : ()),
+                      ($3                  ? ( todo     => $3 ) : ()),
+                      (index($4, 'v') >= 0 ? ( varargs  => 1  ) : ()),
+                      (index($4, 'p') >= 0 ? ( provided => 1  ) : ()),
+                      (index($4, 'n') >= 0 ? ( nothxarg => 1  ) : ()),
+                    } )
+                : die "invalid spec: $_" } qw(
