@@ -2719,3 +2719,166 @@ if (exists $opt{'api-info'}) {
 }
 
 if (exists $opt{'list-provided'}) {
+  my $f;
+  for $f (sort { lc $a cmp lc $b } keys %API) {
+    next unless $API{$f}{provided};
+    my @flags;
+    push @flags, 'explicit' if exists $need{$f};
+    push @flags, 'depend'   if exists $depends{$f};
+    push @flags, 'hint'     if exists $hints{$f};
+    push @flags, 'warning'  if exists $warnings{$f};
+    my $flags = @flags ? '  ['.join(', ', @flags).']' : '';
+    print "$f$flags\n";
+  }
+  exit 0;
+}
+
+my @files;
+my @srcext = qw( .xs .c .h .cc .cpp -c.inc -xs.inc );
+my $srcext = join '|', map { quotemeta $_ } @srcext;
+
+if (@ARGV) {
+  my %seen;
+  for (@ARGV) {
+    if (-e) {
+      if (-f) {
+        push @files, $_ unless $seen{$_}++;
+      }
+      else { warn "'$_' is not a file.\n" }
+    }
+    else {
+      my @new = grep { -f } glob $_
+          or warn "'$_' does not exist.\n";
+      push @files, grep { !$seen{$_}++ } @new;
+    }
+  }
+}
+else {
+  eval {
+    require File::Find;
+    File::Find::find(sub {
+      $File::Find::name =~ /($srcext)$/i
+          and push @files, $File::Find::name;
+    }, '.');
+  };
+  if ($@) {
+    @files = map { glob "*$_" } @srcext;
+  }
+}
+
+if (!@ARGV || $opt{filter}) {
+  my(@in, @out);
+  my %xsc = map { /(.*)\.xs$/ ? ("$1.c" => 1, "$1.cc" => 1) : () } @files;
+  for (@files) {
+    my $out = exists $xsc{$_} || /\b\Q$ppport\E$/i || !/($srcext)$/i;
+    push @{ $out ? \@out : \@in }, $_;
+  }
+  if (@ARGV && @out) {
+    warning("Skipping the following files (use --nofilter to avoid this):\n| ", join "\n| ", @out);
+  }
+  @files = @in;
+}
+
+die "No input files given!\n" unless @files;
+
+my(%files, %global, %revreplace);
+%revreplace = reverse %replace;
+my $filename;
+my $patch_opened = 0;
+
+for $filename (@files) {
+  unless (open IN, "<$filename") {
+    warn "Unable to read from $filename: $!\n";
+    next;
+  }
+
+  info("Scanning $filename ...");
+
+  my $c = do { local $/; <IN> };
+  close IN;
+
+  my %file = (orig => $c, changes => 0);
+
+  # Temporarily remove C/XS comments and strings from the code
+  my @ccom;
+
+  $c =~ s{
+    ( ^$HS*\#$HS*include\b[^\r\n]+\b(?:\Q$ppport\E|XSUB\.h)\b[^\r\n]*
+    | ^$HS*\#$HS*(?:define|elif|if(?:def)?)\b[^\r\n]* )
+  | ( ^$HS*\#[^\r\n]*
+    | "[^"\\]*(?:\\.[^"\\]*)*"
+    | '[^'\\]*(?:\\.[^'\\]*)*'
+    | / (?: \*[^*]*\*+(?:[^$ccs][^*]*\*+)* / | /[^\r\n]* ) )
+  }{ defined $2 and push @ccom, $2;
+     defined $1 ? $1 : "$ccs$#ccom$cce" }mgsex;
+
+  $file{ccom} = \@ccom;
+  $file{code} = $c;
+  $file{has_inc_ppport} = $c =~ /^$HS*#$HS*include[^\r\n]+\b\Q$ppport\E\b/m;
+
+  my $func;
+
+  for $func (keys %API) {
+    my $match = $func;
+    $match .= "|$revreplace{$func}" if exists $revreplace{$func};
+    if ($c =~ /\b(?:Perl_)?($match)\b/) {
+      $file{uses_replace}{$1}++ if exists $revreplace{$func} && $1 eq $revreplace{$func};
+      $file{uses_Perl}{$func}++ if $c =~ /\bPerl_$func\b/;
+      if (exists $API{$func}{provided}) {
+        $file{uses_provided}{$func}++;
+        if (!exists $API{$func}{base} || $API{$func}{base} > $opt{'compat-version'}) {
+          $file{uses}{$func}++;
+          my @deps = rec_depend($func);
+          if (@deps) {
+            $file{uses_deps}{$func} = \@deps;
+            for (@deps) {
+              $file{uses}{$_} = 0 unless exists $file{uses}{$_};
+            }
+          }
+          for ($func, @deps) {
+            $file{needs}{$_} = 'static' if exists $need{$_};
+          }
+        }
+      }
+      if (exists $API{$func}{todo} && $API{$func}{todo} > $opt{'compat-version'}) {
+        if ($c =~ /\b$func\b/) {
+          $file{uses_todo}{$func}++;
+        }
+      }
+    }
+  }
+
+  while ($c =~ /^$HS*#$HS*define$HS+(NEED_(\w+?)(_GLOBAL)?)\b/mg) {
+    if (exists $need{$2}) {
+      $file{defined $3 ? 'needed_global' : 'needed_static'}{$2}++;
+    }
+    else { warning("Possibly wrong #define $1 in $filename") }
+  }
+
+  for (qw(uses needs uses_todo needed_global needed_static)) {
+    for $func (keys %{$file{$_}}) {
+      push @{$global{$_}{$func}}, $filename;
+    }
+  }
+
+  $files{$filename} = \%file;
+}
+
+# Globally resolve NEED_'s
+my $need;
+for $need (keys %{$global{needs}}) {
+  if (@{$global{needs}{$need}} > 1) {
+    my @targets = @{$global{needs}{$need}};
+    my @t = grep $files{$_}{needed_global}{$need}, @targets;
+    @targets = @t if @t;
+    @t = grep /\.xs$/i, @targets;
+    @targets = @t if @t;
+    my $target = shift @targets;
+    $files{$target}{needs}{$need} = 'global';
+    for (@{$global{needs}{$need}}) {
+      $files{$_}{needs}{$need} = 'extern' if $_ ne $target;
+    }
+  }
+}
+
+for $filename (@files) {
