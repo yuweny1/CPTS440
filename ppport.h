@@ -2587,3 +2587,135 @@ xmldump_packsubs_perl|||
 xmldump_packsubs|||
 xmldump_sub_perl|||
 xmldump_sub|||
+xmldump_vindent|||
+xs_apiversion_bootcheck|||
+xs_version_bootcheck|||
+yyerror|||
+yylex|||
+yyparse|||
+yyunlex|||
+yywarn|||
+);
+
+if (exists $opt{'list-unsupported'}) {
+  my $f;
+  for $f (sort { lc $a cmp lc $b } keys %API) {
+    next unless $API{$f}{todo};
+    print "$f ", '.'x(40-length($f)), " ", format_version($API{$f}{todo}), "\n";
+  }
+  exit 0;
+}
+
+# Scan for possible replacement candidates
+
+my(%replace, %need, %hints, %warnings, %depends);
+my $replace = 0;
+my($hint, $define, $function);
+
+sub find_api
+{
+  my $code = shift;
+  $code =~ s{
+    / (?: \*[^*]*\*+(?:[^$ccs][^*]*\*+)* / | /[^\r\n]*)
+  | "[^"\\]*(?:\\.[^"\\]*)*"
+  | '[^'\\]*(?:\\.[^'\\]*)*' }{}egsx;
+  grep { exists $API{$_} } $code =~ /(\w+)/mg;
+}
+
+while (<DATA>) {
+  if ($hint) {
+    my $h = $hint->[0] eq 'Hint' ? \%hints : \%warnings;
+    if (m{^\s*\*\s(.*?)\s*$}) {
+      for (@{$hint->[1]}) {
+        $h->{$_} ||= '';  # suppress warning with older perls
+        $h->{$_} .= "$1\n";
+      }
+    }
+    else { undef $hint }
+  }
+
+  $hint = [$1, [split /,?\s+/, $2]]
+      if m{^\s*$rccs\s+(Hint|Warning):\s+(\w+(?:,?\s+\w+)*)\s*$};
+
+  if ($define) {
+    if ($define->[1] =~ /\\$/) {
+      $define->[1] .= $_;
+    }
+    else {
+      if (exists $API{$define->[0]} && $define->[1] !~ /^DPPP_\(/) {
+        my @n = find_api($define->[1]);
+        push @{$depends{$define->[0]}}, @n if @n
+      }
+      undef $define;
+    }
+  }
+
+  $define = [$1, $2] if m{^\s*#\s*define\s+(\w+)(?:\([^)]*\))?\s+(.*)};
+
+  if ($function) {
+    if (/^}/) {
+      if (exists $API{$function->[0]}) {
+        my @n = find_api($function->[1]);
+        push @{$depends{$function->[0]}}, @n if @n
+      }
+      undef $function;
+    }
+    else {
+      $function->[1] .= $_;
+    }
+  }
+
+  $function = [$1, ''] if m{^DPPP_\(my_(\w+)\)};
+
+  $replace     = $1 if m{^\s*$rccs\s+Replace:\s+(\d+)\s+$rcce\s*$};
+  $replace{$2} = $1 if $replace and m{^\s*#\s*define\s+(\w+)(?:\([^)]*\))?\s+(\w+)};
+  $replace{$2} = $1 if m{^\s*#\s*define\s+(\w+)(?:\([^)]*\))?\s+(\w+).*$rccs\s+Replace\s+$rcce};
+  $replace{$1} = $2 if m{^\s*$rccs\s+Replace (\w+) with (\w+)\s+$rcce\s*$};
+
+  if (m{^\s*$rccs\s+(\w+(\s*,\s*\w+)*)\s+depends\s+on\s+(\w+(\s*,\s*\w+)*)\s+$rcce\s*$}) {
+    my @deps = map { s/\s+//g; $_ } split /,/, $3;
+    my $d;
+    for $d (map { s/\s+//g; $_ } split /,/, $1) {
+      push @{$depends{$d}}, @deps;
+    }
+  }
+
+  $need{$1} = 1 if m{^#if\s+defined\(NEED_(\w+)(?:_GLOBAL)?\)};
+}
+
+for (values %depends) {
+  my %s;
+  $_ = [sort grep !$s{$_}++, @$_];
+}
+
+if (exists $opt{'api-info'}) {
+  my $f;
+  my $count = 0;
+  my $match = $opt{'api-info'} =~ m!^/(.*)/$! ? $1 : "^\Q$opt{'api-info'}\E\$";
+  for $f (sort { lc $a cmp lc $b } keys %API) {
+    next unless $f =~ /$match/;
+    print "\n=== $f ===\n\n";
+    my $info = 0;
+    if ($API{$f}{base} || $API{$f}{todo}) {
+      my $base = format_version($API{$f}{base} || $API{$f}{todo});
+      print "Supported at least starting from perl-$base.\n";
+      $info++;
+    }
+    if ($API{$f}{provided}) {
+      my $todo = $API{$f}{todo} ? format_version($API{$f}{todo}) : "5.003";
+      print "Support by $ppport provided back to perl-$todo.\n";
+      print "Support needs to be explicitly requested by NEED_$f.\n" if exists $need{$f};
+      print "Depends on: ", join(', ', @{$depends{$f}}), ".\n" if exists $depends{$f};
+      print "\n$hints{$f}" if exists $hints{$f};
+      print "\nWARNING:\n$warnings{$f}" if exists $warnings{$f};
+      $info++;
+    }
+    print "No portability information available.\n" unless $info;
+    $count++;
+  }
+  $count or print "Found no API matching '$opt{'api-info'}'.";
+  print "\n";
+  exit 0;
+}
+
+if (exists $opt{'list-provided'}) {
