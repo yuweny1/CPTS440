@@ -2882,3 +2882,145 @@ for $need (keys %{$global{needs}}) {
 }
 
 for $filename (@files) {
+  exists $files{$filename} or next;
+
+  info("=== Analyzing $filename ===");
+
+  my %file = %{$files{$filename}};
+  my $func;
+  my $c = $file{code};
+  my $warnings = 0;
+
+  for $func (sort keys %{$file{uses_Perl}}) {
+    if ($API{$func}{varargs}) {
+      unless ($API{$func}{nothxarg}) {
+        my $changes = ($c =~ s{\b(Perl_$func\s*\(\s*)(?!aTHX_?)(\)|[^\s)]*\))}
+                              { $1 . ($2 eq ')' ? 'aTHX' : 'aTHX_ ') . $2 }ge);
+        if ($changes) {
+          warning("Doesn't pass interpreter argument aTHX to Perl_$func");
+          $file{changes} += $changes;
+        }
+      }
+    }
+    else {
+      warning("Uses Perl_$func instead of $func");
+      $file{changes} += ($c =~ s{\bPerl_$func(\s*)\((\s*aTHX_?)?\s*}
+                                {$func$1(}g);
+    }
+  }
+
+  for $func (sort keys %{$file{uses_replace}}) {
+    warning("Uses $func instead of $replace{$func}");
+    $file{changes} += ($c =~ s/\b$func\b/$replace{$func}/g);
+  }
+
+  for $func (sort keys %{$file{uses_provided}}) {
+    if ($file{uses}{$func}) {
+      if (exists $file{uses_deps}{$func}) {
+        diag("Uses $func, which depends on ", join(', ', @{$file{uses_deps}{$func}}));
+      }
+      else {
+        diag("Uses $func");
+      }
+    }
+    $warnings += hint($func);
+  }
+
+  unless ($opt{quiet}) {
+    for $func (sort keys %{$file{uses_todo}}) {
+      print "*** WARNING: Uses $func, which may not be portable below perl ",
+            format_version($API{$func}{todo}), ", even with '$ppport'\n";
+      $warnings++;
+    }
+  }
+
+  for $func (sort keys %{$file{needed_static}}) {
+    my $message = '';
+    if (not exists $file{uses}{$func}) {
+      $message = "No need to define NEED_$func if $func is never used";
+    }
+    elsif (exists $file{needs}{$func} && $file{needs}{$func} ne 'static') {
+      $message = "No need to define NEED_$func when already needed globally";
+    }
+    if ($message) {
+      diag($message);
+      $file{changes} += ($c =~ s/^$HS*#$HS*define$HS+NEED_$func\b.*$LF//mg);
+    }
+  }
+
+  for $func (sort keys %{$file{needed_global}}) {
+    my $message = '';
+    if (not exists $global{uses}{$func}) {
+      $message = "No need to define NEED_${func}_GLOBAL if $func is never used";
+    }
+    elsif (exists $file{needs}{$func}) {
+      if ($file{needs}{$func} eq 'extern') {
+        $message = "No need to define NEED_${func}_GLOBAL when already needed globally";
+      }
+      elsif ($file{needs}{$func} eq 'static') {
+        $message = "No need to define NEED_${func}_GLOBAL when only used in this file";
+      }
+    }
+    if ($message) {
+      diag($message);
+      $file{changes} += ($c =~ s/^$HS*#$HS*define$HS+NEED_${func}_GLOBAL\b.*$LF//mg);
+    }
+  }
+
+  $file{needs_inc_ppport} = keys %{$file{uses}};
+
+  if ($file{needs_inc_ppport}) {
+    my $pp = '';
+
+    for $func (sort keys %{$file{needs}}) {
+      my $type = $file{needs}{$func};
+      next if $type eq 'extern';
+      my $suffix = $type eq 'global' ? '_GLOBAL' : '';
+      unless (exists $file{"needed_$type"}{$func}) {
+        if ($type eq 'global') {
+          diag("Files [@{$global{needs}{$func}}] need $func, adding global request");
+        }
+        else {
+          diag("File needs $func, adding static request");
+        }
+        $pp .= "#define NEED_$func$suffix\n";
+      }
+    }
+
+    if ($pp && ($c =~ s/^(?=$HS*#$HS*define$HS+NEED_\w+)/$pp/m)) {
+      $pp = '';
+      $file{changes}++;
+    }
+
+    unless ($file{has_inc_ppport}) {
+      diag("Needs to include '$ppport'");
+      $pp .= qq(#include "$ppport"\n)
+    }
+
+    if ($pp) {
+      $file{changes} += ($c =~ s/^($HS*#$HS*define$HS+NEED_\w+.*?)^/$1$pp/ms)
+                     || ($c =~ s/^(?=$HS*#$HS*include.*\Q$ppport\E)/$pp/m)
+                     || ($c =~ s/^($HS*#$HS*include.*XSUB.*\s*?)^/$1$pp/m)
+                     || ($c =~ s/^/$pp/);
+    }
+  }
+  else {
+    if ($file{has_inc_ppport}) {
+      diag("No need to include '$ppport'");
+      $file{changes} += ($c =~ s/^$HS*?#$HS*include.*\Q$ppport\E.*?$LF//m);
+    }
+  }
+
+  # put back in our C comments
+  my $ix;
+  my $cppc = 0;
+  my @ccom = @{$file{ccom}};
+  for $ix (0 .. $#ccom) {
+    if (!$opt{cplusplus} && $ccom[$ix] =~ s!^//!!) {
+      $cppc++;
+      $file{changes} += $c =~ s/$rccs$ix$rcce/$ccs$ccom[$ix] $cce/;
+    }
+    else {
+      $c =~ s/$rccs$ix$rcce/$ccom[$ix]/;
+    }
+  }
