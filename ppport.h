@@ -3024,3 +3024,143 @@ for $filename (@files) {
       $c =~ s/$rccs$ix$rcce/$ccom[$ix]/;
     }
   }
+
+  if ($cppc) {
+    my $s = $cppc != 1 ? 's' : '';
+    warning("Uses $cppc C++ style comment$s, which is not portable");
+  }
+
+  my $s = $warnings != 1 ? 's' : '';
+  my $warn = $warnings ? " ($warnings warning$s)" : '';
+  info("Analysis completed$warn");
+
+  if ($file{changes}) {
+    if (exists $opt{copy}) {
+      my $newfile = "$filename$opt{copy}";
+      if (-e $newfile) {
+        error("'$newfile' already exists, refusing to write copy of '$filename'");
+      }
+      else {
+        local *F;
+        if (open F, ">$newfile") {
+          info("Writing copy of '$filename' with changes to '$newfile'");
+          print F $c;
+          close F;
+        }
+        else {
+          error("Cannot open '$newfile' for writing: $!");
+        }
+      }
+    }
+    elsif (exists $opt{patch} || $opt{changes}) {
+      if (exists $opt{patch}) {
+        unless ($patch_opened) {
+          if (open PATCH, ">$opt{patch}") {
+            $patch_opened = 1;
+          }
+          else {
+            error("Cannot open '$opt{patch}' for writing: $!");
+            delete $opt{patch};
+            $opt{changes} = 1;
+            goto fallback;
+          }
+        }
+        mydiff(\*PATCH, $filename, $c);
+      }
+      else {
+fallback:
+        info("Suggested changes:");
+        mydiff(\*STDOUT, $filename, $c);
+      }
+    }
+    else {
+      my $s = $file{changes} == 1 ? '' : 's';
+      info("$file{changes} potentially required change$s detected");
+    }
+  }
+  else {
+    info("Looks good");
+  }
+}
+
+close PATCH if $patch_opened;
+
+exit 0;
+
+
+sub try_use { eval "use @_;"; return $@ eq '' }
+
+sub mydiff
+{
+  local *F = shift;
+  my($file, $str) = @_;
+  my $diff;
+
+  if (exists $opt{diff}) {
+    $diff = run_diff($opt{diff}, $file, $str);
+  }
+
+  if (!defined $diff and try_use('Text::Diff')) {
+    $diff = Text::Diff::diff($file, \$str, { STYLE => 'Unified' });
+    $diff = <<HEADER . $diff;
+--- $file
++++ $file.patched
+HEADER
+  }
+
+  if (!defined $diff) {
+    $diff = run_diff('diff -u', $file, $str);
+  }
+
+  if (!defined $diff) {
+    $diff = run_diff('diff', $file, $str);
+  }
+
+  if (!defined $diff) {
+    error("Cannot generate a diff. Please install Text::Diff or use --copy.");
+    return;
+  }
+
+  print F $diff;
+}
+
+sub run_diff
+{
+  my($prog, $file, $str) = @_;
+  my $tmp = 'dppptemp';
+  my $suf = 'aaa';
+  my $diff = '';
+  local *F;
+
+  while (-e "$tmp.$suf") { $suf++ }
+  $tmp = "$tmp.$suf";
+
+  if (open F, ">$tmp") {
+    print F $str;
+    close F;
+
+    if (open F, "$prog $file $tmp |") {
+      while (<F>) {
+        s/\Q$tmp\E/$file.patched/;
+        $diff .= $_;
+      }
+      close F;
+      unlink $tmp;
+      return $diff;
+    }
+
+    unlink $tmp;
+  }
+  else {
+    error("Cannot open '$tmp' for writing: $!");
+  }
+
+  return undef;
+}
+
+sub rec_depend
+{
+  my($func, $seen) = @_;
+  return () unless exists $depends{$func};
+  $seen = {%{$seen||{}}};
+  return () if $seen->{$func}++;
