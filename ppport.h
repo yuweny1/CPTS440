@@ -3164,3 +3164,157 @@ sub rec_depend
   return () unless exists $depends{$func};
   $seen = {%{$seen||{}}};
   return () if $seen->{$func}++;
+  my %s;
+  grep !$s{$_}++, map { ($_, rec_depend($_, $seen)) } @{$depends{$func}};
+}
+
+sub parse_version
+{
+  my $ver = shift;
+
+  if ($ver =~ /^(\d+)\.(\d+)\.(\d+)$/) {
+    return ($1, $2, $3);
+  }
+  elsif ($ver !~ /^\d+\.[\d_]+$/) {
+    die "cannot parse version '$ver'\n";
+  }
+
+  $ver =~ s/_//g;
+  $ver =~ s/$/000000/;
+
+  my($r,$v,$s) = $ver =~ /(\d+)\.(\d{3})(\d{3})/;
+
+  $v = int $v;
+  $s = int $s;
+
+  if ($r < 5 || ($r == 5 && $v < 6)) {
+    if ($s % 10) {
+      die "cannot parse version '$ver'\n";
+    }
+  }
+
+  return ($r, $v, $s);
+}
+
+sub format_version
+{
+  my $ver = shift;
+
+  $ver =~ s/$/000000/;
+  my($r,$v,$s) = $ver =~ /(\d+)\.(\d{3})(\d{3})/;
+
+  $v = int $v;
+  $s = int $s;
+
+  if ($r < 5 || ($r == 5 && $v < 6)) {
+    if ($s % 10) {
+      die "invalid version '$ver'\n";
+    }
+    $s /= 10;
+
+    $ver = sprintf "%d.%03d", $r, $v;
+    $s > 0 and $ver .= sprintf "_%02d", $s;
+
+    return $ver;
+  }
+
+  return sprintf "%d.%d.%d", $r, $v, $s;
+}
+
+sub info
+{
+  $opt{quiet} and return;
+  print @_, "\n";
+}
+
+sub diag
+{
+  $opt{quiet} and return;
+  $opt{diag} and print @_, "\n";
+}
+
+sub warning
+{
+  $opt{quiet} and return;
+  print "*** ", @_, "\n";
+}
+
+sub error
+{
+  print "*** ERROR: ", @_, "\n";
+}
+
+my %given_hints;
+my %given_warnings;
+sub hint
+{
+  $opt{quiet} and return;
+  my $func = shift;
+  my $rv = 0;
+  if (exists $warnings{$func} && !$given_warnings{$func}++) {
+    my $warn = $warnings{$func};
+    $warn =~ s!^!*** !mg;
+    print "*** WARNING: $func\n", $warn;
+    $rv++;
+  }
+  if ($opt{hints} && exists $hints{$func} && !$given_hints{$func}++) {
+    my $hint = $hints{$func};
+    $hint =~ s/^/   /mg;
+    print "   --- hint for $func ---\n", $hint;
+  }
+  $rv;
+}
+
+sub usage
+{
+  my($usage) = do { local(@ARGV,$/)=($0); <> } =~ /^=head\d$HS+SYNOPSIS\s*^(.*?)\s*^=/ms;
+  my %M = ( 'I' => '*' );
+  $usage =~ s/^\s*perl\s+\S+/$^X $0/;
+  $usage =~ s/([A-Z])<([^>]+)>/$M{$1}$2$M{$1}/g;
+
+  print <<ENDUSAGE;
+
+Usage: $usage
+
+See perldoc $0 for details.
+
+ENDUSAGE
+
+  exit 2;
+}
+
+sub strip
+{
+  my $self = do { local(@ARGV,$/)=($0); <> };
+  my($copy) = $self =~ /^=head\d\s+COPYRIGHT\s*^(.*?)^=\w+/ms;
+  $copy =~ s/^(?=\S+)/    /gms;
+  $self =~ s/^$HS+Do NOT edit.*?(?=^-)/$copy/ms;
+  $self =~ s/^SKIP.*(?=^__DATA__)/SKIP
+if (\@ARGV && \$ARGV[0] eq '--unstrip') {
+  eval { require Devel::PPPort };
+  \$@ and die "Cannot require Devel::PPPort, please install.\\n";
+  if (eval \$Devel::PPPort::VERSION < $VERSION) {
+    die "$0 was originally generated with Devel::PPPort $VERSION.\\n"
+      . "Your Devel::PPPort is only version \$Devel::PPPort::VERSION.\\n"
+      . "Please install a newer version, or --unstrip will not work.\\n";
+  }
+  Devel::PPPort::WriteFile(\$0);
+  exit 0;
+}
+print <<END;
+
+Sorry, but this is a stripped version of \$0.
+
+To be able to use its original script and doc functionality,
+please try to regenerate this file using:
+
+  \$^X \$0 --unstrip
+
+END
+/ms;
+  my($pl, $c) = $self =~ /(.*^__DATA__)(.*)/ms;
+  $c =~ s{
+    / (?: \*[^*]*\*+(?:[^$ccs][^*]*\*+)* / | /[^\r\n]*)
+  | ( "[^"\\]*(?:\\.[^"\\]*)*"
+    | '[^'\\]*(?:\\.[^'\\]*)*' )
+  | ($HS+) }{ defined $2 ? ' ' : ($1 || '') }gsex;
