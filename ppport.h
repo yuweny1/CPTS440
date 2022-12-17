@@ -3318,3 +3318,158 @@ END
   | ( "[^"\\]*(?:\\.[^"\\]*)*"
     | '[^'\\]*(?:\\.[^'\\]*)*' )
   | ($HS+) }{ defined $2 ? ' ' : ($1 || '') }gsex;
+  $c =~ s!\s+$!!mg;
+  $c =~ s!^$LF!!mg;
+  $c =~ s!^\s*#\s*!#!mg;
+  $c =~ s!^\s+!!mg;
+
+  open OUT, ">$0" or die "cannot strip $0: $!\n";
+  print OUT "$pl$c\n";
+
+  exit 0;
+}
+
+__DATA__
+*/
+
+#ifndef _P_P_PORTABILITY_H_
+#define _P_P_PORTABILITY_H_
+
+#ifndef DPPP_NAMESPACE
+#  define DPPP_NAMESPACE DPPP_
+#endif
+
+#define DPPP_CAT2(x,y) CAT2(x,y)
+#define DPPP_(name) DPPP_CAT2(DPPP_NAMESPACE, name)
+
+#ifndef PERL_REVISION
+#  if !defined(__PATCHLEVEL_H_INCLUDED__) && !(defined(PATCHLEVEL) && defined(SUBVERSION))
+#    define PERL_PATCHLEVEL_H_IMPLICIT
+#    include <patchlevel.h>
+#  endif
+#  if !(defined(PERL_VERSION) || (defined(SUBVERSION) && defined(PATCHLEVEL)))
+#    include <could_not_find_Perl_patchlevel.h>
+#  endif
+#  ifndef PERL_REVISION
+#    define PERL_REVISION       (5)
+     /* Replace: 1 */
+#    define PERL_VERSION        PATCHLEVEL
+#    define PERL_SUBVERSION     SUBVERSION
+     /* Replace PERL_PATCHLEVEL with PERL_VERSION */
+     /* Replace: 0 */
+#  endif
+#endif
+
+#define _dpppDEC2BCD(dec) ((((dec)/100)<<8)|((((dec)%100)/10)<<4)|((dec)%10))
+#define PERL_BCDVERSION ((_dpppDEC2BCD(PERL_REVISION)<<24)|(_dpppDEC2BCD(PERL_VERSION)<<12)|_dpppDEC2BCD(PERL_SUBVERSION))
+
+/* It is very unlikely that anyone will try to use this with Perl 6
+   (or greater), but who knows.
+ */
+#if PERL_REVISION != 5
+#  error ppport.h only works with Perl version 5
+#endif /* PERL_REVISION != 5 */
+#ifndef dTHR
+#  define dTHR                           dNOOP
+#endif
+#ifndef dTHX
+#  define dTHX                           dNOOP
+#endif
+
+#ifndef dTHXa
+#  define dTHXa(x)                       dNOOP
+#endif
+#ifndef pTHX
+#  define pTHX                           void
+#endif
+
+#ifndef pTHX_
+#  define pTHX_
+#endif
+
+#ifndef aTHX
+#  define aTHX
+#endif
+
+#ifndef aTHX_
+#  define aTHX_
+#endif
+
+#if (PERL_BCDVERSION < 0x5006000)
+#  ifdef USE_THREADS
+#    define aTHXR  thr
+#    define aTHXR_ thr,
+#  else
+#    define aTHXR
+#    define aTHXR_
+#  endif
+#  define dTHXR  dTHR
+#else
+#  define aTHXR  aTHX
+#  define aTHXR_ aTHX_
+#  define dTHXR  dTHX
+#endif
+#ifndef dTHXoa
+#  define dTHXoa(x)                      dTHXa(x)
+#endif
+
+#ifdef I_LIMITS
+#  include <limits.h>
+#endif
+
+#ifndef PERL_UCHAR_MIN
+#  define PERL_UCHAR_MIN ((unsigned char)0)
+#endif
+
+#ifndef PERL_UCHAR_MAX
+#  ifdef UCHAR_MAX
+#    define PERL_UCHAR_MAX ((unsigned char)UCHAR_MAX)
+#  else
+#    ifdef MAXUCHAR
+#      define PERL_UCHAR_MAX ((unsigned char)MAXUCHAR)
+#    else
+#      define PERL_UCHAR_MAX ((unsigned char)~(unsigned)0)
+#    endif
+#  endif
+#endif
+
+#ifndef PERL_USHORT_MIN
+#  define PERL_USHORT_MIN ((unsigned short)0)
+#endif
+
+#ifndef PERL_USHORT_MAX
+#  ifdef USHORT_MAX
+#    define PERL_USHORT_MAX ((unsigned short)USHORT_MAX)
+#  else
+#    ifdef MAXUSHORT
+#      define PERL_USHORT_MAX ((unsigned short)MAXUSHORT)
+#    else
+#      ifdef USHRT_MAX
+#        define PERL_USHORT_MAX ((unsigned short)USHRT_MAX)
+#      else
+#        define PERL_USHORT_MAX ((unsigned short)~(unsigned)0)
+#      endif
+#    endif
+#  endif
+#endif
+
+#ifndef PERL_SHORT_MAX
+#  ifdef SHORT_MAX
+#    define PERL_SHORT_MAX ((short)SHORT_MAX)
+#  else
+#    ifdef MAXSHORT    /* Often used in <values.h> */
+#      define PERL_SHORT_MAX ((short)MAXSHORT)
+#    else
+#      ifdef SHRT_MAX
+#        define PERL_SHORT_MAX ((short)SHRT_MAX)
+#      else
+#        define PERL_SHORT_MAX ((short) (PERL_USHORT_MAX >> 1))
+#      endif
+#    endif
+#  endif
+#endif
+
+#ifndef PERL_SHORT_MIN
+#  ifdef SHORT_MIN
+#    define PERL_SHORT_MIN ((short)SHORT_MIN)
+#  else
