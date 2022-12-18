@@ -3742,3 +3742,124 @@ __DATA__
 #  else
 #    define IVSIZE 4 /* A bold guess, but the best we can make. */
 #  endif
+#endif
+#ifndef UVTYPE
+#  define UVTYPE                         unsigned IVTYPE
+#endif
+
+#ifndef UVSIZE
+#  define UVSIZE                         IVSIZE
+#endif
+#ifndef sv_setuv
+#  define sv_setuv(sv, uv)               \
+               STMT_START {                         \
+                 UV TeMpUv = uv;                    \
+                 if (TeMpUv <= IV_MAX)              \
+                   sv_setiv(sv, TeMpUv);            \
+                 else                               \
+                   sv_setnv(sv, (double)TeMpUv);    \
+               } STMT_END
+#endif
+#ifndef newSVuv
+#  define newSVuv(uv)                    ((uv) <= IV_MAX ? newSViv((IV)uv) : newSVnv((NV)uv))
+#endif
+#ifndef sv_2uv
+#  define sv_2uv(sv)                     ((PL_Sv = (sv)), (UV) (SvNOK(PL_Sv) ? SvNV(PL_Sv) : sv_2nv(PL_Sv)))
+#endif
+
+#ifndef SvUVX
+#  define SvUVX(sv)                      ((UV)SvIVX(sv))
+#endif
+
+#ifndef SvUVXx
+#  define SvUVXx(sv)                     SvUVX(sv)
+#endif
+
+#ifndef SvUV
+#  define SvUV(sv)                       (SvIOK(sv) ? SvUVX(sv) : sv_2uv(sv))
+#endif
+
+#ifndef SvUVx
+#  define SvUVx(sv)                      ((PL_Sv = (sv)), SvUV(PL_Sv))
+#endif
+
+/* Hint: sv_uv
+ * Always use the SvUVx() macro instead of sv_uv().
+ */
+#ifndef sv_uv
+#  define sv_uv(sv)                      SvUVx(sv)
+#endif
+
+#if !defined(SvUOK) && defined(SvIOK_UV)
+#  define SvUOK(sv) SvIOK_UV(sv)
+#endif
+#ifndef XST_mUV
+#  define XST_mUV(i,v)                   (ST(i) = sv_2mortal(newSVuv(v))  )
+#endif
+
+#ifndef XSRETURN_UV
+#  define XSRETURN_UV(v)                 STMT_START { XST_mUV(0,v);  XSRETURN(1); } STMT_END
+#endif
+#ifndef PUSHu
+#  define PUSHu(u)                       STMT_START { sv_setuv(TARG, (UV)(u)); PUSHTARG;  } STMT_END
+#endif
+
+#ifndef XPUSHu
+#  define XPUSHu(u)                      STMT_START { sv_setuv(TARG, (UV)(u)); XPUSHTARG; } STMT_END
+#endif
+
+#ifdef HAS_MEMCMP
+#ifndef memNE
+#  define memNE(s1,s2,l)                 (memcmp(s1,s2,l))
+#endif
+
+#ifndef memEQ
+#  define memEQ(s1,s2,l)                 (!memcmp(s1,s2,l))
+#endif
+
+#else
+#ifndef memNE
+#  define memNE(s1,s2,l)                 (bcmp(s1,s2,l))
+#endif
+
+#ifndef memEQ
+#  define memEQ(s1,s2,l)                 (!bcmp(s1,s2,l))
+#endif
+
+#endif
+#ifndef memEQs
+#  define memEQs(s1, l, s2)              \
+                   (sizeof(s2)-1 == l && memEQ(s1, (s2 ""), (sizeof(s2)-1)))
+#endif
+
+#ifndef memNEs
+#  define memNEs(s1, l, s2)              !memEQs(s1, l, s2)
+#endif
+#ifndef MoveD
+#  define MoveD(s,d,n,t)                 memmove((char*)(d),(char*)(s), (n) * sizeof(t))
+#endif
+
+#ifndef CopyD
+#  define CopyD(s,d,n,t)                 memcpy((char*)(d),(char*)(s), (n) * sizeof(t))
+#endif
+
+#ifdef HAS_MEMSET
+#ifndef ZeroD
+#  define ZeroD(d,n,t)                   memzero((char*)(d), (n) * sizeof(t))
+#endif
+
+#else
+#ifndef ZeroD
+#  define ZeroD(d,n,t)                   ((void)memzero((char*)(d), (n) * sizeof(t)), d)
+#endif
+
+#endif
+#ifndef PoisonWith
+#  define PoisonWith(d,n,t,b)            (void)memset((char*)(d), (U8)(b), (n) * sizeof(t))
+#endif
+
+#ifndef PoisonNew
+#  define PoisonNew(d,n,t)               PoisonWith(d,n,t,0xAB)
+#endif
+
+#ifndef PoisonFree
