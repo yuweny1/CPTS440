@@ -3596,3 +3596,149 @@ __DATA__
 
 #  ifndef PERL_QUAD_MIN
 #    ifdef LONGLONG_MIN
+#      define PERL_QUAD_MIN ((long long)LONGLONG_MIN)
+#    else
+#      ifdef MINLONGLONG
+#        define PERL_QUAD_MIN ((long long)MINLONGLONG)
+#      else
+#        define PERL_QUAD_MIN (-PERL_QUAD_MAX - ((3 & -1) == 3))
+#      endif
+#    endif
+#  endif
+#endif
+
+/* This is based on code from 5.003 perl.h */
+#ifdef HAS_QUAD
+#  ifdef cray
+#ifndef IVTYPE
+#  define IVTYPE                         int
+#endif
+
+#ifndef IV_MIN
+#  define IV_MIN                         PERL_INT_MIN
+#endif
+
+#ifndef IV_MAX
+#  define IV_MAX                         PERL_INT_MAX
+#endif
+
+#ifndef UV_MIN
+#  define UV_MIN                         PERL_UINT_MIN
+#endif
+
+#ifndef UV_MAX
+#  define UV_MAX                         PERL_UINT_MAX
+#endif
+
+#    ifdef INTSIZE
+#ifndef IVSIZE
+#  define IVSIZE                         INTSIZE
+#endif
+
+#    endif
+#  else
+#    if defined(convex) || defined(uts)
+#ifndef IVTYPE
+#  define IVTYPE                         long long
+#endif
+
+#ifndef IV_MIN
+#  define IV_MIN                         PERL_QUAD_MIN
+#endif
+
+#ifndef IV_MAX
+#  define IV_MAX                         PERL_QUAD_MAX
+#endif
+
+#ifndef UV_MIN
+#  define UV_MIN                         PERL_UQUAD_MIN
+#endif
+
+#ifndef UV_MAX
+#  define UV_MAX                         PERL_UQUAD_MAX
+#endif
+
+#      ifdef LONGLONGSIZE
+#ifndef IVSIZE
+#  define IVSIZE                         LONGLONGSIZE
+#endif
+
+#      endif
+#    else
+#ifndef IVTYPE
+#  define IVTYPE                         long
+#endif
+
+#ifndef IV_MIN
+#  define IV_MIN                         PERL_LONG_MIN
+#endif
+
+#ifndef IV_MAX
+#  define IV_MAX                         PERL_LONG_MAX
+#endif
+
+#ifndef UV_MIN
+#  define UV_MIN                         PERL_ULONG_MIN
+#endif
+
+#ifndef UV_MAX
+#  define UV_MAX                         PERL_ULONG_MAX
+#endif
+
+#      ifdef LONGSIZE
+#ifndef IVSIZE
+#  define IVSIZE                         LONGSIZE
+#endif
+
+#      endif
+#    endif
+#  endif
+#ifndef IVSIZE
+#  define IVSIZE                         8
+#endif
+
+#ifndef PERL_QUAD_MIN
+#  define PERL_QUAD_MIN                  IV_MIN
+#endif
+
+#ifndef PERL_QUAD_MAX
+#  define PERL_QUAD_MAX                  IV_MAX
+#endif
+
+#ifndef PERL_UQUAD_MIN
+#  define PERL_UQUAD_MIN                 UV_MIN
+#endif
+
+#ifndef PERL_UQUAD_MAX
+#  define PERL_UQUAD_MAX                 UV_MAX
+#endif
+
+#else
+#ifndef IVTYPE
+#  define IVTYPE                         long
+#endif
+
+#ifndef IV_MIN
+#  define IV_MIN                         PERL_LONG_MIN
+#endif
+
+#ifndef IV_MAX
+#  define IV_MAX                         PERL_LONG_MAX
+#endif
+
+#ifndef UV_MIN
+#  define UV_MIN                         PERL_ULONG_MIN
+#endif
+
+#ifndef UV_MAX
+#  define UV_MAX                         PERL_ULONG_MAX
+#endif
+
+#endif
+
+#ifndef IVSIZE
+#  ifdef LONGSIZE
+#    define IVSIZE LONGSIZE
+#  else
+#    define IVSIZE 4 /* A bold guess, but the best we can make. */
+#  endif
