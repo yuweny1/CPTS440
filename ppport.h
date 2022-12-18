@@ -3473,3 +3473,126 @@ __DATA__
 #  ifdef SHORT_MIN
 #    define PERL_SHORT_MIN ((short)SHORT_MIN)
 #  else
+#    ifdef MINSHORT
+#      define PERL_SHORT_MIN ((short)MINSHORT)
+#    else
+#      ifdef SHRT_MIN
+#        define PERL_SHORT_MIN ((short)SHRT_MIN)
+#      else
+#        define PERL_SHORT_MIN (-PERL_SHORT_MAX - ((3 & -1) == 3))
+#      endif
+#    endif
+#  endif
+#endif
+
+#ifndef PERL_UINT_MAX
+#  ifdef UINT_MAX
+#    define PERL_UINT_MAX ((unsigned int)UINT_MAX)
+#  else
+#    ifdef MAXUINT
+#      define PERL_UINT_MAX ((unsigned int)MAXUINT)
+#    else
+#      define PERL_UINT_MAX (~(unsigned int)0)
+#    endif
+#  endif
+#endif
+
+#ifndef PERL_UINT_MIN
+#  define PERL_UINT_MIN ((unsigned int)0)
+#endif
+
+#ifndef PERL_INT_MAX
+#  ifdef INT_MAX
+#    define PERL_INT_MAX ((int)INT_MAX)
+#  else
+#    ifdef MAXINT    /* Often used in <values.h> */
+#      define PERL_INT_MAX ((int)MAXINT)
+#    else
+#      define PERL_INT_MAX ((int)(PERL_UINT_MAX >> 1))
+#    endif
+#  endif
+#endif
+
+#ifndef PERL_INT_MIN
+#  ifdef INT_MIN
+#    define PERL_INT_MIN ((int)INT_MIN)
+#  else
+#    ifdef MININT
+#      define PERL_INT_MIN ((int)MININT)
+#    else
+#      define PERL_INT_MIN (-PERL_INT_MAX - ((3 & -1) == 3))
+#    endif
+#  endif
+#endif
+
+#ifndef PERL_ULONG_MAX
+#  ifdef ULONG_MAX
+#    define PERL_ULONG_MAX ((unsigned long)ULONG_MAX)
+#  else
+#    ifdef MAXULONG
+#      define PERL_ULONG_MAX ((unsigned long)MAXULONG)
+#    else
+#      define PERL_ULONG_MAX (~(unsigned long)0)
+#    endif
+#  endif
+#endif
+
+#ifndef PERL_ULONG_MIN
+#  define PERL_ULONG_MIN ((unsigned long)0L)
+#endif
+
+#ifndef PERL_LONG_MAX
+#  ifdef LONG_MAX
+#    define PERL_LONG_MAX ((long)LONG_MAX)
+#  else
+#    ifdef MAXLONG
+#      define PERL_LONG_MAX ((long)MAXLONG)
+#    else
+#      define PERL_LONG_MAX ((long) (PERL_ULONG_MAX >> 1))
+#    endif
+#  endif
+#endif
+
+#ifndef PERL_LONG_MIN
+#  ifdef LONG_MIN
+#    define PERL_LONG_MIN ((long)LONG_MIN)
+#  else
+#    ifdef MINLONG
+#      define PERL_LONG_MIN ((long)MINLONG)
+#    else
+#      define PERL_LONG_MIN (-PERL_LONG_MAX - ((3 & -1) == 3))
+#    endif
+#  endif
+#endif
+
+#if defined(HAS_QUAD) && (defined(convex) || defined(uts))
+#  ifndef PERL_UQUAD_MAX
+#    ifdef ULONGLONG_MAX
+#      define PERL_UQUAD_MAX ((unsigned long long)ULONGLONG_MAX)
+#    else
+#      ifdef MAXULONGLONG
+#        define PERL_UQUAD_MAX ((unsigned long long)MAXULONGLONG)
+#      else
+#        define PERL_UQUAD_MAX (~(unsigned long long)0)
+#      endif
+#    endif
+#  endif
+
+#  ifndef PERL_UQUAD_MIN
+#    define PERL_UQUAD_MIN ((unsigned long long)0L)
+#  endif
+
+#  ifndef PERL_QUAD_MAX
+#    ifdef LONGLONG_MAX
+#      define PERL_QUAD_MAX ((long long)LONGLONG_MAX)
+#    else
+#      ifdef MAXLONGLONG
+#        define PERL_QUAD_MAX ((long long)MAXLONGLONG)
+#      else
+#        define PERL_QUAD_MAX ((long long) (PERL_UQUAD_MAX >> 1))
+#      endif
+#    endif
+#  endif
+
+#  ifndef PERL_QUAD_MIN
+#    ifdef LONGLONG_MIN
