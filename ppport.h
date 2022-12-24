@@ -3997,3 +3997,142 @@ typedef NVTYPE NV;
 #endif
 
 #undef STMT_START
+#undef STMT_END
+#ifdef PERL_USE_GCC_BRACE_GROUPS
+#  define STMT_START	(void)(	/* gcc supports ``({ STATEMENTS; })'' */
+#  define STMT_END	)
+#else
+#  if defined(VOIDFLAGS) && (VOIDFLAGS) && (defined(sun) || defined(__sun__)) && !defined(__GNUC__)
+#    define STMT_START	if (1)
+#    define STMT_END	else (void)0
+#  else
+#    define STMT_START	do
+#    define STMT_END	while (0)
+#  endif
+#endif
+#ifndef boolSV
+#  define boolSV(b)                      ((b) ? &PL_sv_yes : &PL_sv_no)
+#endif
+
+/* DEFSV appears first in 5.004_56 */
+#ifndef DEFSV
+#  define DEFSV                          GvSV(PL_defgv)
+#endif
+
+#ifndef SAVE_DEFSV
+#  define SAVE_DEFSV                     SAVESPTR(GvSV(PL_defgv))
+#endif
+
+#ifndef DEFSV_set
+#  define DEFSV_set(sv)                  (DEFSV = (sv))
+#endif
+
+/* Older perls (<=5.003) lack AvFILLp */
+#ifndef AvFILLp
+#  define AvFILLp                        AvFILL
+#endif
+#ifndef ERRSV
+#  define ERRSV                          get_sv("@",FALSE)
+#endif
+
+/* Hint: gv_stashpvn
+ * This function's backport doesn't support the length parameter, but
+ * rather ignores it. Portability can only be ensured if the length
+ * parameter is used for speed reasons, but the length can always be
+ * correctly computed from the string argument.
+ */
+#ifndef gv_stashpvn
+#  define gv_stashpvn(str,len,create)    gv_stashpv(str,create)
+#endif
+
+/* Replace: 1 */
+#ifndef get_cv
+#  define get_cv                         perl_get_cv
+#endif
+
+#ifndef get_sv
+#  define get_sv                         perl_get_sv
+#endif
+
+#ifndef get_av
+#  define get_av                         perl_get_av
+#endif
+
+#ifndef get_hv
+#  define get_hv                         perl_get_hv
+#endif
+
+/* Replace: 0 */
+#ifndef dUNDERBAR
+#  define dUNDERBAR                      dNOOP
+#endif
+
+#ifndef UNDERBAR
+#  define UNDERBAR                       DEFSV
+#endif
+#ifndef dAX
+#  define dAX                            I32 ax = MARK - PL_stack_base + 1
+#endif
+
+#ifndef dITEMS
+#  define dITEMS                         I32 items = SP - MARK
+#endif
+#ifndef dXSTARG
+#  define dXSTARG                        SV * targ = sv_newmortal()
+#endif
+#ifndef dAXMARK
+#  define dAXMARK                        I32 ax = POPMARK; \
+                               register SV ** const mark = PL_stack_base + ax++
+#endif
+#ifndef XSprePUSH
+#  define XSprePUSH                      (sp = PL_stack_base + ax - 1)
+#endif
+
+#if (PERL_BCDVERSION < 0x5005000)
+#  undef XSRETURN
+#  define XSRETURN(off)                                   \
+      STMT_START {                                        \
+          PL_stack_sp = PL_stack_base + ax + ((off) - 1); \
+          return;                                         \
+      } STMT_END
+#endif
+#ifndef XSPROTO
+#  define XSPROTO(name)                  void name(pTHX_ CV* cv)
+#endif
+
+#ifndef SVfARG
+#  define SVfARG(p)                      ((void*)(p))
+#endif
+#ifndef PERL_ABS
+#  define PERL_ABS(x)                    ((x) < 0 ? -(x) : (x))
+#endif
+#ifndef dVAR
+#  define dVAR                           dNOOP
+#endif
+#ifndef SVf
+#  define SVf                            "_"
+#endif
+#ifndef UTF8_MAXBYTES
+#  define UTF8_MAXBYTES                  UTF8_MAXLEN
+#endif
+#ifndef CPERLscope
+#  define CPERLscope(x)                  x
+#endif
+#ifndef PERL_HASH
+#  define PERL_HASH(hash,str,len)        \
+     STMT_START	{ \
+	const char *s_PeRlHaSh = str; \
+	I32 i_PeRlHaSh = len; \
+	U32 hash_PeRlHaSh = 0; \
+	while (i_PeRlHaSh--) \
+	    hash_PeRlHaSh = hash_PeRlHaSh * 33 + *s_PeRlHaSh++; \
+	(hash) = hash_PeRlHaSh; \
+    } STMT_END
+#endif
+
+#ifndef PERLIO_FUNCS_DECL
+# ifdef PERLIO_FUNCS_CONST
+#  define PERLIO_FUNCS_DECL(funcs) const PerlIO_funcs funcs
+#  define PERLIO_FUNCS_CAST(funcs) (PerlIO_funcs*)(funcs)
+# else
+#  define PERLIO_FUNCS_DECL(funcs) PerlIO_funcs funcs
