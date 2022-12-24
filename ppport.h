@@ -4295,3 +4295,145 @@ extern U32 DPPP_(my_PL_signals);
 #  define PL_perl_destruct_level    perl_destruct_level
 #  define PL_perldb                 perldb
 #  define PL_rsfp_filters           rsfp_filters
+#  define PL_rsfp                   rsfp
+#  define PL_stack_base             stack_base
+#  define PL_stack_sp               stack_sp
+#  define PL_statcache              statcache
+#  define PL_stdingv                stdingv
+#  define PL_sv_arenaroot           sv_arenaroot
+#  define PL_sv_no                  sv_no
+#  define PL_sv_undef               sv_undef
+#  define PL_sv_yes                 sv_yes
+#  define PL_tainted                tainted
+#  define PL_tainting               tainting
+#  define PL_tokenbuf               tokenbuf
+/* Replace: 0 */
+#endif
+
+/* Warning: PL_parser
+ * For perl versions earlier than 5.9.5, this is an always
+ * non-NULL dummy. Also, it cannot be dereferenced. Don't
+ * use it if you can avoid is and unless you absolutely know
+ * what you're doing.
+ * If you always check that PL_parser is non-NULL, you can
+ * define DPPP_PL_parser_NO_DUMMY to avoid the creation of
+ * a dummy parser structure.
+ */
+
+#if (PERL_BCDVERSION >= 0x5009005)
+# ifdef DPPP_PL_parser_NO_DUMMY
+#  define D_PPP_my_PL_parser_var(var) ((PL_parser ? PL_parser : \
+                (croak("panic: PL_parser == NULL in %s:%d", \
+                       __FILE__, __LINE__), (yy_parser *) NULL))->var)
+# else
+#  ifdef DPPP_PL_parser_NO_DUMMY_WARNING
+#   define D_PPP_parser_dummy_warning(var)
+#  else
+#   define D_PPP_parser_dummy_warning(var) \
+             warn("warning: dummy PL_" #var " used in %s:%d", __FILE__, __LINE__),
+#  endif
+#  define D_PPP_my_PL_parser_var(var) ((PL_parser ? PL_parser : \
+                (D_PPP_parser_dummy_warning(var) &DPPP_(dummy_PL_parser)))->var)
+#if defined(NEED_PL_parser)
+static yy_parser DPPP_(dummy_PL_parser);
+#elif defined(NEED_PL_parser_GLOBAL)
+yy_parser DPPP_(dummy_PL_parser);
+#else
+extern yy_parser DPPP_(dummy_PL_parser);
+#endif
+
+# endif
+
+/* PL_expect, PL_copline, PL_rsfp, PL_rsfp_filters, PL_linestr, PL_bufptr, PL_bufend, PL_lex_state, PL_lex_stuff, PL_tokenbuf depends on PL_parser */
+/* Warning: PL_expect, PL_copline, PL_rsfp, PL_rsfp_filters, PL_linestr, PL_bufptr, PL_bufend, PL_lex_state, PL_lex_stuff, PL_tokenbuf
+ * Do not use this variable unless you know exactly what you're
+ * doint. It is internal to the perl parser and may change or even
+ * be removed in the future. As of perl 5.9.5, you have to check
+ * for (PL_parser != NULL) for this variable to have any effect.
+ * An always non-NULL PL_parser dummy is provided for earlier
+ * perl versions.
+ * If PL_parser is NULL when you try to access this variable, a
+ * dummy is being accessed instead and a warning is issued unless
+ * you define DPPP_PL_parser_NO_DUMMY_WARNING.
+ * If DPPP_PL_parser_NO_DUMMY is defined, the code trying to access
+ * this variable will croak with a panic message.
+ */
+
+# define PL_expect         D_PPP_my_PL_parser_var(expect)
+# define PL_copline        D_PPP_my_PL_parser_var(copline)
+# define PL_rsfp           D_PPP_my_PL_parser_var(rsfp)
+# define PL_rsfp_filters   D_PPP_my_PL_parser_var(rsfp_filters)
+# define PL_linestr        D_PPP_my_PL_parser_var(linestr)
+# define PL_bufptr         D_PPP_my_PL_parser_var(bufptr)
+# define PL_bufend         D_PPP_my_PL_parser_var(bufend)
+# define PL_lex_state      D_PPP_my_PL_parser_var(lex_state)
+# define PL_lex_stuff      D_PPP_my_PL_parser_var(lex_stuff)
+# define PL_tokenbuf       D_PPP_my_PL_parser_var(tokenbuf)
+# define PL_in_my          D_PPP_my_PL_parser_var(in_my)
+# define PL_in_my_stash    D_PPP_my_PL_parser_var(in_my_stash)
+# define PL_error_count    D_PPP_my_PL_parser_var(error_count)
+
+
+#else
+
+/* ensure that PL_parser != NULL and cannot be dereferenced */
+# define PL_parser         ((void *) 1)
+
+#endif
+#ifndef mPUSHs
+#  define mPUSHs(s)                      PUSHs(sv_2mortal(s))
+#endif
+
+#ifndef PUSHmortal
+#  define PUSHmortal                     PUSHs(sv_newmortal())
+#endif
+
+#ifndef mPUSHp
+#  define mPUSHp(p,l)                    sv_setpvn(PUSHmortal, (p), (l))
+#endif
+
+#ifndef mPUSHn
+#  define mPUSHn(n)                      sv_setnv(PUSHmortal, (NV)(n))
+#endif
+
+#ifndef mPUSHi
+#  define mPUSHi(i)                      sv_setiv(PUSHmortal, (IV)(i))
+#endif
+
+#ifndef mPUSHu
+#  define mPUSHu(u)                      sv_setuv(PUSHmortal, (UV)(u))
+#endif
+#ifndef mXPUSHs
+#  define mXPUSHs(s)                     XPUSHs(sv_2mortal(s))
+#endif
+
+#ifndef XPUSHmortal
+#  define XPUSHmortal                    XPUSHs(sv_newmortal())
+#endif
+
+#ifndef mXPUSHp
+#  define mXPUSHp(p,l)                   STMT_START { EXTEND(sp,1); sv_setpvn(PUSHmortal, (p), (l)); } STMT_END
+#endif
+
+#ifndef mXPUSHn
+#  define mXPUSHn(n)                     STMT_START { EXTEND(sp,1); sv_setnv(PUSHmortal, (NV)(n)); } STMT_END
+#endif
+
+#ifndef mXPUSHi
+#  define mXPUSHi(i)                     STMT_START { EXTEND(sp,1); sv_setiv(PUSHmortal, (IV)(i)); } STMT_END
+#endif
+
+#ifndef mXPUSHu
+#  define mXPUSHu(u)                     STMT_START { EXTEND(sp,1); sv_setuv(PUSHmortal, (UV)(u)); } STMT_END
+#endif
+
+/* Replace: 1 */
+#ifndef call_sv
+#  define call_sv                        perl_call_sv
+#endif
+
+#ifndef call_pv
+#  define call_pv                        perl_call_pv
+#endif
+
+#ifndef call_argv
