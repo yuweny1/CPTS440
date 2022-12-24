@@ -3863,3 +3863,137 @@ __DATA__
 #endif
 
 #ifndef PoisonFree
+#  define PoisonFree(d,n,t)              PoisonWith(d,n,t,0xEF)
+#endif
+
+#ifndef Poison
+#  define Poison(d,n,t)                  PoisonFree(d,n,t)
+#endif
+#ifndef Newx
+#  define Newx(v,n,t)                    New(0,v,n,t)
+#endif
+
+#ifndef Newxc
+#  define Newxc(v,n,t,c)                 Newc(0,v,n,t,c)
+#endif
+
+#ifndef Newxz
+#  define Newxz(v,n,t)                   Newz(0,v,n,t)
+#endif
+
+#ifndef PERL_UNUSED_DECL
+#  ifdef HASATTRIBUTE
+#    if (defined(__GNUC__) && defined(__cplusplus)) || defined(__INTEL_COMPILER)
+#      define PERL_UNUSED_DECL
+#    else
+#      define PERL_UNUSED_DECL __attribute__((unused))
+#    endif
+#  else
+#    define PERL_UNUSED_DECL
+#  endif
+#endif
+
+#ifndef PERL_UNUSED_ARG
+#  if defined(lint) && defined(S_SPLINT_S) /* www.splint.org */
+#    include <note.h>
+#    define PERL_UNUSED_ARG(x) NOTE(ARGUNUSED(x))
+#  else
+#    define PERL_UNUSED_ARG(x) ((void)x)
+#  endif
+#endif
+
+#ifndef PERL_UNUSED_VAR
+#  define PERL_UNUSED_VAR(x) ((void)x)
+#endif
+
+#ifndef PERL_UNUSED_CONTEXT
+#  ifdef USE_ITHREADS
+#    define PERL_UNUSED_CONTEXT PERL_UNUSED_ARG(my_perl)
+#  else
+#    define PERL_UNUSED_CONTEXT
+#  endif
+#endif
+#ifndef NOOP
+#  define NOOP                           /*EMPTY*/(void)0
+#endif
+
+#ifndef dNOOP
+#  define dNOOP                          extern int /*@unused@*/ Perl___notused PERL_UNUSED_DECL
+#endif
+
+#ifndef NVTYPE
+#  if defined(USE_LONG_DOUBLE) && defined(HAS_LONG_DOUBLE)
+#    define NVTYPE long double
+#  else
+#    define NVTYPE double
+#  endif
+typedef NVTYPE NV;
+#endif
+
+#ifndef INT2PTR
+#  if (IVSIZE == PTRSIZE) && (UVSIZE == PTRSIZE)
+#    define PTRV                  UV
+#    define INT2PTR(any,d)        (any)(d)
+#  else
+#    if PTRSIZE == LONGSIZE
+#      define PTRV                unsigned long
+#    else
+#      define PTRV                unsigned
+#    endif
+#    define INT2PTR(any,d)        (any)(PTRV)(d)
+#  endif
+#endif
+
+#ifndef PTR2ul
+#  if PTRSIZE == LONGSIZE
+#    define PTR2ul(p)     (unsigned long)(p)
+#  else
+#    define PTR2ul(p)     INT2PTR(unsigned long,p)
+#  endif
+#endif
+#ifndef PTR2nat
+#  define PTR2nat(p)                     (PTRV)(p)
+#endif
+
+#ifndef NUM2PTR
+#  define NUM2PTR(any,d)                 (any)PTR2nat(d)
+#endif
+
+#ifndef PTR2IV
+#  define PTR2IV(p)                      INT2PTR(IV,p)
+#endif
+
+#ifndef PTR2UV
+#  define PTR2UV(p)                      INT2PTR(UV,p)
+#endif
+
+#ifndef PTR2NV
+#  define PTR2NV(p)                      NUM2PTR(NV,p)
+#endif
+
+#undef START_EXTERN_C
+#undef END_EXTERN_C
+#undef EXTERN_C
+#ifdef __cplusplus
+#  define START_EXTERN_C extern "C" {
+#  define END_EXTERN_C }
+#  define EXTERN_C extern "C"
+#else
+#  define START_EXTERN_C
+#  define END_EXTERN_C
+#  define EXTERN_C extern
+#endif
+
+#if defined(PERL_GCC_PEDANTIC)
+#  ifndef PERL_GCC_BRACE_GROUPS_FORBIDDEN
+#    define PERL_GCC_BRACE_GROUPS_FORBIDDEN
+#  endif
+#endif
+
+#if defined(__GNUC__) && !defined(PERL_GCC_BRACE_GROUPS_FORBIDDEN) && !defined(__cplusplus)
+#  ifndef PERL_USE_GCC_BRACE_GROUPS
+#    define PERL_USE_GCC_BRACE_GROUPS
+#  endif
+#endif
+
+#undef STMT_START
