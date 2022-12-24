@@ -4136,3 +4136,162 @@ typedef NVTYPE NV;
 #  define PERLIO_FUNCS_CAST(funcs) (PerlIO_funcs*)(funcs)
 # else
 #  define PERLIO_FUNCS_DECL(funcs) PerlIO_funcs funcs
+#  define PERLIO_FUNCS_CAST(funcs) (funcs)
+# endif
+#endif
+
+/* provide these typedefs for older perls */
+#if (PERL_BCDVERSION < 0x5009003)
+
+# ifdef ARGSproto
+typedef OP* (CPERLscope(*Perl_ppaddr_t))(ARGSproto);
+# else
+typedef OP* (CPERLscope(*Perl_ppaddr_t))(pTHX);
+# endif
+
+typedef OP* (CPERLscope(*Perl_check_t)) (pTHX_ OP*);
+
+#endif
+#ifndef isPSXSPC
+#  define isPSXSPC(c)                    (isSPACE(c) || (c) == '\v')
+#endif
+
+#ifndef isBLANK
+#  define isBLANK(c)                     ((c) == ' ' || (c) == '\t')
+#endif
+
+#ifdef EBCDIC
+#ifndef isALNUMC
+#  define isALNUMC(c)                    isalnum(c)
+#endif
+
+#ifndef isASCII
+#  define isASCII(c)                     isascii(c)
+#endif
+
+#ifndef isCNTRL
+#  define isCNTRL(c)                     iscntrl(c)
+#endif
+
+#ifndef isGRAPH
+#  define isGRAPH(c)                     isgraph(c)
+#endif
+
+#ifndef isPRINT
+#  define isPRINT(c)                     isprint(c)
+#endif
+
+#ifndef isPUNCT
+#  define isPUNCT(c)                     ispunct(c)
+#endif
+
+#ifndef isXDIGIT
+#  define isXDIGIT(c)                    isxdigit(c)
+#endif
+
+#else
+# if (PERL_BCDVERSION < 0x5010000)
+/* Hint: isPRINT
+ * The implementation in older perl versions includes all of the
+ * isSPACE() characters, which is wrong. The version provided by
+ * Devel::PPPort always overrides a present buggy version.
+ */
+#  undef isPRINT
+# endif
+#ifndef isALNUMC
+#  define isALNUMC(c)                    (isALPHA(c) || isDIGIT(c))
+#endif
+
+#ifndef isASCII
+#  define isASCII(c)                     ((U8) (c) <= 127)
+#endif
+
+#ifndef isCNTRL
+#  define isCNTRL(c)                     ((U8) (c) < ' ' || (c) == 127)
+#endif
+
+#ifndef isGRAPH
+#  define isGRAPH(c)                     (isALNUM(c) || isPUNCT(c))
+#endif
+
+#ifndef isPRINT
+#  define isPRINT(c)                     (((c) >= 32 && (c) < 127))
+#endif
+
+#ifndef isPUNCT
+#  define isPUNCT(c)                     (((c) >= 33 && (c) <= 47) || ((c) >= 58 && (c) <= 64)  || ((c) >= 91 && (c) <= 96) || ((c) >= 123 && (c) <= 126))
+#endif
+
+#ifndef isXDIGIT
+#  define isXDIGIT(c)                    (isDIGIT(c) || ((c) >= 'a' && (c) <= 'f') || ((c) >= 'A' && (c) <= 'F'))
+#endif
+
+#endif
+
+#ifndef PERL_SIGNALS_UNSAFE_FLAG
+
+#define PERL_SIGNALS_UNSAFE_FLAG 0x0001
+
+#if (PERL_BCDVERSION < 0x5008000)
+#  define D_PPP_PERL_SIGNALS_INIT   PERL_SIGNALS_UNSAFE_FLAG
+#else
+#  define D_PPP_PERL_SIGNALS_INIT   0
+#endif
+
+#if defined(NEED_PL_signals)
+static U32 DPPP_(my_PL_signals) = D_PPP_PERL_SIGNALS_INIT;
+#elif defined(NEED_PL_signals_GLOBAL)
+U32 DPPP_(my_PL_signals) = D_PPP_PERL_SIGNALS_INIT;
+#else
+extern U32 DPPP_(my_PL_signals);
+#endif
+#define PL_signals DPPP_(my_PL_signals)
+
+#endif
+
+/* Hint: PL_ppaddr
+ * Calling an op via PL_ppaddr requires passing a context argument
+ * for threaded builds. Since the context argument is different for
+ * 5.005 perls, you can use aTHXR (supplied by ppport.h), which will
+ * automatically be defined as the correct argument.
+ */
+
+#if (PERL_BCDVERSION <= 0x5005005)
+/* Replace: 1 */
+#  define PL_ppaddr                 ppaddr
+#  define PL_no_modify              no_modify
+/* Replace: 0 */
+#endif
+
+#if (PERL_BCDVERSION <= 0x5004005)
+/* Replace: 1 */
+#  define PL_DBsignal               DBsignal
+#  define PL_DBsingle               DBsingle
+#  define PL_DBsub                  DBsub
+#  define PL_DBtrace                DBtrace
+#  define PL_Sv                     Sv
+#  define PL_bufend                 bufend
+#  define PL_bufptr                 bufptr
+#  define PL_compiling              compiling
+#  define PL_copline                copline
+#  define PL_curcop                 curcop
+#  define PL_curstash               curstash
+#  define PL_debstash               debstash
+#  define PL_defgv                  defgv
+#  define PL_diehook                diehook
+#  define PL_dirty                  dirty
+#  define PL_dowarn                 dowarn
+#  define PL_errgv                  errgv
+#  define PL_error_count            error_count
+#  define PL_expect                 expect
+#  define PL_hexdigit               hexdigit
+#  define PL_hints                  hints
+#  define PL_in_my                  in_my
+#  define PL_laststatval            laststatval
+#  define PL_lex_state              lex_state
+#  define PL_lex_stuff              lex_stuff
+#  define PL_linestr                linestr
+#  define PL_na                     na
+#  define PL_perl_destruct_level    perl_destruct_level
+#  define PL_perldb                 perldb
+#  define PL_rsfp_filters           rsfp_filters
