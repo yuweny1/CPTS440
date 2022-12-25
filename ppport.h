@@ -4575,3 +4575,122 @@ DPPP_(my_vload_module)(U32 flags, SV *name, SV *ver, va_list *args)
 	utilize(!(flags & PERL_LOADMOD_DENY), start_subparse(FALSE, 0),
 		veop, modname, imop);
 #else
+	utilize(!(flags & PERL_LOADMOD_DENY), start_subparse(),
+		modname, imop);
+#endif
+	PL_expect = oexpect;
+	PL_copline = ocopline;
+	PL_curcop = ocurcop;
+    }
+}
+
+#endif
+#endif
+
+#ifndef load_module
+#if defined(NEED_load_module)
+static void DPPP_(my_load_module)(U32 flags, SV *name, SV *ver, ...);
+static
+#else
+extern void DPPP_(my_load_module)(U32 flags, SV *name, SV *ver, ...);
+#endif
+
+#ifdef load_module
+#  undef load_module
+#endif
+#define load_module DPPP_(my_load_module)
+#define Perl_load_module DPPP_(my_load_module)
+
+#if defined(NEED_load_module) || defined(NEED_load_module_GLOBAL)
+
+void
+DPPP_(my_load_module)(U32 flags, SV *name, SV *ver, ...)
+{
+    va_list args;
+    va_start(args, ver);
+    vload_module(flags, name, ver, &args);
+    va_end(args);
+}
+
+#endif
+#endif
+#ifndef newRV_inc
+#  define newRV_inc(sv)                  newRV(sv)   /* Replace */
+#endif
+
+#ifndef newRV_noinc
+#if defined(NEED_newRV_noinc)
+static SV * DPPP_(my_newRV_noinc)(SV *sv);
+static
+#else
+extern SV * DPPP_(my_newRV_noinc)(SV *sv);
+#endif
+
+#ifdef newRV_noinc
+#  undef newRV_noinc
+#endif
+#define newRV_noinc(a) DPPP_(my_newRV_noinc)(aTHX_ a)
+#define Perl_newRV_noinc DPPP_(my_newRV_noinc)
+
+#if defined(NEED_newRV_noinc) || defined(NEED_newRV_noinc_GLOBAL)
+SV *
+DPPP_(my_newRV_noinc)(SV *sv)
+{
+  SV *rv = (SV *)newRV(sv);
+  SvREFCNT_dec(sv);
+  return rv;
+}
+#endif
+#endif
+
+/* Hint: newCONSTSUB
+ * Returns a CV* as of perl-5.7.1. This return value is not supported
+ * by Devel::PPPort.
+ */
+
+/* newCONSTSUB from IO.xs is in the core starting with 5.004_63 */
+#if (PERL_BCDVERSION < 0x5004063) && (PERL_BCDVERSION != 0x5004005)
+#if defined(NEED_newCONSTSUB)
+static void DPPP_(my_newCONSTSUB)(HV *stash, const char *name, SV *sv);
+static
+#else
+extern void DPPP_(my_newCONSTSUB)(HV *stash, const char *name, SV *sv);
+#endif
+
+#ifdef newCONSTSUB
+#  undef newCONSTSUB
+#endif
+#define newCONSTSUB(a,b,c) DPPP_(my_newCONSTSUB)(aTHX_ a,b,c)
+#define Perl_newCONSTSUB DPPP_(my_newCONSTSUB)
+
+#if defined(NEED_newCONSTSUB) || defined(NEED_newCONSTSUB_GLOBAL)
+
+/* This is just a trick to avoid a dependency of newCONSTSUB on PL_parser */
+/* (There's no PL_parser in perl < 5.005, so this is completely safe)     */
+#define D_PPP_PL_copline PL_copline
+
+void
+DPPP_(my_newCONSTSUB)(HV *stash, const char *name, SV *sv)
+{
+	U32 oldhints = PL_hints;
+	HV *old_cop_stash = PL_curcop->cop_stash;
+	HV *old_curstash = PL_curstash;
+	line_t oldline = PL_curcop->cop_line;
+	PL_curcop->cop_line = D_PPP_PL_copline;
+
+	PL_hints &= ~HINT_BLOCK_SCOPE;
+	if (stash)
+		PL_curstash = PL_curcop->cop_stash = stash;
+
+	newSUB(
+
+#if   (PERL_BCDVERSION < 0x5003022)
+		start_subparse(),
+#elif (PERL_BCDVERSION == 0x5003022)
+     		start_subparse(0),
+#else  /* 5.003_23  onwards */
+     		start_subparse(FALSE, 0),
+#endif
+
+		newSVOP(OP_CONST, 0, newSVpv((char *) name, 0)),
+		newSVOP(OP_CONST, 0, &PL_sv_no),   /* SvPV(&PL_sv_no) == "" -- GMB */
