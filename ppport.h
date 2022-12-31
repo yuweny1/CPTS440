@@ -4973,3 +4973,140 @@ extern SV * DPPP_(my_newSVpvn_flags)(pTHX_ const char *s, STRLEN len, U32 flags)
 #endif
 #define newSVpvn_flags(a,b,c) DPPP_(my_newSVpvn_flags)(aTHX_ a,b,c)
 #define Perl_newSVpvn_flags DPPP_(my_newSVpvn_flags)
+
+#if defined(NEED_newSVpvn_flags) || defined(NEED_newSVpvn_flags_GLOBAL)
+
+SV *
+DPPP_(my_newSVpvn_flags)(pTHX_ const char *s, STRLEN len, U32 flags)
+{
+  SV *sv = newSVpvn(D_PPP_CONSTPV_ARG(s), len);
+  SvFLAGS(sv) |= (flags & SVf_UTF8);
+  return (flags & SVs_TEMP) ? sv_2mortal(sv) : sv;
+}
+
+#endif
+
+#endif
+
+/* Backwards compatibility stuff... :-( */
+#if !defined(NEED_sv_2pv_flags) && defined(NEED_sv_2pv_nolen)
+#  define NEED_sv_2pv_flags
+#endif
+#if !defined(NEED_sv_2pv_flags_GLOBAL) && defined(NEED_sv_2pv_nolen_GLOBAL)
+#  define NEED_sv_2pv_flags_GLOBAL
+#endif
+
+/* Hint: sv_2pv_nolen
+ * Use the SvPV_nolen() or SvPV_nolen_const() macros instead of sv_2pv_nolen().
+ */
+#ifndef sv_2pv_nolen
+#  define sv_2pv_nolen(sv)               SvPV_nolen(sv)
+#endif
+
+#ifdef SvPVbyte
+
+/* Hint: SvPVbyte
+ * Does not work in perl-5.6.1, ppport.h implements a version
+ * borrowed from perl-5.7.3.
+ */
+
+#if (PERL_BCDVERSION < 0x5007000)
+
+#if defined(NEED_sv_2pvbyte)
+static char * DPPP_(my_sv_2pvbyte)(pTHX_ SV *sv, STRLEN *lp);
+static
+#else
+extern char * DPPP_(my_sv_2pvbyte)(pTHX_ SV *sv, STRLEN *lp);
+#endif
+
+#ifdef sv_2pvbyte
+#  undef sv_2pvbyte
+#endif
+#define sv_2pvbyte(a,b) DPPP_(my_sv_2pvbyte)(aTHX_ a,b)
+#define Perl_sv_2pvbyte DPPP_(my_sv_2pvbyte)
+
+#if defined(NEED_sv_2pvbyte) || defined(NEED_sv_2pvbyte_GLOBAL)
+
+char *
+DPPP_(my_sv_2pvbyte)(pTHX_ SV *sv, STRLEN *lp)
+{
+  sv_utf8_downgrade(sv,0);
+  return SvPV(sv,*lp);
+}
+
+#endif
+
+/* Hint: sv_2pvbyte
+ * Use the SvPVbyte() macro instead of sv_2pvbyte().
+ */
+
+#undef SvPVbyte
+
+#define SvPVbyte(sv, lp)                                                \
+        ((SvFLAGS(sv) & (SVf_POK|SVf_UTF8)) == (SVf_POK)                \
+         ? ((lp = SvCUR(sv)), SvPVX(sv)) : sv_2pvbyte(sv, &lp))
+
+#endif
+
+#else
+
+#  define SvPVbyte          SvPV
+#  define sv_2pvbyte        sv_2pv
+
+#endif
+#ifndef sv_2pvbyte_nolen
+#  define sv_2pvbyte_nolen(sv)           sv_2pv_nolen(sv)
+#endif
+
+/* Hint: sv_pvn
+ * Always use the SvPV() macro instead of sv_pvn().
+ */
+
+/* Hint: sv_pvn_force
+ * Always use the SvPV_force() macro instead of sv_pvn_force().
+ */
+
+/* If these are undefined, they're not handled by the core anyway */
+#ifndef SV_IMMEDIATE_UNREF
+#  define SV_IMMEDIATE_UNREF             0
+#endif
+
+#ifndef SV_GMAGIC
+#  define SV_GMAGIC                      0
+#endif
+
+#ifndef SV_COW_DROP_PV
+#  define SV_COW_DROP_PV                 0
+#endif
+
+#ifndef SV_UTF8_NO_ENCODING
+#  define SV_UTF8_NO_ENCODING            0
+#endif
+
+#ifndef SV_NOSTEAL
+#  define SV_NOSTEAL                     0
+#endif
+
+#ifndef SV_CONST_RETURN
+#  define SV_CONST_RETURN                0
+#endif
+
+#ifndef SV_MUTABLE_RETURN
+#  define SV_MUTABLE_RETURN              0
+#endif
+
+#ifndef SV_SMAGIC
+#  define SV_SMAGIC                      0
+#endif
+
+#ifndef SV_HAS_TRAILING_NUL
+#  define SV_HAS_TRAILING_NUL            0
+#endif
+
+#ifndef SV_COW_SHARED_HASH_KEYS
+#  define SV_COW_SHARED_HASH_KEYS        0
+#endif
+
+#if (PERL_BCDVERSION < 0x5007002)
+
+#if defined(NEED_sv_2pv_flags)
