@@ -4694,3 +4694,149 @@ DPPP_(my_newCONSTSUB)(HV *stash, const char *name, SV *sv)
 
 		newSVOP(OP_CONST, 0, newSVpv((char *) name, 0)),
 		newSVOP(OP_CONST, 0, &PL_sv_no),   /* SvPV(&PL_sv_no) == "" -- GMB */
+		newSTATEOP(0, Nullch, newSVOP(OP_CONST, 0, sv))
+	);
+
+	PL_hints = oldhints;
+	PL_curcop->cop_stash = old_cop_stash;
+	PL_curstash = old_curstash;
+	PL_curcop->cop_line = oldline;
+}
+#endif
+#endif
+
+/*
+ * Boilerplate macros for initializing and accessing interpreter-local
+ * data from C.  All statics in extensions should be reworked to use
+ * this, if you want to make the extension thread-safe.  See ext/re/re.xs
+ * for an example of the use of these macros.
+ *
+ * Code that uses these macros is responsible for the following:
+ * 1. #define MY_CXT_KEY to a unique string, e.g. "DynaLoader_guts"
+ * 2. Declare a typedef named my_cxt_t that is a structure that contains
+ *    all the data that needs to be interpreter-local.
+ * 3. Use the START_MY_CXT macro after the declaration of my_cxt_t.
+ * 4. Use the MY_CXT_INIT macro such that it is called exactly once
+ *    (typically put in the BOOT: section).
+ * 5. Use the members of the my_cxt_t structure everywhere as
+ *    MY_CXT.member.
+ * 6. Use the dMY_CXT macro (a declaration) in all the functions that
+ *    access MY_CXT.
+ */
+
+#if defined(MULTIPLICITY) || defined(PERL_OBJECT) || \
+    defined(PERL_CAPI)    || defined(PERL_IMPLICIT_CONTEXT)
+
+#ifndef START_MY_CXT
+
+/* This must appear in all extensions that define a my_cxt_t structure,
+ * right after the definition (i.e. at file scope).  The non-threads
+ * case below uses it to declare the data as static. */
+#define START_MY_CXT
+
+#if (PERL_BCDVERSION < 0x5004068)
+/* Fetches the SV that keeps the per-interpreter data. */
+#define dMY_CXT_SV \
+	SV *my_cxt_sv = get_sv(MY_CXT_KEY, FALSE)
+#else /* >= perl5.004_68 */
+#define dMY_CXT_SV \
+	SV *my_cxt_sv = *hv_fetch(PL_modglobal, MY_CXT_KEY,		\
+				  sizeof(MY_CXT_KEY)-1, TRUE)
+#endif /* < perl5.004_68 */
+
+/* This declaration should be used within all functions that use the
+ * interpreter-local data. */
+#define dMY_CXT	\
+	dMY_CXT_SV;							\
+	my_cxt_t *my_cxtp = INT2PTR(my_cxt_t*,SvUV(my_cxt_sv))
+
+/* Creates and zeroes the per-interpreter data.
+ * (We allocate my_cxtp in a Perl SV so that it will be released when
+ * the interpreter goes away.) */
+#define MY_CXT_INIT \
+	dMY_CXT_SV;							\
+	/* newSV() allocates one more than needed */			\
+	my_cxt_t *my_cxtp = (my_cxt_t*)SvPVX(newSV(sizeof(my_cxt_t)-1));\
+	Zero(my_cxtp, 1, my_cxt_t);					\
+	sv_setuv(my_cxt_sv, PTR2UV(my_cxtp))
+
+/* This macro must be used to access members of the my_cxt_t structure.
+ * e.g. MYCXT.some_data */
+#define MY_CXT		(*my_cxtp)
+
+/* Judicious use of these macros can reduce the number of times dMY_CXT
+ * is used.  Use is similar to pTHX, aTHX etc. */
+#define pMY_CXT		my_cxt_t *my_cxtp
+#define pMY_CXT_	pMY_CXT,
+#define _pMY_CXT	,pMY_CXT
+#define aMY_CXT		my_cxtp
+#define aMY_CXT_	aMY_CXT,
+#define _aMY_CXT	,aMY_CXT
+
+#endif /* START_MY_CXT */
+
+#ifndef MY_CXT_CLONE
+/* Clones the per-interpreter data. */
+#define MY_CXT_CLONE \
+	dMY_CXT_SV;							\
+	my_cxt_t *my_cxtp = (my_cxt_t*)SvPVX(newSV(sizeof(my_cxt_t)-1));\
+	Copy(INT2PTR(my_cxt_t*, SvUV(my_cxt_sv)), my_cxtp, 1, my_cxt_t);\
+	sv_setuv(my_cxt_sv, PTR2UV(my_cxtp))
+#endif
+
+#else /* single interpreter */
+
+#ifndef START_MY_CXT
+
+#define START_MY_CXT	static my_cxt_t my_cxt;
+#define dMY_CXT_SV	dNOOP
+#define dMY_CXT		dNOOP
+#define MY_CXT_INIT	NOOP
+#define MY_CXT		my_cxt
+
+#define pMY_CXT		void
+#define pMY_CXT_
+#define _pMY_CXT
+#define aMY_CXT
+#define aMY_CXT_
+#define _aMY_CXT
+
+#endif /* START_MY_CXT */
+
+#ifndef MY_CXT_CLONE
+#define MY_CXT_CLONE	NOOP
+#endif
+
+#endif
+
+#ifndef IVdf
+#  if IVSIZE == LONGSIZE
+#    define	IVdf      "ld"
+#    define	UVuf      "lu"
+#    define	UVof      "lo"
+#    define	UVxf      "lx"
+#    define	UVXf      "lX"
+#  else
+#    if IVSIZE == INTSIZE
+#      define	IVdf      "d"
+#      define	UVuf      "u"
+#      define	UVof      "o"
+#      define	UVxf      "x"
+#      define	UVXf      "X"
+#    endif
+#  endif
+#endif
+
+#ifndef NVef
+#  if defined(USE_LONG_DOUBLE) && defined(HAS_LONG_DOUBLE) && \
+      defined(PERL_PRIfldbl) && (PERL_BCDVERSION != 0x5006000)
+            /* Not very likely, but let's try anyway. */
+#    define NVef          PERL_PRIeldbl
+#    define NVff          PERL_PRIfldbl
+#    define NVgf          PERL_PRIgldbl
+#  else
+#    define NVef          "e"
+#    define NVff          "f"
+#    define NVgf          "g"
+#  endif
+#endif
