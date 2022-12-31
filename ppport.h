@@ -4840,3 +4840,136 @@ DPPP_(my_newCONSTSUB)(HV *stash, const char *name, SV *sv)
 #    define NVgf          "g"
 #  endif
 #endif
+
+#ifndef SvREFCNT_inc
+#  ifdef PERL_USE_GCC_BRACE_GROUPS
+#    define SvREFCNT_inc(sv)		\
+      ({				\
+          SV * const _sv = (SV*)(sv);	\
+          if (_sv)			\
+               (SvREFCNT(_sv))++;	\
+          _sv;				\
+      })
+#  else
+#    define SvREFCNT_inc(sv)	\
+          ((PL_Sv=(SV*)(sv)) ? (++(SvREFCNT(PL_Sv)),PL_Sv) : NULL)
+#  endif
+#endif
+
+#ifndef SvREFCNT_inc_simple
+#  ifdef PERL_USE_GCC_BRACE_GROUPS
+#    define SvREFCNT_inc_simple(sv)	\
+      ({					\
+          if (sv)				\
+               (SvREFCNT(sv))++;		\
+          (SV *)(sv);				\
+      })
+#  else
+#    define SvREFCNT_inc_simple(sv) \
+          ((sv) ? (SvREFCNT(sv)++,(SV*)(sv)) : NULL)
+#  endif
+#endif
+
+#ifndef SvREFCNT_inc_NN
+#  ifdef PERL_USE_GCC_BRACE_GROUPS
+#    define SvREFCNT_inc_NN(sv)		\
+      ({					\
+          SV * const _sv = (SV*)(sv);	\
+          SvREFCNT(_sv)++;		\
+          _sv;				\
+      })
+#  else
+#    define SvREFCNT_inc_NN(sv) \
+          (PL_Sv=(SV*)(sv),++(SvREFCNT(PL_Sv)),PL_Sv)
+#  endif
+#endif
+
+#ifndef SvREFCNT_inc_void
+#  ifdef PERL_USE_GCC_BRACE_GROUPS
+#    define SvREFCNT_inc_void(sv)		\
+      ({					\
+          SV * const _sv = (SV*)(sv);	\
+          if (_sv)			\
+              (void)(SvREFCNT(_sv)++);	\
+      })
+#  else
+#    define SvREFCNT_inc_void(sv) \
+          (void)((PL_Sv=(SV*)(sv)) ? ++(SvREFCNT(PL_Sv)) : 0)
+#  endif
+#endif
+#ifndef SvREFCNT_inc_simple_void
+#  define SvREFCNT_inc_simple_void(sv)   STMT_START { if (sv) SvREFCNT(sv)++; } STMT_END
+#endif
+
+#ifndef SvREFCNT_inc_simple_NN
+#  define SvREFCNT_inc_simple_NN(sv)     (++SvREFCNT(sv), (SV*)(sv))
+#endif
+
+#ifndef SvREFCNT_inc_void_NN
+#  define SvREFCNT_inc_void_NN(sv)       (void)(++SvREFCNT((SV*)(sv)))
+#endif
+
+#ifndef SvREFCNT_inc_simple_void_NN
+#  define SvREFCNT_inc_simple_void_NN(sv) (void)(++SvREFCNT((SV*)(sv)))
+#endif
+
+#ifndef newSV_type
+
+#if defined(NEED_newSV_type)
+static SV* DPPP_(my_newSV_type)(pTHX_ svtype const t);
+static
+#else
+extern SV* DPPP_(my_newSV_type)(pTHX_ svtype const t);
+#endif
+
+#ifdef newSV_type
+#  undef newSV_type
+#endif
+#define newSV_type(a) DPPP_(my_newSV_type)(aTHX_ a)
+#define Perl_newSV_type DPPP_(my_newSV_type)
+
+#if defined(NEED_newSV_type) || defined(NEED_newSV_type_GLOBAL)
+
+SV*
+DPPP_(my_newSV_type)(pTHX_ svtype const t)
+{
+  SV* const sv = newSV(0);
+  sv_upgrade(sv, t);
+  return sv;
+}
+
+#endif
+
+#endif
+
+#if (PERL_BCDVERSION < 0x5006000)
+# define D_PPP_CONSTPV_ARG(x)  ((char *) (x))
+#else
+# define D_PPP_CONSTPV_ARG(x)  (x)
+#endif
+#ifndef newSVpvn
+#  define newSVpvn(data,len)             ((data)                                              \
+                                    ? ((len) ? newSVpv((data), (len)) : newSVpv("", 0)) \
+                                    : newSV(0))
+#endif
+#ifndef newSVpvn_utf8
+#  define newSVpvn_utf8(s, len, u)       newSVpvn_flags((s), (len), (u) ? SVf_UTF8 : 0)
+#endif
+#ifndef SVf_UTF8
+#  define SVf_UTF8                       0
+#endif
+
+#ifndef newSVpvn_flags
+
+#if defined(NEED_newSVpvn_flags)
+static SV * DPPP_(my_newSVpvn_flags)(pTHX_ const char *s, STRLEN len, U32 flags);
+static
+#else
+extern SV * DPPP_(my_newSVpvn_flags)(pTHX_ const char *s, STRLEN len, U32 flags);
+#endif
+
+#ifdef newSVpvn_flags
+#  undef newSVpvn_flags
+#endif
+#define newSVpvn_flags(a,b,c) DPPP_(my_newSVpvn_flags)(aTHX_ a,b,c)
+#define Perl_newSVpvn_flags DPPP_(my_newSVpvn_flags)
