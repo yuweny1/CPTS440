@@ -5259,3 +5259,147 @@ DPPP_(my_sv_pvn_force_flags)(pTHX_ SV *sv, STRLEN *lp, I32 flags)
 #ifndef SvMAGIC_set
 #  define SvMAGIC_set(sv, val)           \
                 STMT_START { assert(SvTYPE(sv) >= SVt_PVMG); \
+                (((XPVMG*) SvANY(sv))->xmg_magic = (val)); } STMT_END
+#endif
+
+#if (PERL_BCDVERSION < 0x5009003)
+#ifndef SvPVX_const
+#  define SvPVX_const(sv)                ((const char*) (0 + SvPVX(sv)))
+#endif
+
+#ifndef SvPVX_mutable
+#  define SvPVX_mutable(sv)              (0 + SvPVX(sv))
+#endif
+#ifndef SvRV_set
+#  define SvRV_set(sv, val)              \
+                STMT_START { assert(SvTYPE(sv) >=  SVt_RV); \
+                (((XRV*) SvANY(sv))->xrv_rv = (val)); } STMT_END
+#endif
+
+#else
+#ifndef SvPVX_const
+#  define SvPVX_const(sv)                ((const char*)((sv)->sv_u.svu_pv))
+#endif
+
+#ifndef SvPVX_mutable
+#  define SvPVX_mutable(sv)              ((sv)->sv_u.svu_pv)
+#endif
+#ifndef SvRV_set
+#  define SvRV_set(sv, val)              \
+                STMT_START { assert(SvTYPE(sv) >=  SVt_RV); \
+                ((sv)->sv_u.svu_rv = (val)); } STMT_END
+#endif
+
+#endif
+#ifndef SvSTASH_set
+#  define SvSTASH_set(sv, val)           \
+                STMT_START { assert(SvTYPE(sv) >= SVt_PVMG); \
+                (((XPVMG*) SvANY(sv))->xmg_stash = (val)); } STMT_END
+#endif
+
+#if (PERL_BCDVERSION < 0x5004000)
+#ifndef SvUV_set
+#  define SvUV_set(sv, val)              \
+                STMT_START { assert(SvTYPE(sv) == SVt_IV || SvTYPE(sv) >= SVt_PVIV); \
+                (((XPVIV*) SvANY(sv))->xiv_iv = (IV) (val)); } STMT_END
+#endif
+
+#else
+#ifndef SvUV_set
+#  define SvUV_set(sv, val)              \
+                STMT_START { assert(SvTYPE(sv) == SVt_IV || SvTYPE(sv) >= SVt_PVIV); \
+                (((XPVUV*) SvANY(sv))->xuv_uv = (val)); } STMT_END
+#endif
+
+#endif
+
+#if (PERL_BCDVERSION >= 0x5004000) && !defined(vnewSVpvf)
+#if defined(NEED_vnewSVpvf)
+static SV * DPPP_(my_vnewSVpvf)(pTHX_ const char *pat, va_list *args);
+static
+#else
+extern SV * DPPP_(my_vnewSVpvf)(pTHX_ const char *pat, va_list *args);
+#endif
+
+#ifdef vnewSVpvf
+#  undef vnewSVpvf
+#endif
+#define vnewSVpvf(a,b) DPPP_(my_vnewSVpvf)(aTHX_ a,b)
+#define Perl_vnewSVpvf DPPP_(my_vnewSVpvf)
+
+#if defined(NEED_vnewSVpvf) || defined(NEED_vnewSVpvf_GLOBAL)
+
+SV *
+DPPP_(my_vnewSVpvf)(pTHX_ const char *pat, va_list *args)
+{
+  register SV *sv = newSV(0);
+  sv_vsetpvfn(sv, pat, strlen(pat), args, Null(SV**), 0, Null(bool*));
+  return sv;
+}
+
+#endif
+#endif
+
+#if (PERL_BCDVERSION >= 0x5004000) && !defined(sv_vcatpvf)
+#  define sv_vcatpvf(sv, pat, args)  sv_vcatpvfn(sv, pat, strlen(pat), args, Null(SV**), 0, Null(bool*))
+#endif
+
+#if (PERL_BCDVERSION >= 0x5004000) && !defined(sv_vsetpvf)
+#  define sv_vsetpvf(sv, pat, args)  sv_vsetpvfn(sv, pat, strlen(pat), args, Null(SV**), 0, Null(bool*))
+#endif
+
+#if (PERL_BCDVERSION >= 0x5004000) && !defined(sv_catpvf_mg)
+#if defined(NEED_sv_catpvf_mg)
+static void DPPP_(my_sv_catpvf_mg)(pTHX_ SV *sv, const char *pat, ...);
+static
+#else
+extern void DPPP_(my_sv_catpvf_mg)(pTHX_ SV *sv, const char *pat, ...);
+#endif
+
+#define Perl_sv_catpvf_mg DPPP_(my_sv_catpvf_mg)
+
+#if defined(NEED_sv_catpvf_mg) || defined(NEED_sv_catpvf_mg_GLOBAL)
+
+void
+DPPP_(my_sv_catpvf_mg)(pTHX_ SV *sv, const char *pat, ...)
+{
+  va_list args;
+  va_start(args, pat);
+  sv_vcatpvfn(sv, pat, strlen(pat), &args, Null(SV**), 0, Null(bool*));
+  SvSETMAGIC(sv);
+  va_end(args);
+}
+
+#endif
+#endif
+
+#ifdef PERL_IMPLICIT_CONTEXT
+#if (PERL_BCDVERSION >= 0x5004000) && !defined(sv_catpvf_mg_nocontext)
+#if defined(NEED_sv_catpvf_mg_nocontext)
+static void DPPP_(my_sv_catpvf_mg_nocontext)(SV *sv, const char *pat, ...);
+static
+#else
+extern void DPPP_(my_sv_catpvf_mg_nocontext)(SV *sv, const char *pat, ...);
+#endif
+
+#define sv_catpvf_mg_nocontext DPPP_(my_sv_catpvf_mg_nocontext)
+#define Perl_sv_catpvf_mg_nocontext DPPP_(my_sv_catpvf_mg_nocontext)
+
+#if defined(NEED_sv_catpvf_mg_nocontext) || defined(NEED_sv_catpvf_mg_nocontext_GLOBAL)
+
+void
+DPPP_(my_sv_catpvf_mg_nocontext)(SV *sv, const char *pat, ...)
+{
+  dTHX;
+  va_list args;
+  va_start(args, pat);
+  sv_vcatpvfn(sv, pat, strlen(pat), &args, Null(SV**), 0, Null(bool*));
+  SvSETMAGIC(sv);
+  va_end(args);
+}
+
+#endif
+#endif
+#endif
+
+/* sv_catpvf_mg depends on sv_catpvf_mg_nocontext */
