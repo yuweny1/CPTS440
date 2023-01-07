@@ -5952,3 +5952,159 @@ DPPP_(my_warner)(U32 err, const char *pat, ...)
 #endif
 
 #ifndef PERL_MAGIC_uvar_elem
+#  define PERL_MAGIC_uvar_elem           'u'
+#endif
+
+#ifndef PERL_MAGIC_vstring
+#  define PERL_MAGIC_vstring             'V'
+#endif
+
+#ifndef PERL_MAGIC_vec
+#  define PERL_MAGIC_vec                 'v'
+#endif
+
+#ifndef PERL_MAGIC_utf8
+#  define PERL_MAGIC_utf8                'w'
+#endif
+
+#ifndef PERL_MAGIC_substr
+#  define PERL_MAGIC_substr              'x'
+#endif
+
+#ifndef PERL_MAGIC_defelem
+#  define PERL_MAGIC_defelem             'y'
+#endif
+
+#ifndef PERL_MAGIC_glob
+#  define PERL_MAGIC_glob                '*'
+#endif
+
+#ifndef PERL_MAGIC_arylen
+#  define PERL_MAGIC_arylen              '#'
+#endif
+
+#ifndef PERL_MAGIC_pos
+#  define PERL_MAGIC_pos                 '.'
+#endif
+
+#ifndef PERL_MAGIC_backref
+#  define PERL_MAGIC_backref             '<'
+#endif
+
+#ifndef PERL_MAGIC_ext
+#  define PERL_MAGIC_ext                 '~'
+#endif
+
+/* That's the best we can do... */
+#ifndef sv_catpvn_nomg
+#  define sv_catpvn_nomg                 sv_catpvn
+#endif
+
+#ifndef sv_catsv_nomg
+#  define sv_catsv_nomg                  sv_catsv
+#endif
+
+#ifndef sv_setsv_nomg
+#  define sv_setsv_nomg                  sv_setsv
+#endif
+
+#ifndef sv_pvn_nomg
+#  define sv_pvn_nomg                    sv_pvn
+#endif
+
+#ifndef SvIV_nomg
+#  define SvIV_nomg                      SvIV
+#endif
+
+#ifndef SvUV_nomg
+#  define SvUV_nomg                      SvUV
+#endif
+
+#ifndef sv_catpv_mg
+#  define sv_catpv_mg(sv, ptr)          \
+   STMT_START {                         \
+     SV *TeMpSv = sv;                   \
+     sv_catpv(TeMpSv,ptr);              \
+     SvSETMAGIC(TeMpSv);                \
+   } STMT_END
+#endif
+
+#ifndef sv_catpvn_mg
+#  define sv_catpvn_mg(sv, ptr, len)    \
+   STMT_START {                         \
+     SV *TeMpSv = sv;                   \
+     sv_catpvn(TeMpSv,ptr,len);         \
+     SvSETMAGIC(TeMpSv);                \
+   } STMT_END
+#endif
+
+#ifndef sv_catsv_mg
+#  define sv_catsv_mg(dsv, ssv)         \
+   STMT_START {                         \
+     SV *TeMpSv = dsv;                  \
+     sv_catsv(TeMpSv,ssv);              \
+     SvSETMAGIC(TeMpSv);                \
+   } STMT_END
+#endif
+
+#ifndef sv_setiv_mg
+#  define sv_setiv_mg(sv, i)            \
+   STMT_START {                         \
+     SV *TeMpSv = sv;                   \
+     sv_setiv(TeMpSv,i);                \
+     SvSETMAGIC(TeMpSv);                \
+   } STMT_END
+#endif
+
+#ifndef sv_setnv_mg
+#  define sv_setnv_mg(sv, num)          \
+   STMT_START {                         \
+     SV *TeMpSv = sv;                   \
+     sv_setnv(TeMpSv,num);              \
+     SvSETMAGIC(TeMpSv);                \
+   } STMT_END
+#endif
+
+#ifndef sv_setpv_mg
+#  define sv_setpv_mg(sv, ptr)          \
+   STMT_START {                         \
+     SV *TeMpSv = sv;                   \
+     sv_setpv(TeMpSv,ptr);              \
+     SvSETMAGIC(TeMpSv);                \
+   } STMT_END
+#endif
+
+#ifndef sv_setpvn_mg
+#  define sv_setpvn_mg(sv, ptr, len)    \
+   STMT_START {                         \
+     SV *TeMpSv = sv;                   \
+     sv_setpvn(TeMpSv,ptr,len);         \
+     SvSETMAGIC(TeMpSv);                \
+   } STMT_END
+#endif
+
+#ifndef sv_setsv_mg
+#  define sv_setsv_mg(dsv, ssv)         \
+   STMT_START {                         \
+     SV *TeMpSv = dsv;                  \
+     sv_setsv(TeMpSv,ssv);              \
+     SvSETMAGIC(TeMpSv);                \
+   } STMT_END
+#endif
+
+#ifndef sv_setuv_mg
+#  define sv_setuv_mg(sv, i)            \
+   STMT_START {                         \
+     SV *TeMpSv = sv;                   \
+     sv_setuv(TeMpSv,i);                \
+     SvSETMAGIC(TeMpSv);                \
+   } STMT_END
+#endif
+
+#ifndef sv_usepvn_mg
+#  define sv_usepvn_mg(sv, ptr, len)    \
+   STMT_START {                         \
+     SV *TeMpSv = sv;                   \
+     sv_usepvn(TeMpSv,ptr,len);         \
+     SvSETMAGIC(TeMpSv);                \
+   } STMT_END
