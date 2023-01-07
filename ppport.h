@@ -5403,3 +5403,136 @@ DPPP_(my_sv_catpvf_mg_nocontext)(SV *sv, const char *pat, ...)
 #endif
 
 /* sv_catpvf_mg depends on sv_catpvf_mg_nocontext */
+#ifndef sv_catpvf_mg
+#  ifdef PERL_IMPLICIT_CONTEXT
+#    define sv_catpvf_mg   Perl_sv_catpvf_mg_nocontext
+#  else
+#    define sv_catpvf_mg   Perl_sv_catpvf_mg
+#  endif
+#endif
+
+#if (PERL_BCDVERSION >= 0x5004000) && !defined(sv_vcatpvf_mg)
+#  define sv_vcatpvf_mg(sv, pat, args)                                     \
+   STMT_START {                                                            \
+     sv_vcatpvfn(sv, pat, strlen(pat), args, Null(SV**), 0, Null(bool*));  \
+     SvSETMAGIC(sv);                                                       \
+   } STMT_END
+#endif
+
+#if (PERL_BCDVERSION >= 0x5004000) && !defined(sv_setpvf_mg)
+#if defined(NEED_sv_setpvf_mg)
+static void DPPP_(my_sv_setpvf_mg)(pTHX_ SV *sv, const char *pat, ...);
+static
+#else
+extern void DPPP_(my_sv_setpvf_mg)(pTHX_ SV *sv, const char *pat, ...);
+#endif
+
+#define Perl_sv_setpvf_mg DPPP_(my_sv_setpvf_mg)
+
+#if defined(NEED_sv_setpvf_mg) || defined(NEED_sv_setpvf_mg_GLOBAL)
+
+void
+DPPP_(my_sv_setpvf_mg)(pTHX_ SV *sv, const char *pat, ...)
+{
+  va_list args;
+  va_start(args, pat);
+  sv_vsetpvfn(sv, pat, strlen(pat), &args, Null(SV**), 0, Null(bool*));
+  SvSETMAGIC(sv);
+  va_end(args);
+}
+
+#endif
+#endif
+
+#ifdef PERL_IMPLICIT_CONTEXT
+#if (PERL_BCDVERSION >= 0x5004000) && !defined(sv_setpvf_mg_nocontext)
+#if defined(NEED_sv_setpvf_mg_nocontext)
+static void DPPP_(my_sv_setpvf_mg_nocontext)(SV *sv, const char *pat, ...);
+static
+#else
+extern void DPPP_(my_sv_setpvf_mg_nocontext)(SV *sv, const char *pat, ...);
+#endif
+
+#define sv_setpvf_mg_nocontext DPPP_(my_sv_setpvf_mg_nocontext)
+#define Perl_sv_setpvf_mg_nocontext DPPP_(my_sv_setpvf_mg_nocontext)
+
+#if defined(NEED_sv_setpvf_mg_nocontext) || defined(NEED_sv_setpvf_mg_nocontext_GLOBAL)
+
+void
+DPPP_(my_sv_setpvf_mg_nocontext)(SV *sv, const char *pat, ...)
+{
+  dTHX;
+  va_list args;
+  va_start(args, pat);
+  sv_vsetpvfn(sv, pat, strlen(pat), &args, Null(SV**), 0, Null(bool*));
+  SvSETMAGIC(sv);
+  va_end(args);
+}
+
+#endif
+#endif
+#endif
+
+/* sv_setpvf_mg depends on sv_setpvf_mg_nocontext */
+#ifndef sv_setpvf_mg
+#  ifdef PERL_IMPLICIT_CONTEXT
+#    define sv_setpvf_mg   Perl_sv_setpvf_mg_nocontext
+#  else
+#    define sv_setpvf_mg   Perl_sv_setpvf_mg
+#  endif
+#endif
+
+#if (PERL_BCDVERSION >= 0x5004000) && !defined(sv_vsetpvf_mg)
+#  define sv_vsetpvf_mg(sv, pat, args)                                     \
+   STMT_START {                                                            \
+     sv_vsetpvfn(sv, pat, strlen(pat), args, Null(SV**), 0, Null(bool*));  \
+     SvSETMAGIC(sv);                                                       \
+   } STMT_END
+#endif
+
+/* Hint: newSVpvn_share
+ * The SVs created by this function only mimic the behaviour of
+ * shared PVs without really being shared. Only use if you know
+ * what you're doing.
+ */
+
+#ifndef newSVpvn_share
+
+#if defined(NEED_newSVpvn_share)
+static SV * DPPP_(my_newSVpvn_share)(pTHX_ const char *src, I32 len, U32 hash);
+static
+#else
+extern SV * DPPP_(my_newSVpvn_share)(pTHX_ const char *src, I32 len, U32 hash);
+#endif
+
+#ifdef newSVpvn_share
+#  undef newSVpvn_share
+#endif
+#define newSVpvn_share(a,b,c) DPPP_(my_newSVpvn_share)(aTHX_ a,b,c)
+#define Perl_newSVpvn_share DPPP_(my_newSVpvn_share)
+
+#if defined(NEED_newSVpvn_share) || defined(NEED_newSVpvn_share_GLOBAL)
+
+SV *
+DPPP_(my_newSVpvn_share)(pTHX_ const char *src, I32 len, U32 hash)
+{
+  SV *sv;
+  if (len < 0)
+    len = -len;
+  if (!hash)
+    PERL_HASH(hash, (char*) src, len);
+  sv = newSVpvn((char *) src, len);
+  sv_upgrade(sv, SVt_PVIV);
+  SvIVX(sv) = hash;
+  SvREADONLY_on(sv);
+  SvPOK_on(sv);
+  return sv;
+}
+
+#endif
+
+#endif
+#ifndef SvSHARED_HASH
+#  define SvSHARED_HASH(sv)              (0 + SvUVX(sv))
+#endif
+#ifndef HvNAME_get
