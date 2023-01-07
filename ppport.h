@@ -5536,3 +5536,140 @@ DPPP_(my_newSVpvn_share)(pTHX_ const char *src, I32 len, U32 hash)
 #  define SvSHARED_HASH(sv)              (0 + SvUVX(sv))
 #endif
 #ifndef HvNAME_get
+#  define HvNAME_get(hv)                 HvNAME(hv)
+#endif
+#ifndef HvNAMELEN_get
+#  define HvNAMELEN_get(hv)              (HvNAME_get(hv) ? (I32)strlen(HvNAME_get(hv)) : 0)
+#endif
+#ifndef GvSVn
+#  define GvSVn(gv)                      GvSV(gv)
+#endif
+
+#ifndef isGV_with_GP
+#  define isGV_with_GP(gv)               isGV(gv)
+#endif
+
+#ifndef gv_fetchpvn_flags
+#  define gv_fetchpvn_flags(name, len, flags, svt) gv_fetchpv(name, flags, svt)
+#endif
+
+#ifndef gv_fetchsv
+#  define gv_fetchsv(name, flags, svt)   gv_fetchpv(SvPV_nolen_const(name), flags, svt)
+#endif
+#ifndef get_cvn_flags
+#  define get_cvn_flags(name, namelen, flags) get_cv(name, flags)
+#endif
+#ifndef WARN_ALL
+#  define WARN_ALL                       0
+#endif
+
+#ifndef WARN_CLOSURE
+#  define WARN_CLOSURE                   1
+#endif
+
+#ifndef WARN_DEPRECATED
+#  define WARN_DEPRECATED                2
+#endif
+
+#ifndef WARN_EXITING
+#  define WARN_EXITING                   3
+#endif
+
+#ifndef WARN_GLOB
+#  define WARN_GLOB                      4
+#endif
+
+#ifndef WARN_IO
+#  define WARN_IO                        5
+#endif
+
+#ifndef WARN_CLOSED
+#  define WARN_CLOSED                    6
+#endif
+
+#ifndef WARN_EXEC
+#  define WARN_EXEC                      7
+#endif
+
+#ifndef WARN_LAYER
+#  define WARN_LAYER                     8
+#endif
+
+#ifndef WARN_NEWLINE
+#  define WARN_NEWLINE                   9
+#endif
+
+#ifndef WARN_PIPE
+#  define WARN_PIPE                      10
+#endif
+
+#ifndef WARN_UNOPENED
+#  define WARN_UNOPENED                  11
+#endif
+
+#ifndef WARN_MISC
+#  define WARN_MISC                      12
+#endif
+
+#ifndef WARN_NUMERIC
+#  define WARN_NUMERIC                   13
+#endif
+
+#ifndef WARN_ONCE
+#  define WARN_ONCE                      14
+#endif
+
+#ifndef WARN_OVERFLOW
+#  define WARN_OVERFLOW                  15
+#endif
+
+#ifndef WARN_PACK
+#  define WARN_PACK                      16
+#endif
+
+#ifndef WARN_PORTABLE
+#  define WARN_PORTABLE                  17
+#endif
+
+#ifndef WARN_RECURSION
+#  define WARN_RECURSION                 18
+#endif
+
+#ifndef WARN_REDEFINE
+#  define WARN_REDEFINE                  19
+#endif
+
+#ifndef WARN_REGEXP
+#  define WARN_REGEXP                    20
+#endif
+
+#ifndef WARN_SEVERE
+#  define WARN_SEVERE                    21
+#endif
+
+#ifndef WARN_DEBUGGING
+#  define WARN_DEBUGGING                 22
+#endif
+
+#ifndef WARN_INPLACE
+#  define WARN_INPLACE                   23
+#endif
+
+#ifndef WARN_INTERNAL
+#  define WARN_INTERNAL                  24
+#endif
+
+#ifndef WARN_MALLOC
+#  define WARN_MALLOC                    25
+#endif
+
+#ifndef WARN_SIGNAL
+#  define WARN_SIGNAL                    26
+#endif
+
+#ifndef WARN_SUBSTR
+#  define WARN_SUBSTR                    27
+#endif
+
+#ifndef WARN_SYNTAX
+#  define WARN_SYNTAX                    28
