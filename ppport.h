@@ -5673,3 +5673,147 @@ DPPP_(my_newSVpvn_share)(pTHX_ const char *src, I32 len, U32 hash)
 
 #ifndef WARN_SYNTAX
 #  define WARN_SYNTAX                    28
+#endif
+
+#ifndef WARN_AMBIGUOUS
+#  define WARN_AMBIGUOUS                 29
+#endif
+
+#ifndef WARN_BAREWORD
+#  define WARN_BAREWORD                  30
+#endif
+
+#ifndef WARN_DIGIT
+#  define WARN_DIGIT                     31
+#endif
+
+#ifndef WARN_PARENTHESIS
+#  define WARN_PARENTHESIS               32
+#endif
+
+#ifndef WARN_PRECEDENCE
+#  define WARN_PRECEDENCE                33
+#endif
+
+#ifndef WARN_PRINTF
+#  define WARN_PRINTF                    34
+#endif
+
+#ifndef WARN_PROTOTYPE
+#  define WARN_PROTOTYPE                 35
+#endif
+
+#ifndef WARN_QW
+#  define WARN_QW                        36
+#endif
+
+#ifndef WARN_RESERVED
+#  define WARN_RESERVED                  37
+#endif
+
+#ifndef WARN_SEMICOLON
+#  define WARN_SEMICOLON                 38
+#endif
+
+#ifndef WARN_TAINT
+#  define WARN_TAINT                     39
+#endif
+
+#ifndef WARN_THREADS
+#  define WARN_THREADS                   40
+#endif
+
+#ifndef WARN_UNINITIALIZED
+#  define WARN_UNINITIALIZED             41
+#endif
+
+#ifndef WARN_UNPACK
+#  define WARN_UNPACK                    42
+#endif
+
+#ifndef WARN_UNTIE
+#  define WARN_UNTIE                     43
+#endif
+
+#ifndef WARN_UTF8
+#  define WARN_UTF8                      44
+#endif
+
+#ifndef WARN_VOID
+#  define WARN_VOID                      45
+#endif
+
+#ifndef WARN_ASSERTIONS
+#  define WARN_ASSERTIONS                46
+#endif
+#ifndef packWARN
+#  define packWARN(a)                    (a)
+#endif
+
+#ifndef ckWARN
+#  ifdef G_WARN_ON
+#    define  ckWARN(a)                  (PL_dowarn & G_WARN_ON)
+#  else
+#    define  ckWARN(a)                  PL_dowarn
+#  endif
+#endif
+
+#if (PERL_BCDVERSION >= 0x5004000) && !defined(warner)
+#if defined(NEED_warner)
+static void DPPP_(my_warner)(U32 err, const char *pat, ...);
+static
+#else
+extern void DPPP_(my_warner)(U32 err, const char *pat, ...);
+#endif
+
+#define Perl_warner DPPP_(my_warner)
+
+#if defined(NEED_warner) || defined(NEED_warner_GLOBAL)
+
+void
+DPPP_(my_warner)(U32 err, const char *pat, ...)
+{
+  SV *sv;
+  va_list args;
+
+  PERL_UNUSED_ARG(err);
+
+  va_start(args, pat);
+  sv = vnewSVpvf(pat, &args);
+  va_end(args);
+  sv_2mortal(sv);
+  warn("%s", SvPV_nolen(sv));
+}
+
+#define warner  Perl_warner
+
+#define Perl_warner_nocontext  Perl_warner
+
+#endif
+#endif
+
+/* concatenating with "" ensures that only literal strings are accepted as argument
+ * note that STR_WITH_LEN() can't be used as argument to macros or functions that
+ * under some configurations might be macros
+ */
+#ifndef STR_WITH_LEN
+#  define STR_WITH_LEN(s)                (s ""), (sizeof(s)-1)
+#endif
+#ifndef newSVpvs
+#  define newSVpvs(str)                  newSVpvn(str "", sizeof(str) - 1)
+#endif
+
+#ifndef newSVpvs_flags
+#  define newSVpvs_flags(str, flags)     newSVpvn_flags(str "", sizeof(str) - 1, flags)
+#endif
+
+#ifndef newSVpvs_share
+#  define newSVpvs_share(str)            newSVpvn_share(str "", sizeof(str) - 1, 0)
+#endif
+
+#ifndef sv_catpvs
+#  define sv_catpvs(sv, str)             sv_catpvn(sv, str "", sizeof(str) - 1)
+#endif
+
+#ifndef sv_setpvs
+#  define sv_setpvs(sv, str)             sv_setpvn(sv, str "", sizeof(str) - 1)
