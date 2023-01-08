@@ -6108,3 +6108,140 @@ DPPP_(my_warner)(U32 err, const char *pat, ...)
      sv_usepvn(TeMpSv,ptr,len);         \
      SvSETMAGIC(TeMpSv);                \
    } STMT_END
+#endif
+#ifndef SvVSTRING_mg
+#  define SvVSTRING_mg(sv)               (SvMAGICAL(sv) ? mg_find(sv, PERL_MAGIC_vstring) : NULL)
+#endif
+
+/* Hint: sv_magic_portable
+ * This is a compatibility function that is only available with
+ * Devel::PPPort. It is NOT in the perl core.
+ * Its purpose is to mimic the 5.8.0 behaviour of sv_magic() when
+ * it is being passed a name pointer with namlen == 0. In that
+ * case, perl 5.8.0 and later store the pointer, not a copy of it.
+ * The compatibility can be provided back to perl 5.004. With
+ * earlier versions, the code will not compile.
+ */
+
+#if (PERL_BCDVERSION < 0x5004000)
+
+  /* code that uses sv_magic_portable will not compile */
+
+#elif (PERL_BCDVERSION < 0x5008000)
+
+#  define sv_magic_portable(sv, obj, how, name, namlen)     \
+   STMT_START {                                             \
+     SV *SvMp_sv = (sv);                                    \
+     char *SvMp_name = (char *) (name);                     \
+     I32 SvMp_namlen = (namlen);                            \
+     if (SvMp_name && SvMp_namlen == 0)                     \
+     {                                                      \
+       MAGIC *mg;                                           \
+       sv_magic(SvMp_sv, obj, how, 0, 0);                   \
+       mg = SvMAGIC(SvMp_sv);                               \
+       mg->mg_len = -42; /* XXX: this is the tricky part */ \
+       mg->mg_ptr = SvMp_name;                              \
+     }                                                      \
+     else                                                   \
+     {                                                      \
+       sv_magic(SvMp_sv, obj, how, SvMp_name, SvMp_namlen); \
+     }                                                      \
+   } STMT_END
+
+#else
+
+#  define sv_magic_portable(a, b, c, d, e)  sv_magic(a, b, c, d, e)
+
+#endif
+
+#ifdef USE_ITHREADS
+#ifndef CopFILE
+#  define CopFILE(c)                     ((c)->cop_file)
+#endif
+
+#ifndef CopFILEGV
+#  define CopFILEGV(c)                   (CopFILE(c) ? gv_fetchfile(CopFILE(c)) : Nullgv)
+#endif
+
+#ifndef CopFILE_set
+#  define CopFILE_set(c,pv)              ((c)->cop_file = savepv(pv))
+#endif
+
+#ifndef CopFILESV
+#  define CopFILESV(c)                   (CopFILE(c) ? GvSV(gv_fetchfile(CopFILE(c))) : Nullsv)
+#endif
+
+#ifndef CopFILEAV
+#  define CopFILEAV(c)                   (CopFILE(c) ? GvAV(gv_fetchfile(CopFILE(c))) : Nullav)
+#endif
+
+#ifndef CopSTASHPV
+#  define CopSTASHPV(c)                  ((c)->cop_stashpv)
+#endif
+
+#ifndef CopSTASHPV_set
+#  define CopSTASHPV_set(c,pv)           ((c)->cop_stashpv = ((pv) ? savepv(pv) : Nullch))
+#endif
+
+#ifndef CopSTASH
+#  define CopSTASH(c)                    (CopSTASHPV(c) ? gv_stashpv(CopSTASHPV(c),GV_ADD) : Nullhv)
+#endif
+
+#ifndef CopSTASH_set
+#  define CopSTASH_set(c,hv)             CopSTASHPV_set(c, (hv) ? HvNAME(hv) : Nullch)
+#endif
+
+#ifndef CopSTASH_eq
+#  define CopSTASH_eq(c,hv)              ((hv) && (CopSTASHPV(c) == HvNAME(hv) \
+					|| (CopSTASHPV(c) && HvNAME(hv) \
+					&& strEQ(CopSTASHPV(c), HvNAME(hv)))))
+#endif
+
+#else
+#ifndef CopFILEGV
+#  define CopFILEGV(c)                   ((c)->cop_filegv)
+#endif
+
+#ifndef CopFILEGV_set
+#  define CopFILEGV_set(c,gv)            ((c)->cop_filegv = (GV*)SvREFCNT_inc(gv))
+#endif
+
+#ifndef CopFILE_set
+#  define CopFILE_set(c,pv)              CopFILEGV_set((c), gv_fetchfile(pv))
+#endif
+
+#ifndef CopFILESV
+#  define CopFILESV(c)                   (CopFILEGV(c) ? GvSV(CopFILEGV(c)) : Nullsv)
+#endif
+
+#ifndef CopFILEAV
+#  define CopFILEAV(c)                   (CopFILEGV(c) ? GvAV(CopFILEGV(c)) : Nullav)
+#endif
+
+#ifndef CopFILE
+#  define CopFILE(c)                     (CopFILESV(c) ? SvPVX(CopFILESV(c)) : Nullch)
+#endif
+
+#ifndef CopSTASH
+#  define CopSTASH(c)                    ((c)->cop_stash)
+#endif
+
+#ifndef CopSTASH_set
+#  define CopSTASH_set(c,hv)             ((c)->cop_stash = (hv))
+#endif
+
+#ifndef CopSTASHPV
+#  define CopSTASHPV(c)                  (CopSTASH(c) ? HvNAME(CopSTASH(c)) : Nullch)
+#endif
+
+#ifndef CopSTASHPV_set
+#  define CopSTASHPV_set(c,pv)           CopSTASH_set((c), gv_stashpv(pv,GV_ADD))
+#endif
+
+#ifndef CopSTASH_eq
+#  define CopSTASH_eq(c,hv)              (CopSTASH(c) == (hv))
+#endif
+
+#endif /* USE_ITHREADS */
+#ifndef IN_PERL_COMPILETIME
+#  define IN_PERL_COMPILETIME            (PL_curcop == &PL_compiling)
