@@ -6245,3 +6245,127 @@ DPPP_(my_warner)(U32 err, const char *pat, ...)
 #endif /* USE_ITHREADS */
 #ifndef IN_PERL_COMPILETIME
 #  define IN_PERL_COMPILETIME            (PL_curcop == &PL_compiling)
+#endif
+
+#ifndef IN_LOCALE_RUNTIME
+#  define IN_LOCALE_RUNTIME              (PL_curcop->op_private & HINT_LOCALE)
+#endif
+
+#ifndef IN_LOCALE_COMPILETIME
+#  define IN_LOCALE_COMPILETIME          (PL_hints & HINT_LOCALE)
+#endif
+
+#ifndef IN_LOCALE
+#  define IN_LOCALE                      (IN_PERL_COMPILETIME ? IN_LOCALE_COMPILETIME : IN_LOCALE_RUNTIME)
+#endif
+#ifndef IS_NUMBER_IN_UV
+#  define IS_NUMBER_IN_UV                0x01
+#endif
+
+#ifndef IS_NUMBER_GREATER_THAN_UV_MAX
+#  define IS_NUMBER_GREATER_THAN_UV_MAX  0x02
+#endif
+
+#ifndef IS_NUMBER_NOT_INT
+#  define IS_NUMBER_NOT_INT              0x04
+#endif
+
+#ifndef IS_NUMBER_NEG
+#  define IS_NUMBER_NEG                  0x08
+#endif
+
+#ifndef IS_NUMBER_INFINITY
+#  define IS_NUMBER_INFINITY             0x10
+#endif
+
+#ifndef IS_NUMBER_NAN
+#  define IS_NUMBER_NAN                  0x20
+#endif
+#ifndef GROK_NUMERIC_RADIX
+#  define GROK_NUMERIC_RADIX(sp, send)   grok_numeric_radix(sp, send)
+#endif
+#ifndef PERL_SCAN_GREATER_THAN_UV_MAX
+#  define PERL_SCAN_GREATER_THAN_UV_MAX  0x02
+#endif
+
+#ifndef PERL_SCAN_SILENT_ILLDIGIT
+#  define PERL_SCAN_SILENT_ILLDIGIT      0x04
+#endif
+
+#ifndef PERL_SCAN_ALLOW_UNDERSCORES
+#  define PERL_SCAN_ALLOW_UNDERSCORES    0x01
+#endif
+
+#ifndef PERL_SCAN_DISALLOW_PREFIX
+#  define PERL_SCAN_DISALLOW_PREFIX      0x02
+#endif
+
+#ifndef grok_numeric_radix
+#if defined(NEED_grok_numeric_radix)
+static bool DPPP_(my_grok_numeric_radix)(pTHX_ const char ** sp, const char * send);
+static
+#else
+extern bool DPPP_(my_grok_numeric_radix)(pTHX_ const char ** sp, const char * send);
+#endif
+
+#ifdef grok_numeric_radix
+#  undef grok_numeric_radix
+#endif
+#define grok_numeric_radix(a,b) DPPP_(my_grok_numeric_radix)(aTHX_ a,b)
+#define Perl_grok_numeric_radix DPPP_(my_grok_numeric_radix)
+
+#if defined(NEED_grok_numeric_radix) || defined(NEED_grok_numeric_radix_GLOBAL)
+bool
+DPPP_(my_grok_numeric_radix)(pTHX_ const char **sp, const char *send)
+{
+#ifdef USE_LOCALE_NUMERIC
+#ifdef PL_numeric_radix_sv
+    if (PL_numeric_radix_sv && IN_LOCALE) {
+        STRLEN len;
+        char* radix = SvPV(PL_numeric_radix_sv, len);
+        if (*sp + len <= send && memEQ(*sp, radix, len)) {
+            *sp += len;
+            return TRUE;
+        }
+    }
+#else
+    /* older perls don't have PL_numeric_radix_sv so the radix
+     * must manually be requested from locale.h
+     */
+#include <locale.h>
+    dTHR;  /* needed for older threaded perls */
+    struct lconv *lc = localeconv();
+    char *radix = lc->decimal_point;
+    if (radix && IN_LOCALE) {
+        STRLEN len = strlen(radix);
+        if (*sp + len <= send && memEQ(*sp, radix, len)) {
+            *sp += len;
+            return TRUE;
+        }
+    }
+#endif
+#endif /* USE_LOCALE_NUMERIC */
+    /* always try "." if numeric radix didn't match because
+     * we may have data from different locales mixed */
+    if (*sp < send && **sp == '.') {
+        ++*sp;
+        return TRUE;
+    }
+    return FALSE;
+}
+#endif
+#endif
+
+#ifndef grok_number
+#if defined(NEED_grok_number)
+static int DPPP_(my_grok_number)(pTHX_ const char * pv, STRLEN len, UV * valuep);
+static
+#else
+extern int DPPP_(my_grok_number)(pTHX_ const char * pv, STRLEN len, UV * valuep);
+#endif
+
+#ifdef grok_number
+#  undef grok_number
+#endif
+#define grok_number(a,b,c) DPPP_(my_grok_number)(aTHX_ a,b,c)
+#define Perl_grok_number DPPP_(my_grok_number)
