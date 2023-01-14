@@ -6820,3 +6820,155 @@ DPPP_(my_grok_oct)(pTHX_ const char *start, STRLEN *len_p, I32 *flags, NV *resul
                 overflowed = TRUE;
                 value_nv = (NV) value;
             }
+            value_nv *= 8.0;
+	    /* If an NV has not enough bits in its mantissa to
+	     * represent a UV this summing of small low-order numbers
+	     * is a waste of time (because the NV cannot preserve
+	     * the low-order bits anyway): we could just remember when
+	     * did we overflow and in the end just multiply value_nv by the
+	     * right amount of 8-tuples. */
+            value_nv += (NV)digit;
+            continue;
+        }
+        if (digit == ('_' - '0') && len && allow_underscores
+            && (digit = s[1] - '0') && (digit >= 0 && digit <= 7))
+	    {
+		--len;
+		++s;
+                goto redo;
+	    }
+        /* Allow \octal to work the DWIM way (that is, stop scanning
+         * as soon as non-octal characters are seen, complain only iff
+         * someone seems to want to use the digits eight and nine). */
+        if (digit == 8 || digit == 9) {
+            if (!(*flags & PERL_SCAN_SILENT_ILLDIGIT))
+                warn("Illegal octal digit '%c' ignored", *s);
+        }
+        break;
+    }
+
+    if (   ( overflowed && value_nv > 4294967295.0)
+#if UVSIZE > 4
+	|| (!overflowed && value > 0xffffffff  )
+#endif
+	) {
+	warn("Octal number > 037777777777 non-portable");
+    }
+    *len_p = s - start;
+    if (!overflowed) {
+        *flags = 0;
+        return value;
+    }
+    *flags = PERL_SCAN_GREATER_THAN_UV_MAX;
+    if (result)
+        *result = value_nv;
+    return UV_MAX;
+}
+#endif
+#endif
+
+#if !defined(my_snprintf)
+#if defined(NEED_my_snprintf)
+static int DPPP_(my_my_snprintf)(char * buffer, const Size_t len, const char * format, ...);
+static
+#else
+extern int DPPP_(my_my_snprintf)(char * buffer, const Size_t len, const char * format, ...);
+#endif
+
+#define my_snprintf DPPP_(my_my_snprintf)
+#define Perl_my_snprintf DPPP_(my_my_snprintf)
+
+#if defined(NEED_my_snprintf) || defined(NEED_my_snprintf_GLOBAL)
+
+int
+DPPP_(my_my_snprintf)(char *buffer, const Size_t len, const char *format, ...)
+{
+    dTHX;
+    int retval;
+    va_list ap;
+    va_start(ap, format);
+#ifdef HAS_VSNPRINTF
+    retval = vsnprintf(buffer, len, format, ap);
+#else
+    retval = vsprintf(buffer, format, ap);
+#endif
+    va_end(ap);
+    if (retval < 0 || (len > 0 && (Size_t)retval >= len))
+	Perl_croak(aTHX_ "panic: my_snprintf buffer overflow");
+    return retval;
+}
+
+#endif
+#endif
+
+#if !defined(my_sprintf)
+#if defined(NEED_my_sprintf)
+static int DPPP_(my_my_sprintf)(char * buffer, const char * pat, ...);
+static
+#else
+extern int DPPP_(my_my_sprintf)(char * buffer, const char * pat, ...);
+#endif
+
+#define my_sprintf DPPP_(my_my_sprintf)
+#define Perl_my_sprintf DPPP_(my_my_sprintf)
+
+#if defined(NEED_my_sprintf) || defined(NEED_my_sprintf_GLOBAL)
+
+int
+DPPP_(my_my_sprintf)(char *buffer, const char* pat, ...)
+{
+    va_list args;
+    va_start(args, pat);
+    vsprintf(buffer, pat, args);
+    va_end(args);
+    return strlen(buffer);
+}
+
+#endif
+#endif
+
+#ifdef NO_XSLOCKS
+#  ifdef dJMPENV
+#    define dXCPT             dJMPENV; int rEtV = 0
+#    define XCPT_TRY_START    JMPENV_PUSH(rEtV); if (rEtV == 0)
+#    define XCPT_TRY_END      JMPENV_POP;
+#    define XCPT_CATCH        if (rEtV != 0)
+#    define XCPT_RETHROW      JMPENV_JUMP(rEtV)
+#  else
+#    define dXCPT             Sigjmp_buf oldTOP; int rEtV = 0
+#    define XCPT_TRY_START    Copy(top_env, oldTOP, 1, Sigjmp_buf); rEtV = Sigsetjmp(top_env, 1); if (rEtV == 0)
+#    define XCPT_TRY_END      Copy(oldTOP, top_env, 1, Sigjmp_buf);
+#    define XCPT_CATCH        if (rEtV != 0)
+#    define XCPT_RETHROW      Siglongjmp(top_env, rEtV)
+#  endif
+#endif
+
+#if !defined(my_strlcat)
+#if defined(NEED_my_strlcat)
+static Size_t DPPP_(my_my_strlcat)(char * dst, const char * src, Size_t size);
+static
+#else
+extern Size_t DPPP_(my_my_strlcat)(char * dst, const char * src, Size_t size);
+#endif
+
+#define my_strlcat DPPP_(my_my_strlcat)
+#define Perl_my_strlcat DPPP_(my_my_strlcat)
+
+#if defined(NEED_my_strlcat) || defined(NEED_my_strlcat_GLOBAL)
+
+Size_t
+DPPP_(my_my_strlcat)(char *dst, const char *src, Size_t size)
+{
+    Size_t used, length, copy;
+
+    used = strlen(dst);
+    length = strlen(src);
+    if (size > 0 && used < size - 1) {
+        copy = (length >= size - used) ? size - used - 1 : length;
+        memcpy(dst + used, src, copy);
+        dst[used + copy] = '\0';
+    }
+    return used + length;
+}
+#endif
+#endif
