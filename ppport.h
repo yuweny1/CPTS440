@@ -6666,3 +6666,157 @@ DPPP_(my_grok_bin)(pTHX_ const char *start, STRLEN *len_p, I32 *flags, NV *resul
     }
     *flags = PERL_SCAN_GREATER_THAN_UV_MAX;
     if (result)
+        *result = value_nv;
+    return UV_MAX;
+}
+#endif
+#endif
+
+#ifndef grok_hex
+#if defined(NEED_grok_hex)
+static UV DPPP_(my_grok_hex)(pTHX_ const char * start, STRLEN * len_p, I32 * flags, NV * result);
+static
+#else
+extern UV DPPP_(my_grok_hex)(pTHX_ const char * start, STRLEN * len_p, I32 * flags, NV * result);
+#endif
+
+#ifdef grok_hex
+#  undef grok_hex
+#endif
+#define grok_hex(a,b,c,d) DPPP_(my_grok_hex)(aTHX_ a,b,c,d)
+#define Perl_grok_hex DPPP_(my_grok_hex)
+
+#if defined(NEED_grok_hex) || defined(NEED_grok_hex_GLOBAL)
+UV
+DPPP_(my_grok_hex)(pTHX_ const char *start, STRLEN *len_p, I32 *flags, NV *result)
+{
+    const char *s = start;
+    STRLEN len = *len_p;
+    UV value = 0;
+    NV value_nv = 0;
+
+    const UV max_div_16 = UV_MAX / 16;
+    bool allow_underscores = *flags & PERL_SCAN_ALLOW_UNDERSCORES;
+    bool overflowed = FALSE;
+    const char *xdigit;
+
+    if (!(*flags & PERL_SCAN_DISALLOW_PREFIX)) {
+        /* strip off leading x or 0x.
+           for compatibility silently suffer "x" and "0x" as valid hex numbers.
+        */
+        if (len >= 1) {
+            if (s[0] == 'x') {
+                s++;
+                len--;
+            }
+            else if (len >= 2 && s[0] == '0' && s[1] == 'x') {
+                s+=2;
+                len-=2;
+            }
+        }
+    }
+
+    for (; len-- && *s; s++) {
+	xdigit = strchr((char *) PL_hexdigit, *s);
+        if (xdigit) {
+            /* Write it in this wonky order with a goto to attempt to get the
+               compiler to make the common case integer-only loop pretty tight.
+               With gcc seems to be much straighter code than old scan_hex.  */
+          redo:
+            if (!overflowed) {
+                if (value <= max_div_16) {
+                    value = (value << 4) | ((xdigit - PL_hexdigit) & 15);
+                    continue;
+                }
+                warn("Integer overflow in hexadecimal number");
+                overflowed = TRUE;
+                value_nv = (NV) value;
+            }
+            value_nv *= 16.0;
+	    /* If an NV has not enough bits in its mantissa to
+	     * represent a UV this summing of small low-order numbers
+	     * is a waste of time (because the NV cannot preserve
+	     * the low-order bits anyway): we could just remember when
+	     * did we overflow and in the end just multiply value_nv by the
+	     * right amount of 16-tuples. */
+            value_nv += (NV)((xdigit - PL_hexdigit) & 15);
+            continue;
+        }
+        if (*s == '_' && len && allow_underscores && s[1]
+		&& (xdigit = strchr((char *) PL_hexdigit, s[1])))
+	    {
+		--len;
+		++s;
+                goto redo;
+	    }
+        if (!(*flags & PERL_SCAN_SILENT_ILLDIGIT))
+            warn("Illegal hexadecimal digit '%c' ignored", *s);
+        break;
+    }
+
+    if (   ( overflowed && value_nv > 4294967295.0)
+#if UVSIZE > 4
+	|| (!overflowed && value > 0xffffffff  )
+#endif
+	) {
+	warn("Hexadecimal number > 0xffffffff non-portable");
+    }
+    *len_p = s - start;
+    if (!overflowed) {
+        *flags = 0;
+        return value;
+    }
+    *flags = PERL_SCAN_GREATER_THAN_UV_MAX;
+    if (result)
+        *result = value_nv;
+    return UV_MAX;
+}
+#endif
+#endif
+
+#ifndef grok_oct
+#if defined(NEED_grok_oct)
+static UV DPPP_(my_grok_oct)(pTHX_ const char * start, STRLEN * len_p, I32 * flags, NV * result);
+static
+#else
+extern UV DPPP_(my_grok_oct)(pTHX_ const char * start, STRLEN * len_p, I32 * flags, NV * result);
+#endif
+
+#ifdef grok_oct
+#  undef grok_oct
+#endif
+#define grok_oct(a,b,c,d) DPPP_(my_grok_oct)(aTHX_ a,b,c,d)
+#define Perl_grok_oct DPPP_(my_grok_oct)
+
+#if defined(NEED_grok_oct) || defined(NEED_grok_oct_GLOBAL)
+UV
+DPPP_(my_grok_oct)(pTHX_ const char *start, STRLEN *len_p, I32 *flags, NV *result)
+{
+    const char *s = start;
+    STRLEN len = *len_p;
+    UV value = 0;
+    NV value_nv = 0;
+
+    const UV max_div_8 = UV_MAX / 8;
+    bool allow_underscores = *flags & PERL_SCAN_ALLOW_UNDERSCORES;
+    bool overflowed = FALSE;
+
+    for (; len-- && *s; s++) {
+         /* gcc 2.95 optimiser not smart enough to figure that this subtraction
+            out front allows slicker code.  */
+        int digit = *s - '0';
+        if (digit >= 0 && digit <= 7) {
+            /* Write it in this wonky order with a goto to attempt to get the
+               compiler to make the common case integer-only loop pretty tight.
+            */
+          redo:
+            if (!overflowed) {
+                if (value <= max_div_8) {
+                    value = (value << 3) | digit;
+                    continue;
+                }
+                /* Bah. We're just overflowed.  */
+                warn("Integer overflow in octal number");
+                overflowed = TRUE;
+                value_nv = (NV) value;
+            }
