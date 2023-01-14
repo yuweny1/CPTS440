@@ -6972,3 +6972,125 @@ DPPP_(my_my_strlcat)(char *dst, const char *src, Size_t size)
 }
 #endif
 #endif
+
+#if !defined(my_strlcpy)
+#if defined(NEED_my_strlcpy)
+static Size_t DPPP_(my_my_strlcpy)(char * dst, const char * src, Size_t size);
+static
+#else
+extern Size_t DPPP_(my_my_strlcpy)(char * dst, const char * src, Size_t size);
+#endif
+
+#define my_strlcpy DPPP_(my_my_strlcpy)
+#define Perl_my_strlcpy DPPP_(my_my_strlcpy)
+
+#if defined(NEED_my_strlcpy) || defined(NEED_my_strlcpy_GLOBAL)
+
+Size_t
+DPPP_(my_my_strlcpy)(char *dst, const char *src, Size_t size)
+{
+    Size_t length, copy;
+
+    length = strlen(src);
+    if (size > 0) {
+        copy = (length >= size) ? size - 1 : length;
+        memcpy(dst, src, copy);
+        dst[copy] = '\0';
+    }
+    return length;
+}
+
+#endif
+#endif
+#ifndef PERL_PV_ESCAPE_QUOTE
+#  define PERL_PV_ESCAPE_QUOTE           0x0001
+#endif
+
+#ifndef PERL_PV_PRETTY_QUOTE
+#  define PERL_PV_PRETTY_QUOTE           PERL_PV_ESCAPE_QUOTE
+#endif
+
+#ifndef PERL_PV_PRETTY_ELLIPSES
+#  define PERL_PV_PRETTY_ELLIPSES        0x0002
+#endif
+
+#ifndef PERL_PV_PRETTY_LTGT
+#  define PERL_PV_PRETTY_LTGT            0x0004
+#endif
+
+#ifndef PERL_PV_ESCAPE_FIRSTCHAR
+#  define PERL_PV_ESCAPE_FIRSTCHAR       0x0008
+#endif
+
+#ifndef PERL_PV_ESCAPE_UNI
+#  define PERL_PV_ESCAPE_UNI             0x0100
+#endif
+
+#ifndef PERL_PV_ESCAPE_UNI_DETECT
+#  define PERL_PV_ESCAPE_UNI_DETECT      0x0200
+#endif
+
+#ifndef PERL_PV_ESCAPE_ALL
+#  define PERL_PV_ESCAPE_ALL             0x1000
+#endif
+
+#ifndef PERL_PV_ESCAPE_NOBACKSLASH
+#  define PERL_PV_ESCAPE_NOBACKSLASH     0x2000
+#endif
+
+#ifndef PERL_PV_ESCAPE_NOCLEAR
+#  define PERL_PV_ESCAPE_NOCLEAR         0x4000
+#endif
+
+#ifndef PERL_PV_ESCAPE_RE
+#  define PERL_PV_ESCAPE_RE              0x8000
+#endif
+
+#ifndef PERL_PV_PRETTY_NOCLEAR
+#  define PERL_PV_PRETTY_NOCLEAR         PERL_PV_ESCAPE_NOCLEAR
+#endif
+#ifndef PERL_PV_PRETTY_DUMP
+#  define PERL_PV_PRETTY_DUMP            PERL_PV_PRETTY_ELLIPSES|PERL_PV_PRETTY_QUOTE
+#endif
+
+#ifndef PERL_PV_PRETTY_REGPROP
+#  define PERL_PV_PRETTY_REGPROP         PERL_PV_PRETTY_ELLIPSES|PERL_PV_PRETTY_LTGT|PERL_PV_ESCAPE_RE
+#endif
+
+/* Hint: pv_escape
+ * Note that unicode functionality is only backported to
+ * those perl versions that support it. For older perl
+ * versions, the implementation will fall back to bytes.
+ */
+
+#ifndef pv_escape
+#if defined(NEED_pv_escape)
+static char * DPPP_(my_pv_escape)(pTHX_ SV * dsv, char const * const str, const STRLEN count, const STRLEN max, STRLEN * const escaped, const U32 flags);
+static
+#else
+extern char * DPPP_(my_pv_escape)(pTHX_ SV * dsv, char const * const str, const STRLEN count, const STRLEN max, STRLEN * const escaped, const U32 flags);
+#endif
+
+#ifdef pv_escape
+#  undef pv_escape
+#endif
+#define pv_escape(a,b,c,d,e,f) DPPP_(my_pv_escape)(aTHX_ a,b,c,d,e,f)
+#define Perl_pv_escape DPPP_(my_pv_escape)
+
+#if defined(NEED_pv_escape) || defined(NEED_pv_escape_GLOBAL)
+
+char *
+DPPP_(my_pv_escape)(pTHX_ SV *dsv, char const * const str,
+  const STRLEN count, const STRLEN max,
+  STRLEN * const escaped, const U32 flags)
+{
+    const char esc = flags & PERL_PV_ESCAPE_RE ? '%' : '\\';
+    const char dq = flags & PERL_PV_ESCAPE_QUOTE ? '"' : esc;
+    char octbuf[32] = "%123456789ABCDF";
+    STRLEN wrote = 0;
+    STRLEN chsize = 0;
+    STRLEN readsize = 1;
+#if defined(is_utf8_string) && defined(utf8_to_uvchr)
+    bool isuni = flags & PERL_PV_ESCAPE_UNI ? 1 : 0;
+#endif
+    const char *pv  = str;
