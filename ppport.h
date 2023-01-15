@@ -7094,3 +7094,162 @@ DPPP_(my_pv_escape)(pTHX_ SV *dsv, char const * const str,
     bool isuni = flags & PERL_PV_ESCAPE_UNI ? 1 : 0;
 #endif
     const char *pv  = str;
+    const char * const end = pv + count;
+    octbuf[0] = esc;
+
+    if (!(flags & PERL_PV_ESCAPE_NOCLEAR))
+	sv_setpvs(dsv, "");
+
+#if defined(is_utf8_string) && defined(utf8_to_uvchr)
+    if ((flags & PERL_PV_ESCAPE_UNI_DETECT) && is_utf8_string((U8*)pv, count))
+        isuni = 1;
+#endif
+
+    for (; pv < end && (!max || wrote < max) ; pv += readsize) {
+        const UV u =
+#if defined(is_utf8_string) && defined(utf8_to_uvchr)
+		     isuni ? utf8_to_uvchr((U8*)pv, &readsize) :
+#endif
+			     (U8)*pv;
+        const U8 c = (U8)u & 0xFF;
+
+        if (u > 255 || (flags & PERL_PV_ESCAPE_ALL)) {
+            if (flags & PERL_PV_ESCAPE_FIRSTCHAR)
+                chsize = my_snprintf(octbuf, sizeof octbuf,
+                                      "%"UVxf, u);
+            else
+                chsize = my_snprintf(octbuf, sizeof octbuf,
+                                      "%cx{%"UVxf"}", esc, u);
+        } else if (flags & PERL_PV_ESCAPE_NOBACKSLASH) {
+            chsize = 1;
+        } else {
+            if (c == dq || c == esc || !isPRINT(c)) {
+	        chsize = 2;
+                switch (c) {
+		case '\\' : /* fallthrough */
+		case '%'  : if (c == esc)
+		                octbuf[1] = esc;
+		            else
+		                chsize = 1;
+		            break;
+		case '\v' : octbuf[1] = 'v'; break;
+		case '\t' : octbuf[1] = 't'; break;
+		case '\r' : octbuf[1] = 'r'; break;
+		case '\n' : octbuf[1] = 'n'; break;
+		case '\f' : octbuf[1] = 'f'; break;
+                case '"'  : if (dq == '"')
+				octbuf[1] = '"';
+			    else
+				chsize = 1;
+			    break;
+		default:    chsize = my_snprintf(octbuf, sizeof octbuf,
+				pv < end && isDIGIT((U8)*(pv+readsize))
+				? "%c%03o" : "%c%o", esc, c);
+                }
+            } else {
+                chsize = 1;
+            }
+	}
+	if (max && wrote + chsize > max) {
+	    break;
+        } else if (chsize > 1) {
+            sv_catpvn(dsv, octbuf, chsize);
+            wrote += chsize;
+	} else {
+	    char tmp[2];
+	    my_snprintf(tmp, sizeof tmp, "%c", c);
+            sv_catpvn(dsv, tmp, 1);
+	    wrote++;
+	}
+        if (flags & PERL_PV_ESCAPE_FIRSTCHAR)
+            break;
+    }
+    if (escaped != NULL)
+        *escaped= pv - str;
+    return SvPVX(dsv);
+}
+
+#endif
+#endif
+
+#ifndef pv_pretty
+#if defined(NEED_pv_pretty)
+static char * DPPP_(my_pv_pretty)(pTHX_ SV * dsv, char const * const str, const STRLEN count, const STRLEN max, char const * const start_color, char const * const end_color, const U32 flags);
+static
+#else
+extern char * DPPP_(my_pv_pretty)(pTHX_ SV * dsv, char const * const str, const STRLEN count, const STRLEN max, char const * const start_color, char const * const end_color, const U32 flags);
+#endif
+
+#ifdef pv_pretty
+#  undef pv_pretty
+#endif
+#define pv_pretty(a,b,c,d,e,f,g) DPPP_(my_pv_pretty)(aTHX_ a,b,c,d,e,f,g)
+#define Perl_pv_pretty DPPP_(my_pv_pretty)
+
+#if defined(NEED_pv_pretty) || defined(NEED_pv_pretty_GLOBAL)
+
+char *
+DPPP_(my_pv_pretty)(pTHX_ SV *dsv, char const * const str, const STRLEN count,
+  const STRLEN max, char const * const start_color, char const * const end_color,
+  const U32 flags)
+{
+    const U8 dq = (flags & PERL_PV_PRETTY_QUOTE) ? '"' : '%';
+    STRLEN escaped;
+
+    if (!(flags & PERL_PV_PRETTY_NOCLEAR))
+	sv_setpvs(dsv, "");
+
+    if (dq == '"')
+        sv_catpvs(dsv, "\"");
+    else if (flags & PERL_PV_PRETTY_LTGT)
+        sv_catpvs(dsv, "<");
+
+    if (start_color != NULL)
+        sv_catpv(dsv, D_PPP_CONSTPV_ARG(start_color));
+
+    pv_escape(dsv, str, count, max, &escaped, flags | PERL_PV_ESCAPE_NOCLEAR);
+
+    if (end_color != NULL)
+        sv_catpv(dsv, D_PPP_CONSTPV_ARG(end_color));
+
+    if (dq == '"')
+	sv_catpvs(dsv, "\"");
+    else if (flags & PERL_PV_PRETTY_LTGT)
+        sv_catpvs(dsv, ">");
+
+    if ((flags & PERL_PV_PRETTY_ELLIPSES) && escaped < count)
+	sv_catpvs(dsv, "...");
+
+    return SvPVX(dsv);
+}
+
+#endif
+#endif
+
+#ifndef pv_display
+#if defined(NEED_pv_display)
+static char * DPPP_(my_pv_display)(pTHX_ SV * dsv, const char * pv, STRLEN cur, STRLEN len, STRLEN pvlim);
+static
+#else
+extern char * DPPP_(my_pv_display)(pTHX_ SV * dsv, const char * pv, STRLEN cur, STRLEN len, STRLEN pvlim);
+#endif
+
+#ifdef pv_display
+#  undef pv_display
+#endif
+#define pv_display(a,b,c,d,e) DPPP_(my_pv_display)(aTHX_ a,b,c,d,e)
+#define Perl_pv_display DPPP_(my_pv_display)
+
+#if defined(NEED_pv_display) || defined(NEED_pv_display_GLOBAL)
+
+char *
+DPPP_(my_pv_display)(pTHX_ SV *dsv, const char *pv, STRLEN cur, STRLEN len, STRLEN pvlim)
+{
+    pv_pretty(dsv, pv, cur, pvlim, NULL, NULL, PERL_PV_PRETTY_DUMP);
+    if (len > cur && pv[cur] == '\0')
+	sv_catpvs(dsv, "\\0");
+    return SvPVX(dsv);
+}
+
+#endif
+#endif
