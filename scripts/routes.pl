@@ -327,3 +327,18 @@ return {
 "/garply/quux/grault" => 323,
 "/garply/corge/foo" => 324,
 "/garply/corge/bar" => 325,
+"/garply/corge/baz" => 326,
+"/garply/corge/qux" => 327,
+"/garply/corge/quux" => 328,
+"/garply/corge/grault" => 329,
+"/garply/grault/foo" => 330,
+"/garply/grault/bar" => 331,
+"/garply/grault/baz" => 332,
+"/garply/grault/qux" => 333,
+"/garply/grault/quux" => 334,
+"/garply/grault/corge" => 335,
+
+"/" => 336,
+
+"/post/{year}/{month}" => 337,
+};
