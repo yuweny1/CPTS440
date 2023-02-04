@@ -8,4 +8,9 @@
 use strict;
 use warnings;
 
-use Test::More t
+use Test::More tests => 45;
+BEGIN { use_ok('Router::R3') };
+
+#########################
+
+# Insert your test code below, the Test::More module is use
