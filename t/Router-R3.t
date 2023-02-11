@@ -18,4 +18,8 @@ BEGIN { use_ok('Router::R3') };
 
 sub test_match {
     my($r, $str) = @_;
-    m
+    my($m, $capture) = $r->match($str);
+    is($m, $_[2], "match $str");
+    my $i = 3;
+    while( $i < @_ ) {
+        is($capture->{$_[$i]}, $_[$i+1], "ca
