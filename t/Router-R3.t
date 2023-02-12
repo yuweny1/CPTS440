@@ -22,4 +22,13 @@ sub test_match {
     is($m, $_[2], "match $str");
     my $i = 3;
     while( $i < @_ ) {
-        is($capture->{$_[$i]}, $_[$i+1], "ca
+        is($capture->{$_[$i]}, $_[$i+1], "capture $str $_[$i]");
+        $i += 2;
+    }
+}
+
+my @pattern = (
+    '/abc' => 1,
+    '/def/{x}' => 2,
+    '/ghi/{x}/{y}' => 3,
+    '/xyz/{a:\d{3}}/{b:
