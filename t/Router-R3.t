@@ -38,4 +38,7 @@ sub test_all_match {
     my $r = shift;
     test_match($r, '/abc', 1);
     test_match($r, '/def/XX', 2, x => 'XX');
-    te
+    test_match($r, '/def', undef);
+    test_match($r, '/ghi/AA', undef);
+    test_match($r, '/ghi/AA/BB', 3, x => 'AA', y => 'BB');
+    test_match($r,
