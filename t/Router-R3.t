@@ -31,4 +31,11 @@ my @pattern = (
     '/abc' => 1,
     '/def/{x}' => 2,
     '/ghi/{x}/{y}' => 3,
-    '/xyz/{a:\d{3}}/{b:
+    '/xyz/{a:\d{3}}/{b:\d+}' => 4,
+);
+
+sub test_all_match {
+    my $r = shift;
+    test_match($r, '/abc', 1);
+    test_match($r, '/def/XX', 2, x => 'XX');
+    te
