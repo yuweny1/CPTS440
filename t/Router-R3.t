@@ -41,4 +41,7 @@ sub test_all_match {
     test_match($r, '/def', undef);
     test_match($r, '/ghi/AA', undef);
     test_match($r, '/ghi/AA/BB', 3, x => 'AA', y => 'BB');
-    test_match($r,
+    test_match($r, '/xyz/123/4567', 4, a => '123', b => '4567');
+    test_match($r, '/xyz/12/4567', undef);
+    test_match($r, '/xyz/123/', undef);
+    tes
