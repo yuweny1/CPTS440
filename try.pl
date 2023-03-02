@@ -14,4 +14,9 @@ my $t = Router::R3->new(
     '/zoo' => 1,
     '/bar' => 3,
     '/post/{id}' => 4,
-  
+    '/post2/{id:\d+}' => 5,
+    '/post3/{idx:\d{3}}' => 6,
+    '/post4/{idx:\d{3}}/{idy:\d}' => 7,
+);
+#my $t = Router::R3->new(
+#   
