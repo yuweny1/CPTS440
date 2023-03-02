@@ -19,4 +19,11 @@ my $t = Router::R3->new(
     '/post4/{idx:\d{3}}/{idy:\d}' => 7,
 );
 #my $t = Router::R3->new(
-#   
+#    '/a/' => 6,
+#    '/a/{a}' => 7,
+#);
+my($a, $b) = $t->match('/post4/333/22');
+print "t=$t, a=$a, b=$b\n";
+if( $b ) {
+    local $Data::Dumper::Indent = 0;
+    print D
