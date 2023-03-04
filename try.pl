@@ -26,4 +26,13 @@ my($a, $b) = $t->match('/post4/333/22');
 print "t=$t, a=$a, b=$b\n";
 if( $b ) {
     local $Data::Dumper::Indent = 0;
-    print D
+    print Dumper($b), $/;
+}
+
+__END__
+
+output:
+
+t=Router::R3=REF(0x23c27b8), a=7, b=HASH(0x23c27a0)
+$VAR1 = {'idy' => '22','idx' => '333'};
+
